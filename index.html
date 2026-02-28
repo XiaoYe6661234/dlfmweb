@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>跳舞的线饭制网</title>
+    <title>跳舞的线饭制网 · 滑动目录版</title>
     <style>
         /* 全局重置 白色简约基调 (与原风格保持一致) */
         * {
@@ -49,7 +49,7 @@
 
         /* ----- 搜索栏样式 (增强视觉) ----- */
         .search-section {
-            margin: 0 0 2rem 0;
+            margin: 0 0 1rem 0;
         }
         .search-container {
             background: white;
@@ -103,6 +103,52 @@
             padding-left: 1rem;
         }
 
+        /* ---------- 新增目录条 (水平滑动, 手机适配) ---------- */
+        .directory {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 0.8rem 0.2rem 1.2rem 0.2rem;
+            margin: 1rem 0 0.5rem 0;
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+            white-space: nowrap;
+            scroll-snap-type: x mandatory;
+        }
+        .directory-item {
+            scroll-snap-align: start;
+            background: #ffffffd9;
+            border: 1px solid #e9ecf0;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 470;
+            color: #1e2b3c;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            cursor: pointer;
+            transition: all 0.15s;
+            flex: 0 0 auto;
+            backdrop-filter: blur(2px);
+        }
+        .directory-item.active {
+            background: #1e2b3c;
+            color: white;
+            border-color: #1e2b3c;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .directory-item.all-btn {
+            background: #f8faff;
+            border-color: #ccd7e6;
+        }
+        .directory::-webkit-scrollbar {
+            height: 4px;
+        }
+        .directory::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 8px;
+        }
+
         .card {
             background-color: #ffffff;
             border-radius: 10px;               /* 与公告卡片的圆角统一为10px */
@@ -121,9 +167,12 @@
             opacity: 1;
             transform: translateY(0);
         }
-        /* 隐藏卡片（搜索过滤） */
-        .card.search-hidden {
-            display: none;
+        /* 隐藏卡片（搜索过滤 + 目录隐藏） */
+        .card.search-hidden,
+        .card.series-hidden,
+        .hero-title.series-hidden,
+        .hero-sub.series-hidden {
+            display: none !important;
         }
 
         .card-title {
@@ -263,6 +312,10 @@
             .search-container button {
                 padding: 0.6rem 1.2rem;
             }
+            .directory-item {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
         }
 
         @media (max-width: 380px) {
@@ -292,7 +345,7 @@
             padding: 0.5rem;
         }
 
-        /* ---------- 公告卡片 与全局卡片圆角统一(10px) 且内容居中 ---------- */
+        /* ---------- 公告卡片 (滑动关闭 + 移动端适配) ---------- */
         .announcement-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -308,13 +361,15 @@
             max-width: 420px;
             width: calc(100% - 2rem);
             background: white;
-            border-radius: 10px;                /* 与卡片圆角统一为10px */
+            border-radius: 10px;                /* 与卡片圆角统一 */
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
             padding: 1.8rem 1.8rem 1.5rem 1.8rem;
             position: relative;
             border: 1px solid rgba(255,170,165,0.3);
             animation: announcePop 0.2s ease;
-            text-align: center;                  /* 全局居中 */
+            text-align: center;
+            touch-action: pan-y; /* 允许垂直触摸滑动，我们用于关闭 */
+            transition: transform 0.1s;
         }
         @keyframes announcePop {
             0% { transform: scale(0.95); opacity: 0; }
@@ -340,7 +395,6 @@
             font-weight: 500;
             color: #1e1e1e;
             margin-bottom: 1rem;
-            padding-right: 0;          /* 移除右侧留白，适应居中 */
             letter-spacing: -0.5px;
             text-align: center;
         }
@@ -354,11 +408,11 @@
             margin: 1rem 0 1.8rem 0;
             border-left: 4px solid #ffaaa5;
             white-space: pre-line;
-            text-align: left;          /* 内容文本左对齐更自然，但整体卡片居中 */
+            text-align: left;
         }
         .announcement-button {
             display: flex;
-            justify-content: center;    /* 按钮居中 */
+            justify-content: center;
             width: 100%;
         }
         .announcement-btn {
@@ -366,7 +420,7 @@
             color: white;
             border: none;
             padding: 0.8rem 2.8rem;
-            border-radius: 6px;          /* 与普通按钮圆角一致(6px) */
+            border-radius: 6px;
             font-size: 1.1rem;
             font-weight: 500;
             cursor: pointer;
@@ -386,11 +440,11 @@
 <body>
 <div class="page-wrapper">
 
-    <!-- 顶部大标题 -->
+    <!-- 顶部大标题 (不参与系列隐藏) -->
     <h1 class="hero-title"><strong>跳舞的线饭制网</strong></h1>
     <div class="hero-sub">Dancing Line Fanmade — 让每个饭制可以发光放彩</div>
 
-    <!-- 搜索框区域 (功能已增强为全局搜索) -->
+    <!-- 搜索框区域 -->
     <div class="search-section">
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="搜索合集、作者、更新日志、关卡..." autocomplete="off">
@@ -399,11 +453,21 @@
         <div class="search-hint">输入任意内容，实时全局搜索所有卡片。</div>
     </div>
 
-    <!-- 烧烤之夜 区块 -->
-    <h1 class="hero-title">《烧烤之夜》</h1>
-    <div class="hero-sub">Dancing Line Fanmade — 驍烤之燁Barbecue Night</div>
+    <!-- ========= 新增目录：饭制快速切换 ========= -->
+    <div class="directory" id="seriesDirectory">
+        <span class="directory-item all-btn active" data-series="all">全部饭制</span>
+        <span class="directory-item" data-series="barbecue">烧烤之夜</span>
+        <span class="directory-item" data-series="42line">42Line</span>
+        <span class="directory-item" data-series="guideline">引导线</span>
+        <span class="directory-item" data-series="mazeline">MazeLine</span>
+    </div>
 
-    <div class="card" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
+    <!-- ================= 烧烤之夜 区块 ================= -->
+    <!-- 为标题/副标题添加 data-series 以便目录控制 -->
+    <h1 class="hero-title" data-series="barbecue">《烧烤之夜》</h1>
+    <div class="hero-sub" data-series="barbecue">Dancing Line Fanmade — 驍烤之燁Barbecue Night</div>
+
+    <div class="card" data-series="barbecue" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
         <h2 class="card-title">合集简介</h2>
         <div class="intro-text">
             《驍烤之燁》（Barbecue Night）（另名《烧烤之夜》）是跳舞的线社区玩家“驍燁”自制饭制合集，2026年2月份，v.1.0.0版本已上线，但目前仅完成Windows原型版本。且由于作者时间管理和部分原因，此合集将进入停更阶段，感谢玩家们的支持。
@@ -413,7 +477,7 @@
         </div>
     </div>
 
-    <div class="card" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群">
+    <div class="card" data-series="barbecue" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群">
         <h2 class="card-title">更新日志</h2>
         <div class="intro-text">
 驍烤之燁&烧烤之夜 v1.0.0更新公告
@@ -432,7 +496,7 @@
         </div>
     </div>
 
-    <div class="card" data-search-content="关注作者 驍燁 哔哩哔哩 抖音 DLRS同人网 同人群 chinadlrs">
+    <div class="card" data-series="barbecue" data-search-content="关注作者 驍燁 哔哩哔哩 抖音 DLRS同人网 同人群 chinadlrs">
         <h2 class="card-title">关注作者</h2>
         <div class="button-grid three">
             <a href="https://space.bilibili.com/3546763094919285?spm_id_from=333.337.0.0" target="_blank" rel="noopener" class="btn">哔哩哔哩</a>
@@ -442,7 +506,7 @@
         <div class="hint-text"><i>关注</i> 点击直达作者B站/抖音/DLRS个人主页</div>
     </div>
 
-    <div class="card" data-search-content="下载游戏 Windows下载 百度网盘 提取码 XKZY 安卓下载 暂不支持 iOS HarmonyOS">
+    <div class="card" data-series="barbecue" data-search-content="下载游戏 Windows下载 百度网盘 提取码 XKZY 安卓下载 暂不支持 iOS HarmonyOS">
         <h2 class="card-title">下载游戏</h2>
         <div class="button-grid half">
             <a href="https://pan.baidu.com/s/13202xazcEXru3o1FeUAI7g?pwd=XKZY" target="_blank" rel="noopener" class="btn">Windows下载</a>
@@ -456,7 +520,7 @@
         </div>
     </div>
 
-    <div class="card" data-search-content="玩家社群 QQ群 官方QQ群 qm.qq.com 群内交流">
+    <div class="card" data-series="barbecue" data-search-content="玩家社群 QQ群 官方QQ群 qm.qq.com 群内交流">
         <h2 class="card-title">玩家社群</h2>
         <div class="button-grid full">
             <a href="https://qm.qq.com/q/zTW8maOW3g" target="_blank" rel="noopener" class="btn">加入官方QQ群</a>
@@ -464,18 +528,18 @@
         <div class="hint-text">群内交流饭制、获取最新进度</div>
     </div>
 
-    <div class="card" data-search-content="其他内容 跳舞的线同人论坛 xiaoye6661234.github.io/dl/">
+    <div class="card" data-series="barbecue" data-search-content="其他内容 跳舞的线同人论坛 xiaoye6661234.github.io/dl/">
         <h2 class="card-title">其他内容</h2>
         <div class="button-grid full">
             <a href="https://xiaoye6661234.github.io/dl/" target="_blank" rel="noopener" class="btn">跳舞的线同人论坛</a>
         </div>
     </div>
 
-    <!-- 42Line 区块 -->
-    <h1 class="hero-title">《42Line》</h1>
-    <div class="hero-sub">Dancing Line Fanmade —42Line</div>
+    <!-- ================= 42Line 区块 ================= -->
+    <h1 class="hero-title" data-series="42line">《42Line》</h1>
+    <div class="hero-sub" data-series="42line">Dancing Line Fanmade —42Line</div>
 
-    <div class="card" data-search-content="42Line 42 line 合集简介 42号 Arphros 内测 2026年4月2日 2月28日">
+    <div class="card" data-series="42line" data-search-content="42Line 42 line 合集简介 42号 Arphros 内测 2026年4月2日 2月28日">
         <h2 class="card-title">合集简介</h2>
         <div class="intro-text">
             《42 line》是跳舞的线社区玩家“42号”在Arphros制作的一系列关卡合集，目前正在内测中，特别感谢所有内测人员，将于2026年的4月2日前后发布，第一个关卡将于2月28日制作完成。
@@ -485,12 +549,12 @@
         </div>
     </div>
 
-    <div class="card" data-search-content="42Line 更新日志 暂无">
+    <div class="card" data-series="42line" data-search-content="42Line 更新日志 暂无">
         <h2 class="card-title">更新日志</h2>
         <div class="intro-text">暂无</div>
     </div>
 
-    <div class="card" data-search-content="关注作者 42号 哔哩哔哩 抖音">
+    <div class="card" data-series="42line" data-search-content="关注作者 42号 哔哩哔哩 抖音">
         <h2 class="card-title">关注作者</h2>
         <div class="button-grid half">
             <a href="https://space.bilibili.com/108450571?spm_id_from=333.337.0.0" target="_blank" rel="noopener" class="btn">哔哩哔哩</a>
@@ -499,7 +563,7 @@
         <div class="hint-text"><i>关注</i> 点击直达作者B站/抖音主页</div>
     </div>
 
-    <div class="card" data-search-content="下载游戏 内测暂未开放 arphros 不支持iOS HarmonyOS 内测 勿外传">
+    <div class="card" data-series="42line" data-search-content="下载游戏 内测暂未开放 arphros 不支持iOS HarmonyOS 内测 勿外传">
         <h2 class="card-title">下载游戏</h2>
         <div class="button-grid full">
             <button class="btn" type="button" onclick="alert('目前还在进行内测，暂无游玩版本')">内测暂未开放</button>
@@ -509,7 +573,7 @@
         </div>
     </div>
 
-    <div class="card" data-search-content="玩家社群 复制QQ群号 960250239">
+    <div class="card" data-series="42line" data-search-content="玩家社群 复制QQ群号 960250239">
         <h2 class="card-title">玩家社群</h2>
         <div class="button-grid full">
             <button class="btn copy-qq-btn" type="button" data-qq="960250239">复制QQ群号 (960250239)</button>
@@ -517,11 +581,11 @@
         <div class="hint-text">因作者设置，该群请自行到QQ内搜索。点击按钮复制群号。</div>
     </div>
 
-    <!-- 引导线 Guideline 区块 -->
-    <h1 class="hero-title">《引导线》</h1>
-    <div class="hero-sub">Dancing Line Fanmade —GuideLine</div>
+    <!-- ================= 引导线 区块 ================= -->
+    <h1 class="hero-title" data-series="guideline">《引导线》</h1>
+    <div class="hero-sub" data-series="guideline">Dancing Line Fanmade —GuideLine</div>
 
-    <div class="card" data-search-content="引导线 Guideline MaxLine lnchestn 合集简介 音乐节奏 精美 玩法">
+    <div class="card" data-series="guideline" data-search-content="引导线 Guideline MaxLine lnchestn 合集简介 音乐节奏 精美 玩法">
         <h2 class="card-title">合集简介</h2>
         <div class="intro-text">
             引导🗺线🧵是一看👀非常🔝有趣😍的音乐🎵节奏🎶游戏🎮，游戏🎮引导🗺线🧵(Max🔝Line🧵)内⤵️拥有☑️超多🔢音乐🎵资源和各种🔣难度的关卡🆒，玩家👤可以自由😇挑战各种🔣关卡，跟随节奏🎶完美完成挑战。引导🗺线🧵(Max🔝Line🧵)的乐曲🎵非常多，玩家👤需要通过跟着🚶节奏🎶点击👆屏幕，控制🎮线条🧵转向⤴️，避开✖️障碍物◼️来通过🚶关卡。引导🗺线🧵(Max🔝Line🧵)最新版🆕采用的是比较精美🎨的颜色🌈主题风格，而且玩法🎮丰富程度要高于🔝原版。
@@ -531,7 +595,7 @@
         </div>
     </div>
 
-    <div class="card" data-search-content="引导线 更新日志 1.0.6 关卡列表 海螺我的 东北胜景 宁静之地 Faded 引导线 通关风暴挑战 百度网盘 LNCH 苹果无">
+    <div class="card" data-series="guideline" data-search-content="引导线 更新日志 1.0.6 关卡列表 海螺我的 东北胜景 宁静之地 Faded 引导线 通关风暴挑战 百度网盘 LNCH 苹果无">
         <h2 class="card-title">更新日志</h2>
         <div class="intro-text">
 lnchestn
@@ -573,7 +637,7 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
         </div>
     </div>
 
-    <div class="card" data-search-content="关注作者 lnchestn 哔哩哔哩">
+    <div class="card" data-series="guideline" data-search-content="关注作者 lnchestn 哔哩哔哩">
         <h2 class="card-title">关注作者</h2>
         <div class="button-grid three">
             <a href="https://space.bilibili.com/3546947665266985?spm_id_from=333.337.0.0" target="_blank" rel="noopener" class="btn">哔哩哔哩</a>
@@ -581,7 +645,7 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
         <div class="hint-text"><i>关注</i> 点击直达作者B站个人主页</div>
     </div>
 
-    <div class="card" data-search-content="下载游戏 Windows下载 安卓下载 百度网盘 提取码 LNCH 暂不支持 iOS HarmonyOS">
+    <div class="card" data-series="guideline" data-search-content="下载游戏 Windows下载 安卓下载 百度网盘 提取码 LNCH 暂不支持 iOS HarmonyOS">
         <h2 class="card-title">下载游戏</h2>
         <div class="button-grid half">
             <a href="https://pan.baidu.com/s/1i00pcARGs915FiRHkzF8KA?pwd=LNCH" target="_blank" rel="noopener" class="btn">Windows下载</a>
@@ -595,7 +659,7 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
         </div>
     </div>
 
-    <div class="card" data-search-content="玩家社群 官方QQ群 qm.qq.com 1072411519 群内交流">
+    <div class="card" data-series="guideline" data-search-content="玩家社群 官方QQ群 qm.qq.com 1072411519 群内交流">
         <h2 class="card-title">玩家社群</h2>
         <div class="button-grid full">
             <a href="https://qm.qq.com/q/30tQCnIJJe" target="_blank" rel="noopener" class="btn">加入官方QQ群</a>
@@ -603,11 +667,11 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
         <div class="hint-text">群内交流饭制、获取最新进度</div>
     </div>
 
-    <!-- MazeLine 区块（新增加） -->
-    <h1 class="hero-title">《MaveLine》</h1>
-    <div class="hero-sub">Dancing Line Fanmade —MaveLine</div>
+    <!-- ================= MazeLine 区块 ================= -->
+    <h1 class="hero-title" data-series="mazeline">《MazeLine》</h1>
+    <div class="hero-sub" data-series="mazeline">Dancing Line Fanmade —MaveLine</div>
 
-    <div class="card" data-search-content="MaveLine MazeLine cloverglow 冰焰模版430 合集简介 饭制游戏">
+    <div class="card" data-series="mazeline" data-search-content="MaveLine MazeLine cloverglow 冰焰模版430 合集简介 饭制游戏">
         <h2 class="card-title">合集简介</h2>
         <div class="intro-text">
            MazeLine是一款cloverglow使用冰焰模版430改制作的跳舞的线饭制游戏
@@ -616,14 +680,14 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
             <span>作者：FlowStudio—cloverglow</span><br>
         </div>
     </div>
-    <div class="card" data-search-content="关注作者 cloverglow 哔哩哔哩">
+    <div class="card" data-series="mazeline" data-search-content="关注作者 cloverglow 哔哩哔哩">
         <h2 class="card-title">关注作者</h2>
         <div class="button-grid three">
             <a href="https://space.bilibili.com/3546864318155304?spm_id_from=333.337.0.0" target="_blank" rel="noopener" class="btn">哔哩哔哩</a>
         </div>
         <div class="hint-text"><i>关注</i> 点击直达作者B站个人主页</div>
     </div>
-    <div class="card" data-search-content="下载游戏 暂无游玩版本 暂未公开">
+    <div class="card" data-series="mazeline" data-search-content="下载游戏 暂无游玩版本 暂未公开">
         <h2 class="card-title">下载游戏</h2>
         <div class="button-grid full">
             <button class="btn" type="button" onclick="alert('暂无游玩版本')">暂无</button>
@@ -632,14 +696,14 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
             ⚠️ <strong>本游戏作者暂未公开游戏下载</strong>
         </div>
     </div>
-    <div class="card" data-search-content="玩家社群 QQ群 qm.qq.com/cmXjbRp1FC">
+    <div class="card" data-series="mazeline" data-search-content="玩家社群 QQ群 qm.qq.com/cmXjbRp1FC">
         <h2 class="card-title">玩家社群</h2>
         <div class="button-grid full">
             <a href="https://qm.qq.com/q/cmXjbRp1FC" target="_blank" rel="noopener" class="btn">加入官方QQ群</a>
         </div>
         <div class="hint-text">群内交流饭制、获取最新进度</div>
     </div>
-    <div class="card" data-search-content="详情网站 cloverglow.mazeline flowstudio828.github.io">
+    <div class="card" data-series="mazeline" data-search-content="详情网站 cloverglow.mazeline flowstudio828.github.io">
         <h2 class="card-title">详情网站</h2>
         <div class="button-grid full">
             <a href="https://flowstudio828.github.io/cloverglow.mazeline/" target="_blank" rel="noopener" class="btn">查看</a>
@@ -647,12 +711,11 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
         <div class="hint-text">作者自己的网站</div>
     </div>
 
-     <div class="footer-note">跳舞的线饭制网2026</div>
+    <div class="footer-note">跳舞的线饭制网2026</div>
 </div>
-
-<!-- 公告卡片 (自定义内容, 标题与内容居中，按钮居中) -->
+ <!-- 公告卡片 (滑动关闭 + 手机触控) -->
 <div id="announcementOverlay" class="announcement-overlay">
-    <div class="announcement-card">
+    <div class="announcement-card" id="swipeableAnnouncement">
         <button class="announcement-close" id="announceCloseBtn" aria-label="关闭">&times;</button>
         <div class="announcement-title">公告</div>
         <div class="announcement-content">
@@ -707,7 +770,7 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
             });
         }
 
-        // ========= 增强搜索功能 (全局搜索) =========
+        // ========= 搜索功能 =========
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchButton');
         const allCards = Array.from(document.querySelectorAll('.card'));
@@ -719,11 +782,8 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
                 return;
             }
             allCards.forEach(card => {
-                // 合并所有可搜索文本：data-search-content + 卡片内部文本 + 所有链接/按钮文字
                 let searchText = card.dataset.searchContent || '';
                 searchText += ' ' + (card.innerText || '').toLowerCase();
-                // 额外抓取所有按钮/链接内的文字 (innerText已包含)
-                // 转为小写比较
                 if (searchText.toLowerCase().includes(keyword)) {
                     card.classList.remove('search-hidden');
                 } else {
@@ -736,16 +796,82 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
         searchInput.addEventListener('keyup', function(e) {
             if (e.key === 'Enter') performSearch();
         });
-        searchInput.addEventListener('input', performSearch);  // 实时搜索
+        searchInput.addEventListener('input', performSearch);
 
-        // ========= 公告卡片控制 =========
+        // ========= 目录系列切换 (series隐藏) =========
+        const directoryItems = document.querySelectorAll('.directory-item');
+        const seriesElements = document.querySelectorAll('[data-series]'); // 所有带data-series的元素(标题、副标题、卡片)
+
+        function setActiveSeries(series) {
+            // 更新按钮active样式
+            directoryItems.forEach(item => {
+                const itemSeries = item.dataset.series;
+                if (itemSeries === series || (series === 'all' && itemSeries === 'all')) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // 控制显示隐藏
+            if (series === 'all') {
+                seriesElements.forEach(el => el.classList.remove('series-hidden'));
+            } else {
+                seriesElements.forEach(el => {
+                    if (el.dataset.series !== series) {
+                        el.classList.add('series-hidden');
+                    } else {
+                        el.classList.remove('series-hidden');
+                    }
+                });
+            }
+        }
+
+        directoryItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                const series = this.dataset.series;
+                setActiveSeries(series);
+            });
+        });
+
+        // ========= 滑动公告 (触摸关闭) =========
         const overlay = document.getElementById('announcementOverlay');
         const closeBtn = document.getElementById('announceCloseBtn');
         const confirmBtn = document.getElementById('announceConfirmBtn');
+        const swipeCard = document.getElementById('swipeableAnnouncement');
 
         function hideAnnouncement() {
             overlay.classList.add('announcement-hidden');
         }
+
+        // 触摸滑动关闭 (垂直滑动)
+        let startY = 0;
+        let currentY = 0;
+        const threshold = 50; // 滑动超过50px关闭
+
+        swipeCard.addEventListener('touchstart', function(e) {
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+
+        swipeCard.addEventListener('touchmove', function(e) {
+            if (startY === 0) return;
+            currentY = e.touches[0].clientY;
+            const diff = currentY - startY;
+            // 轻微拖动效果，可限制
+            if (Math.abs(diff) > 10) {
+                e.preventDefault(); // 防止页面滚动
+            }
+        }, { passive: false });
+
+        swipeCard.addEventListener('touchend', function(e) {
+            if (startY === 0) return;
+            const endY = e.changedTouches[0].clientY;
+            const diff = Math.abs(endY - startY);
+            if (diff > threshold) {
+                hideAnnouncement();
+            }
+            startY = 0;
+        });
 
         closeBtn.addEventListener('click', hideAnnouncement);
         confirmBtn.addEventListener('click', hideAnnouncement);
@@ -753,7 +879,10 @@ Windows下载：链接：网页链接 提取码: LNCH<br>
         // 初始化
         initScrollAnimation();
         bindCopyQQ();
-        overlay.classList.remove('announcement-hidden');
+        overlay.classList.remove('announcement-hidden'); // 确保显示
+
+        // 默认全部系列可见，高亮“全部”
+        setActiveSeries('all');
     })();
 </script>
 </body>
