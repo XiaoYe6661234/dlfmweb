@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>跳舞的线饭制网 · 滑动目录＋平滑动画</title>
+    <title>跳舞的线饭制网</title>
     <style>
         /* ----- 全局重置 — 白色简约基调 (兼容深色) ----- */
         * {
@@ -164,7 +164,7 @@
             padding-bottom: 0.75rem;
         }
 
-        /* 顶部栏：搜索 + 深色按钮 */
+        /* 顶部栏：搜索 + 深色按钮 — 按钮尺寸调小 */
         .top-bar {
             display: flex;
             align-items: center;
@@ -191,7 +191,7 @@
         .search-container input {
             flex: 1;
             border: none;
-            padding: 0.9rem 0;
+            padding: 0.7rem 0;         /* 减小垂直内边距 */
             font-size: 1rem;
             background: transparent;
             outline: none;
@@ -205,9 +205,9 @@
             background: #f0f3f8;
             border: none;
             border-radius: 50px;
-            padding: 0.7rem 1.8rem;
+            padding: 0.45rem 1.2rem;    /* 缩小按钮 */
             margin: 0.3rem;
-            font-size: 1rem;
+            font-size: 0.95rem;          /* 稍微减小字号 */
             font-weight: 450;
             color: #2c3e50;
             cursor: pointer;
@@ -225,15 +225,15 @@
             padding-left: 1rem;
         }
 
-        /* 深色模式切换按钮 */
+        /* 深色模式切换按钮 — 缩小尺寸 */
         .theme-toggle {
-            width: 50px;
-            height: 50px;
+            width: 44px;                /* 从50px缩小 */
+            height: 44px;
             border-radius: 50%;
             background: white;
             border: 1px solid #e2e8f0;
             box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            font-size: 1.6rem;
+            font-size: 1.5rem;           /* 调整图标大小 */
             line-height: 1;
             display: flex;
             align-items: center;
@@ -275,7 +275,7 @@
             color: #1e2b3c;
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
             cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s; /* 平滑激活/悬停 */
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
             flex: 0 0 auto;
             backdrop-filter: blur(2px);
         }
@@ -310,7 +310,7 @@
             border-radius: 8px;
         }
 
-        /* 卡片 — 默认完全不透明，移除入场渐变动画（交给View Transition） */
+        /* 卡片 */
         .card {
             background-color: #ffffff;
             border-radius: 10px;
@@ -318,13 +318,13 @@
             padding: 1.5rem 1.5rem;
             margin-bottom: 1.8rem;
             border: 1px solid rgba(0,0,0,0.02);
-            transition: box-shadow 0.2s, background-color 0.2s; /* 保留悬停过渡，不控制显隐 */
+            transition: box-shadow 0.2s, background-color 0.2s;
         }
         .card:hover {
             box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
         }
 
-        /* 隐藏类 — 用于系列过滤 & 搜索 (通过View Transition产生平滑效果) */
+        /* 隐藏类 */
         .card.series-hidden,
         .hero-title.series-hidden,
         .hero-sub.series-hidden,
@@ -421,7 +421,8 @@
             .btn { white-space: normal; padding: 0.7rem 0.5rem; font-size: 0.95rem; }
             .hero-title { font-size: 1.8rem; }
             .search-container { padding-left: 1rem; }
-            .search-container button { padding: 0.6rem 1.2rem; }
+            .search-container button { padding: 0.4rem 1rem; } /* 手机再微调 */
+            .theme-toggle { width: 40px; height: 40px; font-size: 1.4rem; }
             .directory-item { padding: 0.4rem 1rem; font-size: 0.9rem; }
         }
 
@@ -442,7 +443,7 @@
             padding: 0.5rem;
         }
 
-        /* ---------- 公告卡片 — 固定大小 + 内部滚动 ---------- */
+        /* ---------- 公告卡片 — 移除关闭叉号，只保留确定按钮 ---------- */
         .announcement-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -473,19 +474,10 @@
             0% { transform: scale(0.95); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+        /* 彻底隐藏关闭叉号 — 取消按钮 */
         .announcement-close {
-            position: absolute;
-            top: 16px; right: 18px;
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            line-height: 1;
-            color: #aaa;
-            cursor: pointer;
-            padding: 0 6px;
-            transition: color 0.1s;
+            display: none !important;
         }
-        .announcement-close:hover { color: #ff6b6b; }
         .announcement-title {
             font-size: 1.9rem;
             font-weight: 500;
@@ -502,7 +494,7 @@
             border-left: 4px solid #ffaaa5;
             white-space: pre-line;
             text-align: left;
-            overflow-y: auto;
+            overflow-y: auto;          /* 允许内容滚动 */
             flex: 1;
         }
         .announcement-button {
@@ -554,7 +546,7 @@
         <span class="directory-item" data-series="coming">敬请期待</span>
     </div>
 
-    <!-- 烧烤之夜 区块 (所有 data-series 保持一致) -->
+    <!-- 烧烤之夜 区块 -->
     <h1 class="hero-title" data-series="barbecue">《烧烤之夜》</h1>
     <div class="hero-sub" data-series="barbecue">Dancing Line Fanmade — 驍烤之燁 Barbecue Night</div>
     <div class="card" data-series="barbecue" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
@@ -688,13 +680,14 @@
     <div class="footer-note">跳舞的线饭制网2026</div>
 </div>
 
-<!-- 公告卡片 -->
+<!-- 公告卡片 (已移除关闭叉号，只保留确定按钮) -->
 <div id="announcementOverlay" class="announcement-overlay">
     <div class="announcement-card" id="swipeableAnnouncement">
-        <button class="announcement-close" id="announceCloseBtn">&times;</button>
+        <!-- 叉号按钮已被CSS隐藏，无需删除HTML，保留结构但不可见 -->
+        <button class="announcement-close" id="announceCloseBtn" style="display: none;"></button>
         <div class="announcement-title">公告</div>
         <div class="announcement-content">
-            <strong>欢迎来到跳舞的线饭制网！</strong><br>★本网站目前收录未经DLRS 同人群官网审核通过的饭制合集和想要上架到此网站的应用<br>★本网站收录的饭制合集须符合<a href="https://docs.chinadlrs.com/docs/policy/developer">DLRS 同人群官网开发者守则</a>，若含有违规内容，不给予上架<br>★此网站为跳舞的线同人作品汇集网站，没有任何商业性广告，请注意任何盗版链接<br>★如果您也想上架您的作品至这里，欢迎联系邮箱：<a href="https://wx.mail.qq.com/home/index?sid=zVg1Toy7OWQuwTNIAD5rTAAA#/list/1/1">goodgood0222@qq.com</a>（需提供合集名称、合集简介、下载方式、QQ群链接、其他应用个人中心链接。如没有，就在相应栏目填写：无）<br>★网站所有内容都已获得原作者授权
+            <strong>欢迎来到跳舞的线饭制网！</strong><br><br>★本网站目前收录未经DLRS 同人群官网审核通过的饭制合集和想要上架到此网站的应用<br>★本网站收录的饭制合集须符合<a href="https://docs.chinadlrs.com/docs/policy/developer">DLRS 同人群官网开发者守则</a>，若含有违规内容，不给予上架<br>★此网站为跳舞的线同人作品汇集网站，没有任何商业性广告，请注意任何盗版链接<br>★如果您也想上架您的作品至这里，欢迎联系邮箱：<a href="https://wx.mail.qq.com/home/index?sid=zVg1Toy7OWQuwTNIAD5rTAAA#/list/1/1">goodgood0222@qq.com</a>（需提供合集名称、合集简介、下载方式、QQ群链接、其他应用个人中心链接。如没有，就在相应栏目填写：无）<br>★网站所有内容都已获得原作者授权<br><br><strong>近期更新</strong><br><br>1.搜索功能<br>2.浅深色切换<br>3.饭制快速查找目录<br>4.一些新饭制<br>
         </div>
         <div class="announcement-button">
             <button class="announcement-btn" id="announceConfirmBtn">确定</button>
@@ -706,36 +699,29 @@
 (function() {
     // 获取需要操作的元素
     const directoryItems = document.querySelectorAll('.directory-item');
-    const seriesElements = document.querySelectorAll('[data-series]');  // 所有带 data-series 的元素 (标题+卡片)
+    const seriesElements = document.querySelectorAll('[data-series]');  // 所有带 data-series 的元素
     const searchInput = document.getElementById('searchInput');
     const searchBtn = document.getElementById('searchButton');
     const allCards = Array.from(document.querySelectorAll('.card'));
     const themeToggle = document.getElementById('themeToggle');
     const overlay = document.getElementById('announcementOverlay');
-    const closeBtn = document.getElementById('announceCloseBtn');
     const confirmBtn = document.getElementById('announceConfirmBtn');
-    const swipeCard = document.getElementById('swipeableAnnouncement');
+    // 不再绑定关闭叉号，滑动关闭功能已完全移除
 
-    // ---------- 工具函数：使用 View Transitions 平滑更新 (退场/进场动画) ----------
+    // ---------- 工具函数：使用 View Transitions 平滑更新 ----------
     function updateWithTransition(updateFn) {
         if (document.startViewTransition) {
-            // 支持 View Transition API
-            const transition = document.startViewTransition(updateFn);
-            // 可以捕捉错误，但不影响功能
+            document.startViewTransition(updateFn);
         } else {
-            // 降级：直接更新，无动画
             updateFn();
         }
     }
 
-    // ---------- 系列切换逻辑 (修改 class) ----------
+    // ---------- 系列切换逻辑 ----------
     function setActiveSeries(series) {
-        // 目录激活样式
         directoryItems.forEach(item => {
             item.classList.toggle('active', item.dataset.series === series || (series === 'all' && item.dataset.series === 'all'));
         });
-
-        // 控制所有带 data-series 的元素 (标题和卡片) 的显示隐藏
         seriesElements.forEach(el => {
             if (series === 'all') {
                 el.classList.remove('series-hidden');
@@ -745,7 +731,7 @@
         });
     }
 
-    // ---------- 搜索逻辑 (大小写不敏感) ----------
+    // ---------- 搜索逻辑 ----------
     function performSearch() {
         const keyword = searchInput.value.trim().toLowerCase();
         allCards.forEach(card => {
@@ -754,7 +740,6 @@
         });
     }
 
-    // 防抖函数 (避免搜索时频繁启动过渡)
     function debounce(func, delay) {
         let timer;
         return function (...args) {
@@ -763,27 +748,24 @@
         };
     }
 
-    // 包装搜索以支持平滑过渡
     const performSearchWithTransition = debounce(() => {
         updateWithTransition(() => {
             performSearch();
         });
     }, 200);
 
-    // 目录点击处理 (平滑切换)
+    // 目录点击
     directoryItems.forEach(item => {
         item.addEventListener('click', function() {
             const series = this.dataset.series;
             updateWithTransition(() => {
                 setActiveSeries(series);
-                // 切换系列后，搜索框保留但最好重新应用搜索 (保持过滤后的结果)
-                // 但为了避免冲突，直接执行搜索 (使搜索隐藏与系列共存)
-                performSearch(); // 同步执行，因为已经处于 updateFn 内
+                performSearch();
             });
         });
     });
 
-    // 搜索按钮和输入事件
+    // 搜索事件
     searchBtn.addEventListener('click', () => {
         updateWithTransition(() => {
             performSearch();
@@ -792,16 +774,15 @@
     searchInput.addEventListener('keyup', e => e.key === 'Enter' && performSearchWithTransition());
     searchInput.addEventListener('input', performSearchWithTransition);
 
-    // ---------- 深色模式 ----------
+    // 深色模式
     themeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
         themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌑';
     });
 
-    // ---------- 复制QQ按钮 (绑定动态，但静态页面直接查找即可) ----------
+    // 复制QQ按钮绑定
     function bindCopyQQ() {
         document.querySelectorAll('.copy-qq-btn').forEach(btn => {
-            // 移除旧监听避免重复 (用新替换)
             btn.replaceWith(btn.cloneNode(true));
         });
         document.querySelectorAll('.copy-qq-btn').forEach(btn => {
@@ -827,32 +808,20 @@
         });
     }
 
-    // ---------- 公告滑动关闭 ----------
-    let startY = 0;
-    function hideAnnouncement() { overlay.classList.add('announcement-hidden'); }
-    if (swipeCard) {
-        swipeCard.addEventListener('touchstart', e => startY = e.touches[0].clientY, { passive: true });
-        swipeCard.addEventListener('touchmove', e => { if (startY !== 0 && Math.abs(e.touches[0].clientY - startY) > 10) e.preventDefault(); }, { passive: false });
-        swipeCard.addEventListener('touchend', e => {
-            if (startY === 0) return;
-            if (Math.abs(e.changedTouches[0].clientY - startY) > 50) hideAnnouncement();
-            startY = 0;
-        });
+    // ---------- 公告关闭：仅保留确定按钮，滑动关闭与叉号事件已移除 ----------
+    function hideAnnouncement() { 
+        overlay.classList.add('announcement-hidden'); 
     }
-    if (closeBtn) closeBtn.addEventListener('click', hideAnnouncement);
     if (confirmBtn) confirmBtn.addEventListener('click', hideAnnouncement);
-    // 确保公告可见 (默认显示)
+
+    // 确保公告可见
     overlay.classList.remove('announcement-hidden');
 
-    // ---------- 初始化：全部系列 + 绑定复制 + 搜索清空 ----------
+    // 初始化
     setActiveSeries('all');
     bindCopyQQ();
-    searchInput.value = '';   // 清空搜索框
-    // 初始无搜索隐藏
+    searchInput.value = '';
     allCards.forEach(c => c.classList.remove('search-hidden'));
-
-    // 未来如需动态添加内容，只需保证新元素有 data-series 和正确的 data-search-content，并重新调用 bindCopyQQ 即可。
-    // 本结构已具备良好的扩展性。
 })();
 </script>
 </body>
