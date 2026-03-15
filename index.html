@@ -734,7 +734,13 @@
     <div class="hero-sub" data-series="noy">Dancing Line Fanmade — Noy's Arphros Levels Collection</div>
      <div class="card" data-series="noy" data-search-content="图片">
         <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/noy3.png"  
+  <img src="https://xiaoye6661234.github.io/fo/noy4.png"  
+   width="1280" 
+     height="720" 
+     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
+     alt="图片1">
+     <br>
+       <img src="https://xiaoye6661234.github.io/fo/noy3.png"  
    width="1280" 
      height="720" 
      style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
@@ -1694,8 +1700,11 @@ V1.0.5 游戏暂时停更</div></div>
                 <button class="btn" id="settingsFeedback">反馈</button>
                 <button class="btn" id="settingsShowAnnounceB">更新公告</button>
             </div>
-            <div class="hint-text" style="text-align:center;">保存数据暂不可用</div>
-        </div>
+               <div class="settings-row">
+    <button class="btn" id="musicTrackBtn">🎵 音乐(1/5)</button>
+    <button class="btn" id="musicToggleBtn">🔇 背景音乐 OFF</button>
+</div>
+            <div class="hint-text" style="text-align:center;">保存数据暂不可用</div></div>
         <div class="settings-footer">
             <button class="btn" id="settingsCloseBtn">关闭</button>
         </div>
@@ -1896,7 +1905,83 @@ V1.0.5 游戏暂时停更</div></div>
             });
         });
     }
+// ==================== 背景音乐控制 ====================
+const baseMusicUrl = 'https://xiaoye6661234.github.io/fo/';
+const trackNames = ['sypha.mp3', 'world.mp3', 'ten.mp3', 'Utopia.mp3', 'piano.mp3'];
+let currentTrackIndex = 0;          // 当前选中曲目索引（0~4）
+let musicEnabled = false;           // 背景音乐总开关（默认关闭）
+let audio = null;                   // Audio 实例
 
+// 获取或创建 Audio 对象
+function getAudio() {
+    if (!audio) {
+        audio = new Audio();
+        audio.preload = 'metadata'; // 仅预加载元数据
+        audio.onerror = () => console.warn('音频加载失败，请检查文件名或网络');
+    }
+    return audio;
+}
+
+// 设置当前曲目（切换 src，不自动播放）
+function setTrack(index) {
+    if (index < 0 || index >= trackNames.length) return;
+    currentTrackIndex = index;
+    const url = baseMusicUrl + trackNames[currentTrackIndex];
+    const aud = getAudio();
+    aud.src = url;
+    aud.load();                     // 重新加载新资源
+}
+
+// 尝试播放当前曲目（仅当 musicEnabled = true 时生效）
+function playCurrent() {
+    if (!musicEnabled) return;
+    const aud = getAudio();
+    if (!aud.src) {                 // 如果尚未设置 src，则用当前索引设置
+        setTrack(currentTrackIndex);
+    }
+    aud.play().catch(e => console.warn('播放失败，可能由于浏览器策略或网络', e));
+}
+
+// 更新音乐按钮上的曲目指示
+function updateTrackButtonText() {
+    if (musicTrackBtn) {
+        musicTrackBtn.innerText = `🎵 音乐(${currentTrackIndex + 1}/${trackNames.length})`;
+    }
+}
+
+// 获取两个新增按钮
+const musicTrackBtn = document.getElementById('musicTrackBtn');
+const musicToggleBtn = document.getElementById('musicToggleBtn');
+
+if (musicTrackBtn && musicToggleBtn) {
+    // 初始化按钮文字
+    updateTrackButtonText();
+    musicToggleBtn.innerText = musicEnabled ? '🔊 背景音乐 ON' : '🔇 背景音乐 OFF';
+
+    // 点击“音乐”按钮：切换到下一首
+    musicTrackBtn.addEventListener('click', () => {
+        const nextIndex = (currentTrackIndex + 1) % trackNames.length;
+        setTrack(nextIndex);                // 切换 src
+        updateTrackButtonText();             // 更新按钮显示
+        if (musicEnabled) {
+            playCurrent();                   // 如果开关打开则立即播放
+        }
+    });
+
+    // 点击“背景音乐”按钮：切换总开关
+    musicToggleBtn.addEventListener('click', () => {
+        musicEnabled = !musicEnabled;
+        musicToggleBtn.innerText = musicEnabled ? '🔊 背景音乐 ON' : '🔇 背景音乐 OFF';
+
+        if (musicEnabled) {
+            playCurrent();                   // 开启后尝试播放当前曲目
+        } else {
+            if (audio) {
+                audio.pause();                // 关闭时暂停
+            }
+        }
+    });
+}
     // 初始状态：全部饭制
     setActiveSeries('all');
     bindCopyQQ();
