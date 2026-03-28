@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>关卡详情 - 跳舞的线饭制网</title>
+    <style>
+        /* 全局字体与基础样式 - 和主站完全统一 */
+        @font-face {
+            font-family: 'DreamFont';
+            src: url('https://xiaoye6661234.github.io/fo/dream.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'DreamFont', "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        body {
+            background-color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a {
+            text-decoration: none;
+        }
+        /* ========== 顶部通栏 ========== */
+        .top-header {
+            width: 100%;
+            height: 65px;
+            background-color: #bbbbbb;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .menu-toggle {
+            font-size: 1.8rem;
+            color: #000;
+            cursor: pointer;
+            display: none;
+        }
+        .site-title {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #000000;
+            letter-spacing: 1px;
+            margin-left: 10px;
+        }
+        .header-right {
+            flex: 1;
+        }
+        /* ========== 内容容器（侧边栏+主内容） ========== */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            width: 100%;
+        }
+        /* ========== 电脑端侧边栏 ========== */
+        .sidebar {
+            width: 200px;
+            background-color: #ffffff;
+            box-shadow: 3px 0 15px rgba(0, 0, 0, 0.12);
+            padding: 15px 12px;
+            position: fixed;
+            top: 65px;
+            left: 0;
+            height: calc(100vh - 65px);
+            display: flex;
+            flex-direction: column;
+            z-index: 998;
+            transition: transform 0.3s ease;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 5px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            color: #000000;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            transition: all 0.2s ease;
+        }
+        .nav-item:hover {
+            color: #007AFF;
+            background-color: #f0f7ff;
+        }
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+        /* ========== 主内容区域 ========== */
+        .main-content {
+            margin-left: 200px;
+            width: calc(100% - 200px);
+            padding: 20px 20px;
+            flex: 1;
+        }
+        /* 卡片容器 - 电脑端单列，无多余间距 */
+        .card-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            align-items: start; /* 核心：取消拉伸，卡片高度随内容走 */
+        }
+        /* 内容卡片核心修改：自适应高度，无多余内边距/最小高度 */
+        .content-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* 标题和内容仅10px间距，无多余空白 */
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .content-card:hover {
+            transform: scale(1.005);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+            z-index: 10;
+        }
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #000000;
+            margin: 0;
+            line-height: 1.2; /* 标题紧凑，无多余行高 */
+        }
+        .card-content {
+            width: 100%;
+            color: #333333;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin: 0; /* 取消内容区所有默认边距 */
+        }
+        /* 按钮：灰色居中，无多余间距，高度随自身走 */
+        .btn {
+            display: inline-block;
+            padding: 8px 24px;
+            background-color: #888888;
+            color: #ffffff;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: background-color 0.2s ease;
+            line-height: 1.2; /* 按钮文字紧凑 */
+        }
+        .btn:hover {
+            background-color: #666666;
+        }
+        .button-grid {
+            width: 100%;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        /* 图片无多余间距，适配卡片宽度 */
+        .card-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto !important; /* 取消图片多余上下边距 */
+            border-radius: 6px;
+        }
+        /* ========== 手机端适配 - 保留原有样式，同步自适应高度 ========== */
+        @media (max-width: 767px) {
+            .top-header {
+                height: 65px;
+                padding: 0 15px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .site-title {
+                font-size: 1.5rem;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+                width: 75%;
+                max-width: 280px;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px 15px;
+                padding-bottom: 80px;
+            }
+            .card-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .content-card {
+                padding: 20px;
+                gap: 12px;
+            }
+            .card-title {
+                font-size: 1.5rem;
+            }
+        }
+        /* ========== 手机端底部导航 - 完全保留原有样式 ========== */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #ffffff;
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            align-items: center;
+            justify-content: space-around;
+        }
+        @media (max-width: 767px) {
+            .mobile-nav {
+                display: flex;
+            }
+        }
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 100%;
+            color: #000000;
+            transition: all 0.2s ease;
+        }
+        .mobile-nav-item:hover {
+            color: #007AFF;
+        }
+        .mobile-nav-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            margin-bottom: 4px;
+        }
+        .mobile-nav-item span {
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部通栏 -->
+    <header class="top-header">
+        <div class="menu-toggle" id="menuToggle">☰</div>
+        <h1 class="site-title">跳舞的线饭制网—Guideline</h1>
+        <div class="header-right"></div>
+    </header>
+    <div class="content-wrapper">
+        <!-- 左侧侧边栏导航 -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <a href="https://xiaoye6661234.github.io/dlfmweb/" class="nav-item">
+                    <img src="https://xiaoye6661234.github.io/fo/home.png" class="nav-icon" alt="返回首页">
+                    <span>返回首页</span>
+                </a>
+                <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=qq5h6BwX0iUcjXhfit44ShQugGEFgYCBJQUEprQC0d%2Br28ZWF5TzWFPVoer10VEq&busi_data=eyJncm91cENvZGUiOiIxMDcyNDExNTE5IiwidG9rZW4iOiJ2NW1wWGNyYVZqbGwzNU05Nkp5QjRrcWEyWStERXJnUkYyc3BaUG0xVlRxOXZ4VWpXVGE2QlFhVWRKekZqd0Y1IiwidWluIjoiMTc4NzkxMjQ1NSJ9&data=lcZG4mdu1uZAe5n9KDt2olxksSIJ54c3sqhlEOeygM47YXwgAQtr1VA5-NOzsvSWa_8tsTbnT6SwGGtbMAQdbA&svctype=4&tempid=h5_group_info" class="nav-item" target="_blank">
+                    <img src="https://xiaoye6661234.github.io/fo/join.png" class="nav-icon" alt="加入群聊">
+                    <span>加入群聊</span>
+                </a>
+                <a href="mailto:dlfmweb@163.com" class="nav-item" target="_blank">
+                    <img src="https://xiaoye6661234.github.io/fo/feedback.png" class="nav-icon" alt="举报反馈">
+                    <span>举报反馈</span>
+                </a>
+               
+            </nav>
+        </aside>
+        <!-- 主内容区域 - 内容无多余间距，卡片自适应高度 -->
+        <main class="main-content">
+            <div class="card-container">
+                <div class="content-card">
+                    <h2 class="card-title">开发者</h2>   <img src="https://xiaoye6661234.github.io/sucai/lnchestn.png" width=80px;higth=80px;class=author-avatar" alt="驍燁（总设计）">
+                    
+                    
+                    <div class="card-content">lnchestn</div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title">关卡预览</h2>
+                    <div class="card-content">
+                        <img src="https://xiaoye6661234.github.io/fo/guide.png" alt="关卡预览图1">
+                        <br>
+                        <img src="https://xiaoye6661234.github.io/fo/guide1.png" alt="关卡预览图2">
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title">相关视频</h2>
+                    <div class="card-content">
+                        <div class="button-grid">
+                            <a href="https://www.bilibili.com/video/BV1EYyPBpE1a/?spm_id_from=333.1387.homepage.video_card.click&vd_source=5e3fa20254cc9fb698b75506dafb582d" target="_blank" class="btn">东北胜景</a>
+                        </div>
+                        <br>
+                        <div class="button-grid">
+                            <a href="https://www.bilibili.com/video/BV1kFycB7EMK/?spm_id_from=333.1387.homepage.video_card.click&vd_source=5e3fa20254cc9fb698b75506dafb582d" target="_blank" class="btn">FO轮回</a>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="content-card">
+                    <h2 class="card-title">关卡简介</h2>
+                    <div class="card-content">
+                        引导线是一款非常有趣的音乐节奏游戏，游戏引导线(MaxLine)内拥有超多音乐资源和各种难度的关卡，玩家可以自由挑战各种关卡，跟随节奏完美完成挑战。引导线(MaxLine)的乐曲非常多，玩家需要通过跟着节奏点击屏幕，控制线条转向，避开障碍物来通过关卡。引导线(MaxLine)最新版采用的是比较精美的颜色主题风格，而且玩法丰富程度要高于原版。
+                    </div>
+                </div>
+                 <div class="content-card"><h2 class="card-title">更新日志</h2>
+        <div class="intro-text">引导线（1.0.7）更新明细：<br>·加入极速版玩法<br>·优化自定义视角逻辑 ·触屏版自定义视角实装于大部分关卡<br>·修复按空格手不会消失的特性<br>·大副修改东北胜景判定<br>·优化了多个关卡的碰撞<br>·调整了一些路线<br>·回归FO超级简单版原版（线尾版）<br>·优化死亡判定机制<br>·删除东北胜景开头的蓝键彩蛋，将其移至关卡“引导线”中<br>·调整了一些UI<br>·增加tips<br>·其他微调<br>修bug（东北减途无法打开，通关风暴挑战会莫名死亡）<br></div>
+    </div>
+                <div class="content-card">
+                    <h2 class="card-title">关卡彩蛋</h2>
+                    <div class="card-content">
+                        1.《引导线》其实来自作者意外看到的一个<a href="https://m.youxiniao.com/game/yeeody/">🔗链接</a><strong>（仅为浏览，请不要下载此链接内任何游戏安装包，如后续有恶意病毒等，后果自负）</strong>，链接内，上传者上传了MaxLine探索版本的安卓安装包，可是，上传者将它翻译成了“引导线”，并且还有一段神秘的介绍，因过于神秘，所以开发者就制作了一个关卡“引导线”，后续与其他关卡组成的合集也以此命名。<a href="https://b23.tv/zFQ8DCl">👀看看</a><br>
+                        2.引导线（Guideline）因“guide”中文拼音为“贵的”，所以别名“贵的里呢”<br>
+                        3.因为B站动态的审核机制曾经误将1.0.2更新动态里面的QQ群判定是违规推广导致动态被删除，所以作者就在动态里面加了这样一句话“（这个不是违规推广。引导线不能领现金。审核何意味）”<a href="https://b23.tv/tHAF2ne">👆点我跳转</a><br>
+                        4.关卡《通关风暴挑战》里面音乐歌词，你可以看出是哪些名场面吗？<br>
+                        5.合集有一个困扰了作者很久的问题，就是关卡开始时的“飞线”（第一个线尾被顶起），作者反复尝试修改但是无果，有一次用一种较为笨拙的修改成功了，但是因为其引发了其他bug所以还是放弃了<a href="https://b23.tv/7Vw3ZBr">👆点我跳转</a><br>
+                        6.引导线合集使用的是冰焰模板3.0.1，后面新关卡想要转至冰焰模板4，可是因为作者技术不足，而冰4代码较为复杂，导致最后还是没有转。<a href="https://b23.tv/IjzroNH">👆点我跳转</a><br>
+                        7.关卡《东北胜景》里面有很多彩蛋，例如，新版本开局直走会触发飞跃，然后飞向天空，到达神秘的平台，平台有个皇冠，然后满是“猫猫猫猫...”<br>
+                        8.关卡《海螺我的》谐音“Hello World”，关卡内容无实际意义，是合集作者入门DLFM的作品，因具有纪念意义故保留至合集
+                    </div>
+                </div>
+                
+                <div class="content-card">  
+        <h2 class="card-title">关注作者</h2>
+        <div class="button-grid three"><a href="https://space.bilibili.com/3546947665266985?spm_id_from=333.337.0.0" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
+   width="30" 
+     height="30" 
+     alt="图片1">哔哩哔哩</a></div>
+    </div>
+     <div class="content-card">  <h2 class="card-title">下载游戏</h2>
+        <div class="button-grid half">
+            <a href="https://pan.baidu.com/s/1cAVEVvKClS5Ym7B2hfRHdQ?pwd=LNCH" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/win.png"  
+   width="30" 
+     height="30" 
+     alt="图片1"> <img src="https://xiaoye6661234.github.io/fo/baidu.png"  
+   width="30" 
+     height="30" 
+     alt="图片1">Windows下载</a>
+     <br><br>
+            <a href="https://pan.baidu.com/s/1WuFZ-bNxenJWUC3eGHRi4A?pwd=LNCH" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/an.png"  
+   width="30" 
+     height="30" 
+     alt="图片1"> <img src="https://xiaoye6661234.github.io/fo/baidu.png"  
+   width="30" 
+     height="30" 
+     alt="图片1">安卓下载</a>
+        <br><br>
+           <a href="https://pan.baidu.com/s/1HnENT9Z27weMF-teGFfaig?pwd=LNCH" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/mac.png"  
+   width="30" 
+     height="30" 
+     alt="图片1"> <img src="https://xiaoye6661234.github.io/fo/baidu.png"  
+   width="30" 
+     height="30" 
+     alt="图片1">MacOS下载</a>
+        <br><br>
+         <a href="https://pan.baidu.com/s/1zrhTVwW2Dat3DBQ0MyCVyQ?pwd=LNCH" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/ios.png"  
+   width="30" 
+     height="30" 
+     alt="图片1"> <img src="https://xiaoye6661234.github.io/fo/baidu.png"  
+   width="30" 
+     height="30" 
+     alt="图片1">iOS下载</a>
+      </div>
+            </div>
+        </main>
+    </div>
+    <!-- 手机端底部导航 -->
+    <footer class="mobile-nav" id="mobileNav">
+        <a href="https://xiaoye6661234.github.io/dlfmweb/" class="mobile-nav-item">
+            <img src="https://xiaoye6661234.github.io/fo/home.png" class="mobile-nav-icon" alt="返回首页">
+            <span>返回首页</span>
+        </a>
+        <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=qq5h6BwX0iUcjXhfit44ShQugGEFgYCBJQUEprQC0d%2Br28ZWF5TzWFPVoer10VEq&busi_data=eyJncm91cENvZGUiOiIxMDcyNDExNTE5IiwidG9rZW4iOiJ2NW1wWGNyYVZqbGwzNU05Nkp5QjRrcWEyWStERXJnUkYyc3BaUG0xVlRxOXZ4VWpXVGE2QlFhVWRKekZqd0Y1IiwidWluIjoiMTc4NzkxMjQ1NSJ9&data=lcZG4mdu1uZAe5n9KDt2olxksSIJ54c3sqhlEOeygM47YXwgAQtr1VA5-NOzsvSWa_8tsTbnT6SwGGtbMAQdbA&svctype=4&tempid=h5_group_info" class="mobile-nav-item" target="_blank">
+            <img src="https://xiaoye6661234.github.io/fo/join.png" class="mobile-nav-icon" alt="加入群聊">
+            <span>加入群聊</span>
+        </a>
+        <a href="mailto:dlfmweb@163.com" class="mobile-nav-item" target="_blank">
+            <img src="https://xiaoye6661234.github.io/fo/feedback.png" class="mobile-nav-icon" alt="举报反馈">
+            <span>举报反馈</span>
+        </a>
+      
+    </footer>
+    <script>
+        // 汉堡菜单交互
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const mobileDownloadBtn = document.getElementById('mobileDownloadBtn');
+        // 展开/收起侧边栏
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+        // 点击侧边栏外区域自动关闭
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                sidebar.classList.remove('show');
+            }
+        });
+        // 下载试玩按钮
+        const downloadUrl = 'https://xiaoye6661234.github.io/fo/level.zip';
+        downloadBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.open(downloadUrl);
+        });
+        mobileDownloadBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.open(downloadUrl);
+        });
+    </script>
+</body>
+</html>

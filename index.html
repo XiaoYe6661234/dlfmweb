@@ -1,2075 +1,962 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>跳舞的线饭制网2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>跳舞的线饭制网</title>
     <style>
+        /* 全局字体与基础样式 */
+        @font-face {
+            font-family: 'DreamFont';
+            src: url('https://xiaoye6661234.github.io/fo/dream.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            font-family: 'DreamFont', "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
-
-        /* 浅色主题 (默认) */
         body {
-            background-color: #f5f7fa;
-            color: #1e1e1e;
+            background-color: #ffffff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background-image 0.5s ease-in-out;
+            background-repeat: no-repeat;
+        }
+        /* ========== 主题核心样式 - 自动适配电脑/手机 ========== */
+        /* 经典主题（默认） */
+        body.theme-classic {
+            background-color: #ffffff;
+            background-image: none;
+        }
+        /* 油画主题 */
+        body.theme-oil {
+            background-color: #ffffff;
+            background-image: url('https://xiaoye6661234.github.io/sucai/youhua.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        /* 水墨主题 */
+        body.theme-ink {
+            background-color: #ffffff;
+            background-image: url('https://xiaoye6661234.github.io/sucai/shuimo.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        /* 手机端背景自动适配 */
+        @media (max-width: 767px) {
+            body.theme-oil {
+                background-image: url('https://xiaoye6661234.github.io/sucai/youhua1.png');
+            }
+            body.theme-ink {
+                background-image: url('https://xiaoye6661234.github.io/sucai/shuimo1.png');
+            }
+        }
+        a {
+            text-decoration: none;
+        }
+        /* ========== 顶部通栏标题 ========== */
+        .top-header {
+            width: 100%;
+            height: 70px;
+            background-color: #bbbbbb;
+            display: flex;
             align-items: center;
-            justify-content: flex-start;
-            padding: 1.5rem 1rem;
-            transition: background-color 0.2s, color 0.2s;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
-
-        /* 深色模式 */
-        body.dark-mode {
-            background-color: #121212;
-            color: #e0e0e0;
+        .menu-toggle {
+            font-size: 1.8rem;
+            color: #000;
+            cursor: pointer;
+            display: none;
         }
-        body.dark-mode .hero-title,
-        body.dark-mode .hero-sub,
-        body.dark-mode .footer-note {
-            color: #eee;
+        .site-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #000000;
+            letter-spacing: 1px;
+            margin-left: 10px;
         }
-        body.dark-mode .hero-sub {
-            color: #aaa;
-            border-bottom-color: #333;
+        .header-right {
+            flex: 1;
         }
-        body.dark-mode .card {
-            background-color: #1e1e1e;
-            border-color: #2d2d2d;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-        }
-        body.dark-mode .card-title {
-            color: #fff;
-            border-bottom-color: #333;
-        }
-        body.dark-mode .intro-text,
-        body.dark-mode .author-info {
-            color: #ccc;
-            background-color: #2a2a2a;
-        }
-        body.dark-mode .author-info {
-            background-color: #262626;
-            border-left-color: #bb86fc;
-        }
-        body.dark-mode .btn {
-            background-color: #2c2c2c;
-            border-color: #3e3e3e;
-            color: #eaeaea;
-        }
-        body.dark-mode .btn:hover {
-            background-color: #383838;
-            border-color: #5a5a5a;
-        }
-        body.dark-mode .btn.android {
-            background-color: #2f2f2f;
-            color: #aaa;
-        }
-        body.dark-mode .hint-text {
-            color: #9e9e9e;
-        }
-        body.dark-mode .hint-text i {
-            background-color: #2a2a2a;
-        }
-        body.dark-mode .directory-item {
-            background: #262626;
-            border-color: #3a3a3a;
-            color: #ddd;
-        }
-        body.dark-mode .directory-item.active {
-            background: rgba(187, 134, 252, 0.5);
-            color: #fff;
-            border-color: #bb86fc80;
-            box-shadow: 0 8px 20px rgba(187,134,252,0.2);
-        }
-        body.dark-mode .directory-item.all-btn {
-            background: #2b2b2b;
-            border-color: #4a4a4a;
-        }
-        body.dark-mode .search-container {
-            background: #1e1e1e;
-            border-color: #333;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        body.dark-mode .search-container input {
-            color: #eee;
-        }
-        body.dark-mode .search-container input::placeholder {
-            color: #777;
-        }
-        body.dark-mode .search-container button {
-            background: #2d2d2d;
-            border-color: #4a4a4a;
-            color: #eee;
-        }
-        body.dark-mode .search-container button:hover {
-            background: #3a3a3a;
-        }
-        body.dark-mode .badge {
-            background: #2e2e2e;
-            color: #bbb;
-        }
-        /* 浮层深色 */
-        body.dark-mode .announcement-overlay,
-        body.dark-mode .settings-overlay {
-            background-color: rgba(0,0,0,0.7);
-            backdrop-filter: blur(3px);
-        }
-        body.dark-mode .announcement-card,
-        body.dark-mode .settings-card {
-            background: #262626;
-            border-color: #bb86fc40;
-            color: #f0f0f0;
-        }
-        body.dark-mode .announcement-content,
-        body.dark-mode .settings-content {
-            background: #1f1f1f;
-            color: #ddd;
-            border-left-color: #bb86fc;
-        }
-        body.dark-mode .announcement-btn,
-        body.dark-mode .settings-footer .btn {
-            background: #bb86fc;
-            color: #121212;
-        }
-        body.dark-mode .return-home-bar {
-            background: #2d2d2d;
-            border-color: #555;
-            color: #eaeaea;
-        }
-        body.dark-mode .return-home-bar:hover {
-            background: #3a3a3a;
-        }
-        body.dark-mode code {
-            background: #3b3b3b !important;
-            color: #f0c674;
-        }
-
-        .page-wrapper {
-            max-width: 800px;
+        /* ========== 内容容器（侧边栏+主内容） ========== */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
             width: 100%;
         }
-
-        .hero-title {
-            font-size: 2rem;
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-align: center;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            transition: color 0.2s;
-        }
-        .hero-sub {
-            text-align: center;
-            color: #666;
-            font-size: 1rem;
-            margin-bottom: 2rem;
-            border-bottom: 1px dashed #ddd;
-            padding-bottom: 0.75rem;
-        }
-
-        /* 顶部栏：只保留搜索 (返回按钮已移出) */
-        .top-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 1rem;
-        }
-        .search-section {
-            flex: 1;
-        }
-        .search-container {
-            background: white;
-            border-radius: 12px;
-            padding: 0.1rem 0.1rem 0.1rem 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            border: 1px solid #eef2f6;
-            display: flex;
-            align-items: center;
-            transition: box-shadow 0.2s, border-color 0.2s, background 0.2s;
-        }
-        .search-container:focus-within {
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-            border-color: #ffaaa5;
-        }
-        .search-container input {
-            flex: 1;
-            border: none;
-            padding: 0.7rem 0;
-            font-size: 1rem;
-            background: transparent;
-            outline: none;
-            color: #1e2b3c;
-        }
-        .search-container input::placeholder {
-            color: #abb8c8;
-            font-weight: 300;
-        }
-        .search-container button {
-            background: #f0f3f8;
-            border: none;
-            border-radius: 12px;
-            padding: 0.45rem 1.2rem;
-            margin: 0.3rem;
-            font-size: 0.95rem;
-            font-weight: 450;
-            color: #2c3e50;
-            cursor: pointer;
-            transition: background 0.15s;
-            border: 1px solid #e2e8f0;
-            white-space: nowrap;
-        }
-        .search-container button:hover {
-            background: #e6ecf3;
-        }
-        .search-hint {
-            font-size: 0.8rem;
-            color: #8f9fb1;
-            margin-top: 0.4rem;
-            padding-left: 1rem;
-        }
-
-        /* 返回首页栏 (默认隐藏，仅在非全部饭制时显示) */
-        .return-home-bar {
-            display: none;  /* JS控制显示 */
-            align-items: center;
-            gap: 8px;
-            background: #ffffff;
-            border: 1px solid #e9ecf0;
-            border-radius: 12px;
-            padding: 0.5rem 1.2rem;
-            margin: 0.8rem 0 0.2rem 0;
-            cursor: pointer;
-            width: fit-content;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-            transition: background 0.2s;
-            font-size: 1rem;
-            color: #1e2b3c;
-        }
-        .return-home-bar:hover {
-            background: #f0f3f8;
-        }
-        .return-home-bar span {
-            font-size: 1.2rem;
-            line-height: 1;
-        }
-
-        /* 水平滑动目录 */
-        .directory {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            gap: 10px;
-            padding: 0.8rem 0.2rem 1.2rem 0.2rem;
-            margin: 0.5rem 0 0.5rem 0;
-            scrollbar-width: thin;
-            -webkit-overflow-scrolling: touch;
-            scroll-snap-type: x mandatory;
-        }
-        .directory-item {
-            scroll-snap-align: start;
-            background: #ffffffd9;
-            border: 1px solid #e9ecf0;
-            border-radius: 12px;
-            padding: 0.5rem 1.2rem;
-            font-size: 1rem;
-            font-weight: 470;
-            color: #1e2b3c;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
-            flex: 0 0 auto;
-            backdrop-filter: blur(2px);
-        }
-        .directory-item.active {
-            background: rgba(30, 43, 60, 0.5);
-            color: white;
-            border-color: rgba(30, 43, 60, 0.2);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-        .directory-item.all-btn {
-            background: #f8faff;
-            border-color: #ccd7e6;
-        }
-        .directory-item.all-btn.active {
-            background: rgba(30, 43, 60, 0.5) !important;
-            color: white;
-            border-color: rgba(30, 43, 60, 0.2);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-        body.dark-mode .directory-item.active,
-        body.dark-mode .directory-item.all-btn.active {
-            background: rgba(187, 134, 252, 0.5) !important;
-            color: #fff;
-            border-color: #bb86fc80;
-            box-shadow: 0 8px 20px rgba(187,134,252,0.2);
-        }
-        .directory::-webkit-scrollbar {
-            height: 4px;
-        }
-        .directory::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 8px;
-        }
-
-        /* 卡片圆角统一12px */
-        .card {
+        /* ========== 电脑端侧边栏 ========== */
+        .sidebar {
+            width: 220px;
             background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
-            padding: 1.5rem 1.5rem;
-            margin-bottom: 1.8rem;
-            border: 1px solid rgba(0,0,0,0.02);
-            transition: box-shadow 0.2s, background-color 0.2s;
+            box-shadow: 3px 0 15px rgba(0, 0, 0, 0.12);
+            padding: 20px 15px;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            height: calc(100vh - 70px);
+            display: flex;
+            flex-direction: column;
+            z-index: 998;
+            transition: transform 0.3s ease;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 5px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #000000;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+        }
+        .nav-item.active {
+            color: #007AFF;
+            background-color: #f0f7ff;
+        }
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+        /* ========== 主内容区域 ========== */
+        .main-content {
+            margin-left: 220px;
+            width: calc(100% - 220px);
+            padding: 30px 25px;
+            flex: 1;
+        }
+        .page-content {
+            display: none;
+        }
+        .page-content.active {
+            display: block;
+        }
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 25px;
+        }
+        .title-wrapper {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .site-main-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            border-bottom: 2px solid #eaeef2;
+            display: inline-block;
+            padding-bottom: 12px;
+        }
+        .title-wrapper h3 {
+            color: #333;
+            font-weight: normal;
+            margin-bottom: 8px;
+        }
+        /* ========== 卡片容器与基础卡片样式 ========== */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 35px;
+            align-items: start;
+        }
+        @media (min-width: 768px) {
+            .card-container {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 30px;
+            }
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            border-radius: 6px;
+            overflow: hidden;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transition: all 0.3s ease;
+            height: 100%;
         }
         .card:hover {
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
         }
-
-        .card.series-hidden,
-        .hero-title.series-hidden,
-        .hero-sub.series-hidden,
-        .card.search-hidden {
-            display: none !important;
-        }
-
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 450;
-            margin-bottom: 1.2rem;
-            padding-bottom: 0.4rem;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        .intro-text {
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 1.2rem;
-            white-space: pre-line;
-        }
-        .author-info {
-            background-color: #f8f8fa;
-            padding: 1rem 1.2rem;
-            border-radius: 12px;
-            font-size: 1.05rem;
-            border-left: 4px solid #ffaaa5;
-        }
-        .button-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 0.5rem;
-        }
-        .button-grid.half .btn {
-            flex: 1 1 calc(50% - 12px);
-            min-width: 140px;
-        }
-        .button-grid.three .btn {
-            flex: 1 1 calc(33.333% - 10px);
-            min-width: 110px;
-        }
-        .button-grid.full .btn {
-            flex: 1 1 100%;
-        }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.8rem 1rem;
-            background-color: #f8f9fc;
-            border: 1px solid #eaeef2;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 450;
-            color: #1e2b3c;
-            text-decoration: none;
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-            line-height: 1.2;
-            text-align: center;
-        }
-        .btn:hover {
-            background-color: #ffffff;
-            border-color: #cdd9e6;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
-        }
-        .btn:active {
-            transform: scale(0.98);
-        }
-        .btn.android {
-            background-color: #f2f2f2;
-            color: #8a8f99;
-            border-color: #dadfe6;
-        }
-        .hint-text {
-            font-size: 0.85rem;
-            color: #8e9aab;
-            margin-top: 0.8rem;
-            padding-left: 0.2rem;
-        }
-        .hint-text i {
-            font-style: normal;
-            background-color: #f1f3f5;
-            padding: 0.15rem 0.4rem;
-            border-radius: 4px;
-            margin-right: 4px;
-        }
-
-        @media (max-width: 500px) {
-            .card { padding: 1.2rem; }
-            .button-grid.three .btn { flex: 1 1 calc(50% - 10px); }
-            .button-grid.half .btn { flex: 1 1 100%; }
-            .btn { white-space: normal; padding: 0.7rem 0.5rem; font-size: 0.95rem; }
-            .hero-title { font-size: 1.8rem; }
-            .search-container { padding-left: 1rem; }
-            .search-container button { padding: 0.4rem 1rem; }
-            .directory-item { padding: 0.4rem 1rem; font-size: 0.9rem; }
-            .return-home-bar { font-size: 0.9rem; padding: 0.4rem 1rem; }
-        }
-
-        .badge {
-            background: #f0f3f7;
-            border-radius: 12px;
-            padding: 0.2rem 0.7rem;
-            font-size: 0.75rem;
-            color: #4a5b6f;
-            margin-left: 0.3rem;
-        }
-        a { text-decoration: none; }
-        .footer-note {
-            text-align: center;
-            color: #9aa9b9;
-            font-size: 0.85rem;
-            margin-top: 1rem;
-            padding: 0.5rem;
-        }
-
-        /* 浮层样式 + 层级控制 */
-        .announcement-overlay, .settings-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;  /* 设置浮层基础 */
-            transition: opacity 0.2s;
-            /* 背景色在各自定义中设置，确保背景半透明 */
-        }
-        .settings-overlay {
-            background-color: rgba(0,0,0,0.2);
-            backdrop-filter: blur(2px);
-            z-index: 1000;
-        }
-        .announcement-overlay {
-            background-color: rgba(0,0,0,0.2);
-            backdrop-filter: blur(2px);
-            z-index: 1001;  /* 公告比设置更高一层 */
-        }
-        .announcement-card, .settings-card {
-            max-width: 420px;
-            width: calc(100% - 2rem);
-            max-height: 80vh;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            padding: 1.8rem 1.8rem 1.5rem 1.8rem;
-            border: 1px solid rgba(255,170,165,0.3);
-            animation: announcePop 0.2s ease;
-            text-align: center;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-        }
-        @keyframes announcePop {
-            0% { transform: scale(0.95); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .announcement-title, .settings-title {
-            font-size: 1.9rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            flex-shrink: 0;
-        }
-        .announcement-content, .settings-content {
-            font-size: 1rem;
-            line-height: 1.6;
-            background: #faf8f9;
-            padding: 1.2rem;
-            border-radius: 12px;
-            margin: 1rem 0 1.8rem 0;
-            border-left: 4px solid #ffaaa5;
-            white-space: pre-line;
-            text-align: left;
-            overflow-y: auto;
-            flex: 1;
-        }
-        .settings-content {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .settings-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .settings-row .btn {
-            flex: 1 1 auto;
-            min-width: 120px;
-        }
-        .announcement-button, .settings-footer {
-            display: flex;
-            justify-content: center;
+        .card-img-wrap {
             width: 100%;
-            flex-shrink: 0;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .announcement-btn, .settings-footer .btn {
-            background: #1e2b3c;
-            color: white;
-            border: none;
-            padding: 0.8rem 2.2rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.15s;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
-            border: 1px solid #2d4055;
-        }
-        .announcement-btn:hover, .settings-footer .btn:hover {
-            background: #2d4055;
-        }
-        .announcement-hidden { display: none !important; }
-
-        /* 防止背景滚动 (通过JS给body加类) */
-        body.no-scroll {
+            aspect-ratio: 16 / 9;
             overflow: hidden;
+        }
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .card-name {
+            background-color: rgba(85, 85, 85, 0.85);
+            color: #ffffff;
+            padding: 12px 15px;
+            font-size: 1.2rem;
+        }
+        /* 下载卡片底部按钮容器 */
+        .card-btn-wrap {
+            padding: 15px;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            flex-grow: 1;
+            align-items: center;
+        }
+        .download-btn {
+            padding: 8px 20px;
+            background-color: #007AFF;
+            color: #fff;
+            border-radius: 4px;
+            border: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .download-btn:hover {
+            background-color: #0066cc;
+        }
+        /* 首页公告大卡牌（占2个普通卡片宽度） */
+        .notice-card {
+            grid-column: span 2;
+            background-color: #f0f7ff;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            margin-bottom: 30px;
+        }
+        @media (min-width: 768px) {
+            .notice-card {
+                grid-column: span 3;
+            }
+        }
+        .notice-card h2 {
+            color: #007AFF;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e1e8ed;
+        }
+        .notice-content {
+            color: #333;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        /* ========== 主题页面专属样式 ========== */
+        .theme-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .theme-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .theme-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+        }
+        .theme-card.active {
+            border: 3px solid #007AFF;
+        }
+        .theme-card.active::after {
+            content: '✓';
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 36px;
+            height: 36px;
+            background: #007AFF;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+        .theme-preview {
+            width: 100%;
+            height: 160px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+        .theme-name {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+        }
+        /* 极小设备微调 */
+        @media (max-width: 480px) {
+            .card-container {
+                gap: 18px;
+            }
+            .card-name {
+                font-size: 1rem;
+                padding: 10px 12px;
+            }
+            .site-main-title {
+                font-size: 1.6rem;
+            }
+            .mobile-nav-item span {
+                font-size: 0.75rem;
+            }
+            .mobile-nav-icon {
+                width: 22px;
+                height: 22px;
+            }
+            .notice-card {
+                padding: 18px;
+            }
+            .notice-card h2 {
+                font-size: 1.5rem;
+            }
+            .notice-content {
+                font-size: 1rem;
+            }
+            .theme-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 10px;
+            }
+        }
+        /* ========== 手机端适配 ========== */
+        @media (max-width: 767px) {
+            .top-header {
+                height: 65px;
+                padding: 0 15px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .site-title {
+                font-size: 1.5rem;
+            }
+            /* 侧边栏手机端默认隐藏，点击汉堡展开 */
+            .sidebar {
+                transform: translateX(-100%);
+                width: 75%;
+                max-width: 280px;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px 15px;
+                padding-bottom: 80px;
+            }
+            .site-main-title {
+                font-size: 1.8rem;
+                margin-bottom: 10px;
+            }
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+        }
+        /* ========== 手机端底部导航栏 ========== */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #ffffff;
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            align-items: center;
+            justify-content: space-around;
+        }
+        @media (max-width: 767px) {
+            .mobile-nav {
+                display: flex;
+            }
+        }
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 100%;
+            color: #000000;
+            transition: all 0.2s ease;
+        }
+        .mobile-nav-item.active {
+            color: #007AFF;
+        }
+        .mobile-nav-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            margin-bottom: 4px;
+        }
+        .mobile-nav-item span {
+            font-size: 0.85rem;
         }
     </style>
 </head>
-<body>
-<div class="page-wrapper">
-    <h1 class="hero-title"><strong>跳舞的线饭制网</strong></h1>
-
-    <!-- 顶部栏：只有搜索 (返回按钮已移除) -->
-    <div class="top-bar">
-        <div class="search-section">
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="搜索合集、作者、更新日志..." autocomplete="off">
-                <button id="searchButton">🔍搜索</button>
-            </div>
-        </div>
-    </div>
-    <div class="search-hint">输入任意内容......</div>
-
-    <!-- 返回首页栏 (默认隐藏，JS控制显示) -->
-    <div class="return-home-bar" id="returnHomeBar">
-        <span>←</span> 返回首页
-    </div>
-
-    <!-- 目录 (设置按钮改为纯文字，样式与其他一致) -->
-    <div class="directory" id="seriesDirectory">
-        <span class="directory-item all-btn active" data-series="all">首页</span>
-        <!-- 设置按钮：文字“设置”，无特殊样式，id用于点击 -->
-        <span class="directory-item" id="settingsBtn" style="cursor:pointer;">设置</span>
-        <span class="directory-item" data-series="guideline">引导线 🥇</span>
-        <span class="directory-item" data-series="noy">Noy's Arphros Levels Collection 🥇</span>  
-        <span class="directory-item" data-series="barbecue">烧烤之夜</span>
-        <span class="directory-item" data-series="42line">42Line</span>
-        <span class="directory-item" data-series="mazeline">MazeLine</span>
-        <span class="directory-item" data-series="WebLine">WebLine</span>
-        <span class="directory-item" data-series="timeline">Time Line</span>
-        <span class="directory-item" data-series="etherealline">Ethereal Line</span>
-        <span class="directory-item" data-series="cuangyou">创游之线</span>  
-        <span class="directory-item" data-series="paint">Paint Realm</span>  
-        <span class="directory-item" data-series="tainan">太难Line</span> 
-        <span class="directory-item" data-series="kunline">KunLine</span>    
-        <span class="directory-item" data-series="cube">Cube-ALC</span>   
-        <span class="directory-item" data-series="earos">Earos Line</span>
-        <span class="directory-item" data-series="maze">MazeLine 1.0</span>
-        <span class="directory-item" data-series="ear">StarRealm</span>
-        <span class="directory-item" data-series="coming">敬请期待</span>
-    </div>
-    
-
-
-      <h1 class="hero-title" data-series="">欢迎来到跳舞的线饭制网</h1>
-    <div class="hero-sub" data-series="">Welcone to Dancing Line Fanmade Website！</div>
-          <div class="card" data-series="" data-search-content="图片">
-  <img src="https://xiaoye6661234.github.io/fo/logo.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-     <div class="hint-text"><i>跳舞的线饭制网</i>Logo</div>
-    </div>
-        <div class="card" data-series="" data-search-content="图片">
-  <img src="https://xiaoye6661234.github.io/fo/xy.jpg"  
-   width="200" 
-     height="200" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-     <div class="hint-text"><i>主创</i>头像</div>
-    </div>
-       <div class="card" data-series="" data-search-content="图片">
-  <img src="https://xiaoye6661234.github.io/fo/er.png"  
-   width="200" 
-     height="200" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-     <div class="hint-text"><i>加入官方交流群</i>扫描二维码即可进群！</div>
-    </div>
-    <div class="card" data-series="" data-search-content="关注作者 lnchestn 哔哩哔哩">
-        <h2 class="card-title">上架应用</h2>
-        <div class="button-grid three"><a href="https://docs.qq.com/form/page/DR1B2THdOVmtXcXNH" target="_blank" class="btn">申请表</a></div>
-    </div>  
-    <div class="card" data-series="" data-search-content="关注作者 lnchestn 哔哩哔哩">
-        <h2 class="card-title">上架应用</h2>
-        <div class="button-grid three"><a href="https://wap.mail.qq.com/list/readtemplate?name=wap_ad_tip.html" target="_blank" class="btn">QQ邮箱（发送邮件至goodgood0222@qq.com）</a></div>
-    </div>
-    <!-- ================= 所有饭制合集卡片 (原样完整保留) ================= -->
-        <!-- 引导线 -->
-    <h1 class="hero-title" data-series="guideline">《引导线》<br><img src="https://xiaoye6661234.github.io/fo/jiang1.png"  
-   width="256" 
-     height="144" 
-     alt="图片1"></h1>
-    <div class="hero-sub" data-series="guideline">Dancing Line Fanmade —GuideLine</div> 
-     <div class="card" data-series="guideline" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/guide.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-        <img src="https://xiaoye6661234.github.io/fo/guide1.png" 
-     width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片2">
-     <div class="hint-text"><i>图片</i>精美图片</div>
-    </div>
-    <div class="card" data-series="guideline" data-search-content="引导线 Guideline MaxLine lnchestn 合集简介 音乐节奏 精美 玩法">
-        <h2 class="card-title">合集简介—Unity<img src="https://xiaoye6661234.github.io/fo/unity.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2>
-        <div class="intro-text">引导🗺线🧵是一看👀非常🔝有趣😍的音乐🎵节奏🎶游戏🎮，游戏🎮引导🗺线🧵(Max🔝Line🧵)内⤵️拥有☑️超多🔢音乐🎵资源和各种🔣难度的关卡🆒，玩家👤可以自由😇挑战各种🔣关卡，跟随节奏🎶完美完成挑战。引导🗺线🧵(Max🔝Line🧵)的乐曲🎵非常多，玩家👤需要通过跟着🚶节奏🎶点击👆屏幕，控制🎮线条🧵转向⤴️，避开✖️障碍物◼️来通过🚶关卡。引导🗺线🧵(Max🔝Line🧵)最新版🆕采用的是比较精美🎨的颜色🌈主题风格，而且玩法🎮丰富程度要高于🔝原版。</div>
-        <div class="author-info"><span>作者：lnchestn（制作人）</span></div>
-    </div>
-    <div class="card" data-series="guideline" data-search-content="引导线 更新日志 1.0.6 关卡列表 海螺我的 东北胜景 宁静之地 Faded 引导线 通关风暴挑战 百度网盘 LNCH 苹果无">
-        <h2 class="card-title">更新日志</h2>
-        <div class="intro-text">引导线（1.0.7）更新明细：<br>·加入极速版玩法<br>·优化自定义视角逻辑 ·触屏版自定义视角实装于大部分关卡<br>·修复按空格手不会消失的特性<br>·大副修改东北胜景判定<br>·优化了多个关卡的碰撞<br>·调整了一些路线<br>·回归FO超级简单版原版（线尾版）<br>·优化死亡判定机制<br>·删除东北胜景开头的蓝键彩蛋，将其移至关卡“引导线”中<br>·调整了一些UI<br>·增加tips<br>·其他微调<br>修bug（东北减途无法打开，通关风暴挑战会莫名死亡）<br></div>
-    </div>
-    <div class="card" data-series="guideline" data-search-content="冷知识">
-        <h2 class="card-title">冷知识</h2>
-        <div class="intro-text">1.《引导线》其实来自作者意外看到的一个<a href="https://m.youxiniao.com/game/yeeody/">🔗链接</a><strong>（仅为浏览，请不要下载此链接内任何游戏安装包，如后续有恶意病毒等，后果自负）</strong>，链接内，上传者上传了MaxLine探索版本的安卓安装包，可是，上传者将它翻译成了“引导线”，并且还有一段神秘的介绍，因过于神秘，所以开发者就制作了一个关卡“引导线”，后续与其他关卡组成的合集也以此命名。<a href="https://b23.tv/zFQ8DCl">👀看看</a><br>2.引导线（Guideline）因“guide”中文拼音为“贵的”，所以别名“贵的里呢”<br>3..因为B站动态的审核机制曾经误将1.0.2更新动态里面的QQ群判定是违规推广导致动态被删除，所以作者就在动态里面加了这样一句话“（这个不是违规推广。引导线不能领现金。审核何意味）”<a href="https://b23.tv/tHAF2ne">👆点我跳转</a><br>4.关卡《通关风暴挑战》里面音乐歌词，你可以看出是哪些名场面吗？<br>5.合集有一个困扰了作者很久的问题，就是关卡开始时的“飞线”（第一个线尾被顶起），作者反复尝试修改但是无果，有一次用一种较为笨拙的修改成功了，但是因为其引发了其他bug所以还是放弃了<a href="https://b23.tv/7Vw3ZBr">👆点我跳转</a><br>6..引导线合集使用的是冰焰模板3.0.1，后面新关卡想要转至冰焰模板4，可是因为作者技术不足，而冰4代码较为复杂，导致最后还是没有转。<a href="https://b23.tv/IjzroNH">👆点我跳转</a><br>7.关卡《东北胜景》里面有很多彩蛋，例如，新版本开局直走会触发飞跃，然后飞向天空，到达神秘的平台，平台有个皇冠，然后满是“猫猫猫猫...”<br>8.关卡《海螺我的》谐音“Hello World”，关卡内容无实际意义，是合集作者入门DLFM的作品，因具有纪念意义故保留至合集<br></div>
-    </div>
-    <div class="card" data-series="guideline" data-search-content="合集视频">
-        <h2 class="card-title">合集视频</h2>
-        <div class="button-grid half">
-            <a href="https://www.bilibili.com/video/BV1EYyPBpE1a/?spm_id_from=333.1387.homepage.video_card.click&vd_source=5e3fa20254cc9fb698b75506dafb582d" target="_blank" class="btn">东北胜景</a>
-        </div>
-        <div class="button-grid half">
-            <a href="https://www.bilibili.com/video/BV1kFycB7EMK/?spm_id_from=333.1387.homepage.video_card.click&vd_source=5e3fa20254cc9fb698b75506dafb582d" target="_blank" class="btn">FO轮回</a>
-        </div>
-        <div class="hint-text"><i>视频</i> 点击直达合集精美视频</div>
-    </div>
-    <div class="card" data-series="guideline" data-search-content="关注作者 lnchestn 哔哩哔哩">
-        <h2 class="card-title">关注作者</h2>
-        <div class="button-grid three"><a href="https://space.bilibili.com/3546947665266985?spm_id_from=333.337.0.0" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div>
-    </div>
-    <div class="card" data-series="guideline" data-search-content="下载游戏 Windows下载 安卓下载 百度网盘 提取码 LNCH 暂不支持 iOS HarmonyOS">
-        <h2 class="card-title">下载游戏</h2>
-        <div class="button-grid half">
-            <a href="https://pan.baidu.com/s/1cAVEVvKClS5Ym7B2hfRHdQ?pwd=LNCH" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/win.png"  
-   width="30" 
-     height="30" 
-     alt="图片1"> <img src="https://xiaoye6661234.github.io/fo/baidu.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">Windows下载</a>
-            <a href="https://pan.baidu.com/s/1WuFZ-bNxenJWUC3eGHRi4A?pwd=LNCH" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/an.png"  
-   width="30" 
-     height="30" 
-     alt="图片1"> <img src="https://xiaoye6661234.github.io/fo/baidu.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">安卓下载</a>
-        
-           <a href="https://pan.baidu.com/s/1HnENT9Z27weMF-teGFfaig?pwd=LNCH" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/mac.png"  
-   width="30" 
-     height="30" 
-     alt="图片1"> <img src="https://xiaoye6661234.github.io/fo/baidu.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">MacOS下载</a>
-        
-         <a href="https://pan.baidu.com/s/1zrhTVwW2Dat3DBQ0MyCVyQ?pwd=LNCH" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/ios.png"  
-   width="30" 
-     height="30" 
-     alt="图片1"> <img src="https://xiaoye6661234.github.io/fo/baidu.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">iOS下载</a>
-      </div>
-        <div class="hint-text">⚠️ <strong>暂不支持</strong> HarmonyOS  提取码: <code>LNCH</code></div>
-    </div>
-    <div class="card" data-series="guideline" data-search-content="玩家社群 官方QQ群 qm.qq.com 1072411519">
-        <h2 class="card-title">玩家社群</h2>
-        <div class="button-grid full"><a href="https://qm.qq.com/q/30tQCnIJJe" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">加入官方QQ群</a></div>
-    </div>
-
-    <!-- Noy's Collection -->
-    <h1 class="hero-title" data-series="noy">《Noy's Arphros Levels Collection》<br><img src="https://xiaoye6661234.github.io/fo/jiang2.png"  
-   width="256" 
-     height="144" 
-     alt="图片1"></h1>
-    <div class="hero-sub" data-series="noy">Dancing Line Fanmade — Noy's Arphros Levels Collection</div>
-     <div class="card" data-series="noy" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/noy4.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-       <img src="https://xiaoye6661234.github.io/fo/noy3.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-       <img src="https://xiaoye6661234.github.io/fo/noy2.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-   </div>
-    <div class="card" data-series="noy" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
-        <h2 class="card-title">合集简介—Arphros<img src="https://xiaoye6661234.github.io/fo/arphros.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">NOY's Arphros Levels Collection（简称NOYALC），是一个由NOY制作的Arphros饭制合集。本合集多为原创与共创关卡。面对自制与共创关卡，用时间认真打磨质量。面对收录关卡，在保证游玩性与质量双平衡的前提下针对于收录关卡进行优化，保证玩家能够获得与原版截然不同的游玩体验。本合集作为迄今为止Arphros质量最高的合集，努力把持质量关，游玩关，保证合集正常运行与持续发展与优化。本合集由于游玩人数过少，目前处于暂时停更状态，接触停更状态时间待定。最后，感谢大家下载本合集！！</div><div class="author-info"><span>作者：<br>
-NOY（总设计）<br>
-小梦_Rain（美术）<br>
-听想我的天空（技术）</span></div>
-    </div>
-    <div class="card" data-series="noy" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群"><h2 class="card-title">更新日志</h2><div class="intro-text">NOYALC v1.2版本更新内容
-收录了关卡灰白空间
-收录了关卡Summer Fantasy p7</div></div>
-    <div class="card" data-series="noy" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">暂无<br></div></div>
-    <div class="card" data-series="noy" data-search-content="关注"><h2 class="card-title">关注作者</h2><div class="button-grid three"><a href="https://b23.tv/sWdL3ox" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div><div class="hint-text"><i>关注</i> 点击直达哔哩哔哩中心</div></div>
-    <div class="card" data-series="noy" data-search-content="合集视频"><h2 class="card-title">合集视频</h2><div class="button-grid three"><a href="https://b23.tv/lb6MI3n" target="_blank" class="btn">乌托邦【复刻】</a></div><div class="button-grid three"><a href="https://b23.tv/mUHFh6M" target="_blank" class="btn">校园</a></div><div class="hint-text"><i>视频</i> 点击直达</div></div>
-    <div class="card" data-series="noy" data-search-content="下载游戏 安卓下载 暂不支持"><h2 class="card-title">下载游戏</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="697500441"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (697500441)</button></div><div class="hint-text">⚠️ <strong>请加入QQ下载</strong></div></div>
-    <div class="card" data-series="noy" data-search-content="玩家社群 复制QQ群号 697500441"><h2 class="card-title">玩家社群</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="697500441"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (697500441)</button></div><div class="hint-text">下载游戏，请自行到QQ内搜索。点击按钮复制群号。</div></div>
-
-
-    <h1 class="hero-title" data-series="barbecue">《驍烤之燁》</h1>
-    <div class="hero-sub" data-series="barbecue">Dancing Line Fanmade — Barbecue Night</div>
-        <div class="card" data-series="barbecue" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/bn.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-        <img src="https://xiaoye6661234.github.io/fo/bn1.png" 
-     width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片2">
-     <div class="hint-text"><i>图片</i>精美图片</div>
-    </div>
-    
-    <div class="card" data-series="barbecue" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
-        <h2 class="card-title">合集简介—Unity <img src="https://xiaoye6661234.github.io/fo/unity.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2>
-        <div class="intro-text">《驍烤之燁》（Barbecue Night）（另名《烧烤之夜》）是跳舞的线社区玩家“驍燁”自制饭制合集，2026年2月份，v.1.0.0版本已上线，但目前仅完成Windows原型版本。且由于作者时间管理和部分原因，此合集将进入停更阶段，感谢玩家们的支持。</div>
-        <div class="author-info"><span>作者：驍燁 （总设计）</span></div>
-    </div>
-    <div class="card" data-series="barbecue" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群">
-        <h2 class="card-title">更新日志</h2>
-        <div class="intro-text">驍烤之燁&烧烤之夜 v1.0.0更新公告<br>1.关卡：<br>  《开端》：可游玩，已完工<br>  《陨石危机》：可游玩，未完工<br>  《很快回来》：不可游玩<br>2.其他更新：<br>   ①设置界面翻新了一下<br>   ②选关界面翻新了一下<br>3.游玩平台：<br>    目前仅限Windows 安卓后面补上<br>4.下载：<br>    支持网盘链接下载</div>
-    </div>
-    <div class="card" data-series="barbecue" data-search-content="冷知识">
-        <h2 class="card-title">冷知识</h2>
-        <div class="intro-text">1.《驍烤之燁》这个名字其实是<a href="https://space.bilibili.com/3546947665266985?spm_id_from=333.337.0.0">lnchestn</a>取的，但由于太难写，所以用《烧烤之夜》方便记<br>2.《开端》其实有两个版本，但第一个版本因为开发者不小心删除了不该删的东西，导致工程崩溃，于是就有了第二版<br>3.合集最大帮助者是<a href="https://space.bilibili.com/3546947665266985?spm_id_from=333.337.0.0">lnchestn</a>他帮了超多有用的东西（快去关注他）<br>4.开发者之所以没有限制传包，那是因为合集交流群人太少，没人传（<br>5.关卡《陨石危机》其实来自原作者利用AI制作的长视频片头曲，<a href="https://b23.tv/6AlKd5o">👀看看</a><br></div>
-    </div>
-
-    <div class="card" data-series="barbecue" data-search-content="合集视频">
-        <h2 class="card-title">合集视频</h2>
-        <div class="button-grid half">
-            <a href="https://v.douyin.com/zah9tZS9wYw/ " target="_blank" class="btn">1.0.0</a>
-        </div>
-        <div class="hint-text"><i>视频</i> 点击直达合集精美视频</div>
-    </div>
-    <div class="card" data-series="barbecue" data-search-content="关注作者 驍燁 哔哩哔哩 抖音 DLRS同人网 同人群 chinadlrs">
-        <h2 class="card-title">关注作者</h2>
-        <div class="button-grid three">
-            <a href="https://space.bilibili.com/3546763094919285?spm_id_from=333.337.0.0" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a>
-            <a href="https://www.douyin.com/user/MS4wLjABAAAAuhyDxda_ju86Q3Oq6iG4NtEqoA0Jlhn-wMv0SEOUsLg?from_tab_name=main" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/tik.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">抖音</a>
-        
-            <a href="https://xhslink.com/m/ADMpgiGhPMU" target="_blank|" class="btn"><img src="https://xiaoye6661234.github.io/fo/red.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">小红书</a>
-      <a href="https://v.kuaishou.com/n8hmPLq1" target="_blank|" class="btn"><img src="https://xiaoye6661234.github.io/fo/kuai.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">快手</a>
-          </div>
-        <div class="hint-text"><i>关注</i> 点击直达作者B站/抖音个人主页</div>
-    </div>
-    
-    <div class="card" data-series="barbecue" data-search-content="下载游戏 Windows下载 百度网盘 提取码 XKZY 安卓下载 暂不支持 iOS HarmonyOS">
-        <h2 class="card-title">下载游戏</h2>
-        <div class="button-grid half">
-            <a href="https://pan.baidu.com/s/13202xazcEXru3o1FeUAI7g?pwd=XKZY" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/win.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">
-     <img src="https://xiaoye6661234.github.io/fo/baidu.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">Windows下载</a>
-            <button class="btn android" onclick="alert('安卓下载资源暂未开放，作者正在努力打包中。\n\n目前仅支持Windows，iOS与HarmonyOS暂不支持。')"><img src="https://xiaoye6661234.github.io/fo/an.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">安卓下载</button>
-        </div>
-        <div class="hint-text">⚠️ <strong>暂不支持</strong> iOS 和 HarmonyOS ，安卓版本暂无资源。</div>
-        <div class="hint-text">百度网盘 提取码: <code style="background:#eee; padding:2px 6px; border-radius:4px;">XKZY</code> (Windows独占)</div>
-    </div>
-    <div class="card" data-series="barbecue" data-search-content="玩家社群 QQ群 官方QQ群 qm.qq.com 群内交流">
-        <h2 class="card-title">玩家社群</h2>
-        <div class="button-grid full">
-            <a href="https://qm.qq.com/q/zTW8maOW3g" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">加入官方QQ群</a>
-        </div>
-        <div class="hint-text">群内交流饭制、获取最新进度</div>
-    </div>
-    <div class="card" data-series="barbecue" data-search-content="其他内容 跳舞的线同人论坛 xiaoye6661234.github.io/dl/">
-        <h2 class="card-title">其他内容</h2>
-        <div class="button-grid full">
-            <a href="https://xiaoye6661234.github.io/dl/" target="_blank" class="btn">跳舞的线同人论坛</a>
-        </div>
-    </div>
-
-    <!-- 42Line -->
-    <h1 class="hero-title" data-series="42line">《42Line》</h1>
-    <div class="hero-sub" data-series="42line">Dancing Line Fanmade —42Line</div>    <div class="card" data-series="42line" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/42.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <div class="hint-text"><i>图片</i>精美图片</div>
-    </div>
-    <div class="card" data-series="42line" data-search-content="42Line 42 line 合集简介 42号 Arphros 内测 2026年4月2日 2月28日">
-        <h2 class="card-title">合集简介—Arphros<img src="https://xiaoye6661234.github.io/fo/arphros.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2>
-        <div class="intro-text">《42 line》是跳舞的线社区玩家“42号”在Arphros制作的一系列关卡合集，目前正在内测中，特别感谢所有内测人员，将于2026年的4月2日前后发布。</div>
-        <div class="author-info"><span>作者：42号- （制作人）</span></div>
-    </div>
-    <div class="card" data-series="42line" data-search-content="42Line 更新日志 暂无"><h2 class="card-title">更新日志</h2><div class="intro-text">暂无</div></div>
-    <div class="card" data-series="42line" data-search-content="冷知识">
-        <h2 class="card-title">冷知识</h2>
-        <div class="intro-text">1.其实此合集的乌托邦本来是完整的，但是被删减了<br>2.按真正的制作顺序来讲，第一关其实是“饭转是皆”（<br></div>
-    </div>
-    <div class="card" data-series="42line" data-search-content="42Line合集视频 暂无"><h2 class="card-title">合集视频</h2><div class="intro-text">暂无</div></div>
-    <div class="card" data-series="42line" data-search-content="关注作者 42号 哔哩哔哩 抖音">
-        <h2 class="card-title">关注作者</h2>
-        <div class="button-grid half">
-            <a href="https://space.bilibili.com/108450571?spm_id_from=333.337.0.0" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a>
-            <a href="https://www.douyin.com/user/MS4wLjABAAAAFEaTZfPiRivhj4lBJ0C_CMrbo7pFzRZx_GhE80T8XWc_N9XXkpWWG2x4gSnBkdko?from_tab_name=main" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/tik.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">抖音</a>
-        </div>
-        <div class="hint-text"><i>关注</i> 点击直达作者B站/抖音主页</div>
-    </div>
-    <div class="card" data-series="42line" data-search-content="下载游戏 内测暂未开放 arphros 不支持iOS HarmonyOS 内测 勿外传">
-        <h2 class="card-title">下载游戏</h2>
-        <div class="button-grid full"><button class="btn" onclick="alert('目前还在进行内测，暂无游玩版本')">内测暂未开放</button></div>
-        <div class="hint-text">⚠️ <strong>因为本游戏是用arphros制作，故不支持iOS与HarmonyOS</strong>，内测请勿外传。</div>
-    </div>
-    <div class="card" data-series="42line" data-search-content="玩家社群 复制QQ群号 960250239">
-        <h2 class="card-title">玩家社群</h2>
-        <div class="button-grid full">
-            <button class="btn copy-qq-btn" data-qq="960250239"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (960250239)</button>
-        </div>
-        <div class="hint-text">因作者设置，该群请自行到QQ内搜索。点击按钮复制群号。</div>
-    </div>
-
-    <!-- MazeLine -->
-    <h1 class="hero-title" data-series="mazeline">《MazeLine》</h1>
-    <div class="hero-sub" data-series="mazeline">Dancing Line Fanmade —MazeLine</div>
-    <div class="card" data-series="mazeline" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/maze2.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-        <img src="https://xiaoye6661234.github.io/fo/maze.png" 
-     width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片2">
-     <div class="hint-text"><i>图片</i>精美图片</div>
-    </div>
-    <div class="card" data-series="mazeline" data-search-content="MaveLine MazeLine cloverglow 冰焰模版430 合集简介">
-        <h2 class="card-title">合集简介—Unity<img src="https://xiaoye6661234.github.io/fo/unity.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">MazeLine是一款cloverglow使用冰焰模版430改制作的跳舞的线饭制游戏，已停更</div>
-        <div class="author-info"><span>作者：FlowStudio—cloverglow</span></div>
-    </div>
-    <div class="card" data-series="mazeline" data-search-content="关注作者 cloverglow 哔哩哔哩">
-        <h2 class="card-title">关注作者</h2><div class="button-grid three"><a href="https://space.bilibili.com/3546864318155304?spm_id_from=333.337.0.0" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div>
-    </div>
-    <div class="card" data-series="mazeline" data-search-content="冷知识">
-        <h2 class="card-title">冷知识</h2><div class="intro-text">暂无<br></div>
-    </div>
-    <div class="card" data-series="mazeline" data-search-content="mazeine合集视频 暂无"><h2 class="card-title">合集视频</h2><div class="intro-text">暂无</div></div>
-    <div class="card" data-series="mazeline" data-search-content="MazeLine 下载游戏 暂无游玩版本 暂未公开">
-        <h2 class="card-title">下载游戏</h2><div class="button-grid full"><button class="btn" onclick="alert('暂无游玩版本')">暂无</button></div>
-    </div>
-    <div class="card" data-series="mazeline" data-search-content="玩家社群 QQ群 qm.qq.com/cmXjbRp1FC">
-        <h2 class="card-title">玩家社群</h2><div class="button-grid full"><a href="https://qm.qq.com/q/cmXjbRp1FC" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">加入官方QQ群</a></div>
-    </div>
-    <div class="card" data-series="mazeline" data-search-content="详 情 网 站 cloverglow.mazeline flowstudio828.github.io">
-        <h2 class="card-title">详情网站</h2><div class="button-grid full"><a href="https://flowstudio828.github.io/cloverglow.mazeline/" target="_blank" class="btn">查看</a></div>
-    </div>
-
-    <!-- WebLine -->
-    <h1 class="hero-title" data-series="WebLine">《WebLine》</h1>
-    <div class="hero-sub" data-series="WebLine">Dancing Line Fanmade — WebLine</div>
-    <div class="card" data-series="WebLine" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/web.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-   </div>
-    <div class="card" data-series="WebLine" data-search-content="合集简介 作者 驍燁 总设计 停更 2026">
-        <h2 class="card-title">合集简介—Html<img src="https://xiaoye6661234.github.io/fo/html.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2>
-        <div class="intro-text">《WebLine》是驍燁在2025年12月份用AI制作的html文件跳舞的线同人游戏，游戏占用内存很小（200kb左右）且可玩性较小，现在仅可通过加QQ群下载（因为服务器部署有问题），感兴趣的可以下载用浏览器打开玩玩，目前停更</div>
-        <div class="author-info"><span>作者：驍燁 （总设计）</span></div>
-    </div>
-    <div class="card" data-series="WebLine" data-search-content="网线 WebLine">
-        <h2 class="card-title">更新日志</h2><div class="intro-text">停更中...</div>
-    </div>
-    <div class="card" data-series="WebLine" data-search-content="冷知识">
-        <h2 class="card-title">冷知识</h2><div class="intro-text">1.《WebLine》直译《网线》由<a href="https://space.bilibili.com/3546947665266985?spm_id_from=333.337.0.0">lnchestn</a>取名<br></div>
-    </div>
-    <div class="card" data-series="WebLine" data-search-content="WebLine合集视频 暂无"><h2 class="card-title">合集视频</h2><div class="intro-text">暂无</div></div>
-    <div class="card" data-series="WebLine" data-search-content="关注作者 驍燁 哔哩哔哩 抖音 DLRS同人网 同人群 chinadlrs">
-        <h2 class="card-title">关注作者</h2>
-        <div class="button-grid three">
-            <a href="https://space.bilibili.com/3546763094919285?spm_id_from=333.337.0.0" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a>
-            <a href="https://www.douyin.com/user/MS4wLjABAAAAuhyDxda_ju86Q3Oq6iG4NtEqoA0Jlhn-wMv0SEOUsLg?from_tab_name=main" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/tik.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">抖音</a>
+<body class="theme-classic">
+    <!-- 顶部通栏 -->
+    <header class="top-header">
+        <div class="menu-toggle" id="menuToggle">☰</div>
+        <h1 class="site-title">跳舞的线饭制网</h1>
+        <div class="header-right"></div>
+    </header>
+    <div class="content-wrapper">
+        <!-- 左侧侧边栏导航 - 新增主题入口 -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#home" class="nav-item active" data-page="home" data-name="home">
+                    <img src="https://xiaoye6661234.github.io/fo/home1.png" class="nav-icon" alt="首页">
+                    <span>首页</span>
+                </a>
+                <a href="#game" class="nav-item" data-page="game" data-name="game">
+                    <img src="https://xiaoye6661234.github.io/fo/game.png" class="nav-icon" alt="游戏">
+                    <span>游戏</span>
+                </a>
+                <a href="#download" class="nav-item" data-page="download" data-name="download">
+                    <img src="https://xiaoye6661234.github.io/fo/download.png" class="nav-icon" alt="下载">
+                    <span>下载</span>
+                </a>
+               
+                <a href="#maker" class="nav-item" data-page="maker" data-name="maker">
+                    <img src="https://xiaoye6661234.github.io/fo/maker.png" class="nav-icon" alt="开发者">
+                    <span>开发者</span>
+                   
+                </a>
+                  <a href="#theme" class="nav-item" data-page="theme" data-name="dress">
+                    <img src="https://xiaoye6661234.github.io/sucai/dress.png" class="nav-icon" alt="主题">
+                    <span>主题</span>
+                </a>
+                <a href="#teach" class="nav-item" data-page="teach" data-name="teach">
+                    <img src="https://xiaoye6661234.github.io/fo/teach.png" class="nav-icon" alt="教程">
+                    <span>教程</span>
+                </a>
+                <a href="#join" class="nav-item" data-page="join" data-name="join">
+                    <img src="https://xiaoye6661234.github.io/fo/join.png" class="nav-icon" alt="加入我们">
+                    <span>加入我们</span>
+                </a>
+                <a href="#feedback" class="nav-item" data-page="feedback" data-name="feedback">
+                    <img src="https://xiaoye6661234.github.io/fo/feedback.png" class="nav-icon" alt="反馈">
+                    <span>反馈</span>
+                </a>
+             
+            </nav>
+        </aside>
+        <!-- 主内容区域 -->
+        <main class="main-content">
+            <!-- 首页内容 -->
+            <section class="page-content active" id="home-page">
+                <div class="title-wrapper">
+                    <div class="site-main-title">跳舞的线饭制网</div>
+                    <h3>Dancing Line Fanmade Website</h3>
+                  
+                </div>
+                <!-- 公告大卡牌，可自行编辑notice-content内的内容 -->
+                <div class="card-container">
+                    <div class="notice-card">
+                        <h2>公告</h2>
+                        <div class="notice-content">
+                           中文版：<br>
+                            1. 经过好久的代码重构和编写，现在跳舞的线饭制网终于迎来全面大更新，我们模仿了DLRS同人群官网，但是我们加以改造，并且融入了我们的想法与立场<br>
+                            2. 现在全局使用了跳舞的线官方字体，带给你媲美原版的体验！<br>
+                            3. 所有游戏关卡卡片已迁移至【游戏】页面，并且为每个合集单独开发了相应的网站，我们还接入了下载功能，点击即可下载体验部分关卡，欢迎前往体验<br>
+                            4. 后续将持续更新饭制关卡与开发资源，敬请关注！<br>
+                            5.本网站属于非营业性的同人网站，每次编辑都充满了我们开发者的心血与努力，非常感谢支持我们的全体成员<br>
+                            6.新增主题功能，现在在侧边栏即可找到，里面会不定时更新新的主题，每次重大节假日会随机更新1～3个专属主题！<br>
+                            7.欢迎上架你们的合集到此网站！<br><br>
+                            English Edition:<br>
+                            1.After extensive code refactoring and development, the Dancing Line Fanmade Website is finally rolling out its full major update. We took inspiration from the official DLRS fan community website, reworked it, and integrated our own ideas and core vision.<br>
+                            2.The official Dancing Line typeface is now applied across the entire site, delivering an experience on par with the original game!<br>
+3.All in-game level cards have been relocated to the [Games] page, with a dedicated standalone site developed for each level collection. We have also added a download feature: simply click to download and play select levels, and we welcome you to give it a try!<br>
+4.We will continue to roll out ongoing updates for fanmade levels and development resources. Stay tuned for more!<br>
+5.This is a non-commercial fan-run website. Every revision is crafted with the immense dedication and hard work of our development team, and we would like to extend our sincerest gratitude to all of our supporters.<br>
+6.A brand-new theme feature has been added, now accessible via the sidebar. New themes will be added on an irregular basis, and 1 to 3 exclusive themes will be released randomly for every major holiday!<br>
+7.You are more than welcome to submit and host your own level collections on this website!
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 游戏页内容 -->
+            <section class="page-content" id="game-page">
+                <div class="title-wrapper">
+                    <div class="site-main-title">饭制关卡合集</div>
+                    <h3>Fanmade Level Collection</h3>
+                </div>
+                 <h2 class="page-title">精选</h2>
+                 <h4>优质&原创占比高或玩法丰富的合集会优先展示</h4><br><h5>当前仅供参考</h5>
+                 <br>
+                <div class="card-container">
+                    <a href="Guideline.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/guide1.png" alt="饭制关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">Guideline 引导线</div>
+                    </a>
+                    <a href="NOYALC.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/noy4.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">NOYALC</div>
+                    </a>
+                    <a href="BarbecueNight.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/bn.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">驍烤之燁</div>
+                    </a>
+                
+                  
+                    <a href="42Line.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/42.png" alt="饭制关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">42Line</div>
+                    </a>
+                    <a href="MazeLine.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/maze2.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">MazeLine</div>
+                    </a>
+                    <a href="TimeLine.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/time1.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">TimeLine</div>
+                    </a>
+                       <a href="GlowTrace.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/glowtrace.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">GlowTrace</div>
+                    </a>
+                    <a href="EtherealLine.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/eth.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">EtherealLine</div>
+                    </a>
+                      <a href="StarRealm.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/sr.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">Star Realm</div>
+                    </a>
+                         <a href="EarosLine.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/earos1.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">Earos Line</div>
+                    </a>
+                    <a href="CuangYou.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/made.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">创游之线</div>
+                    </a>
+                    <a href="PaintRealm.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/paint.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">Paint Realm</div>
+                    </a>
+                    <a href="Tainan.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/tainan.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">太难Line</div>
+                    </a>
+                    <a href="KunLine.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/kun.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">KunLine</div>
+                    </a>
+                    <a href="Cube-ALC.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/cube.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">Cube-ALC</div>
+                    </a>
+                   
+                    <a href="MazeLine1.0.html" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/maze1.png" alt="关卡预览" class="card-img">
+                        </div>
+                        <div class="card-name">MazeLine1.0</div>
+                    </a>
+                 
+                </div>
+            </section>
+            <!-- 下载页内容 -->
+            <section class="page-content" id="download-page">
+                  <div class="title-wrapper">
+                    <div class="site-main-title">资源下载</div>
+                    <h3>Download Resources</h3>
+                </div> <h2 class="page-title">游戏引擎/软件</h2>
+                 <h4>电脑用户推荐Unity，手机用户推荐Arphros</h4>
+                 <br>
+                <div class="card-container">
+                    <a href="https://www.unity.com" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/Unity.png" alt="开发工具包" class="card-img">
+                        </div>
+                        <div class="card-name">Unity引擎</div>
+                      
+                        
+                    </a>
+                    <a href="https://arphros.kjn.in.th/download" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/Arphros.png" alt="关卡编辑器" class="card-img">
+                        </div>
+                        <div class="card-name">Arphros</div>
+                        
+                       
+                    
+                        
+                    </a>
+                </div>
+                <h2 class="page-title">模型资源库</h2>
+                 <h4>请问未经允许随便转发！请加群下载</h4>
+                 <br>
+                <div class="card-container">
+                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=w%2BaN6zYPwP1FC7plZXu%2BIbTN6y7eQQ5kY7AwO2NL5rGbumThjmhO%2BfstfWztoKL0&busi_data=eyJncm91cENvZGUiOiIxMDcyNDExNTE5IiwidG9rZW4iOiJKUDZDTVdGQnoxRWhoZm02S2NXdzVyNkh0UjVWTGdDQ1o5TGRZY3VWbVVSbGRGWC9qTi9tMXJsaVcyUENuejVlIiwidWluIjoiMTc4NzkxMjQ1NSJ9&data=9kjmcUT4zyO60jIfTpPDOCDuEs_1VmdLzJbkMRneXqqdxEv3R8hP-vsJLUbQaDGUUXLRE1LZeZVZlgrtYgocmA&svctype=4&tempid=h5_group_info" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/model1.png" alt="基础模型" class="card-img">
+                        </div>
+                        <div class="card-name">lnchestn分享的模型<br>QQ群号：1072411519</div>
+                    <a href="" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/model.png" alt="特效模型" class="card-img">
+                        </div>
+                        <div class="card-name">Arphros精选模型<br>QQ群号：1039368783</div>
+                      
+                   
+                   
+                    
+                        
+                    </a>
+                </div>
+            </section>
+            <!-- 开发者页 -->
+            <section class="page-content" id="maker-page">
+                  <div class="title-wrapper">
+                    <div class="site-main-title">开发者必备资源</div>
+                    <h3>Essential Resources for Developers</h3>
+                       </div> <h2 class="page-title">游戏引擎/软件</h2>
+                 <h4>电脑用户推荐Unity，手机用户推荐Arphros</h4>
+                 <br>
+                <div class="card-container">
+                    <a href="https://www.unity.com" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/Unity.png" alt="开发工具包" class="card-img">
+                        </div>
+                        <div class="card-name">Unity引擎</div>
+                      
+                        
+                    </a>
+                    <a href="https://arphros.kjn.in.th/download" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/Arphros.png" alt="关卡编辑器" class="card-img">
+                        </div>
+                        <div class="card-name">Arphros</div>
+                        
+                       
+                    
+                        
+                    </a>
+                
+                </div>
+                 <h2 class="page-title">开发者守则及应用上架</h2>
+                
+                 <br>
           
-        </div>
-        <div class="hint-text"><i>关注</i> 点击直达作者B站/抖音个人主页</div>
+                      <div class="card-container">
+                    <a href="https://dlfmweb.github.io/about/" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/Rule.png" alt="开发工具包" class="card-img">
+                        </div>
+                        <div class="card-name">开发者守则</div>
+                      
+                        
+                    </a>
+                    <a href="https://docs.qq.com/form/page/DR1VyTVZKZUt5eXpR" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/update.png" alt="关卡编辑器" class="card-img">
+                        </div>
+                        <div class="card-name">申请表</div>
+                    </a>
+                         <a href="mailto:dlfmweb@163.com" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/update.png" alt="关卡编辑器" class="card-img">
+                        </div>
+                        <div class="card-name">邮箱</div></a>
+                </div>
+            </section>
+            <!-- 教程页 -->
+            <section class="page-content" id="teach-page">
+                <div class="title-wrapper">
+                    <div class="site-main-title">制作教程</div>
+                    <h3>Creation Tutorials</h3><br>
+                    
+                    <div class="card-container">
+                    <a href="https://b23.tv/Wh8ku84" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/teachvideo.png" alt="基础模型" class="card-img">
+                        </div>
+                        <div class="card-name">蓝焰TheBlueFire</div>
+                    <a href="https://b23.tv/Us148KI" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/teachvideo3.png" alt="特效模型" class="card-img">
+                        </div>
+                        <div class="card-name">Sry-ABYSS</div>
+                      
+                   
+                    <a href="https://b23.tv/pG5TSV9" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/teachvideo2.png" alt="角色模型" class="card-img">
+                        </div>
+                        <div class="card-name">幻影の刄</div>
+                     <a href="https://b23.tv/8vJOW5o" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/teachvideo1.png" alt="角色模型" class="card-img">
+                        </div>
+                        <div class="card-name">RS轮胎</div>
+                        
+                    </a>
+                </div>
+            </section>
+            <!-- 加入我们页 -->
+            <section class="page-content" id="join-page">
+                 <div class="title-wrapper">
+                    <div class="site-main-title">加入我们</div>
+                    <h3>Join Us</h3><br>
+                         <div class="card-container">
+                    <a href="https://qm.qq.com/q/MvcP1CBt2U" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/logo.png" alt="开发工具包" class="card-img">
+                        </div>
+                        <div class="card-name">官方交流群</div>
+                      
+                        
+                    </a>
+                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=X%2F3L8IFjTEytmDwtvsRQ8epM59XyqWftjxnAKDJAxDglPguog6Jt2cSf0FLJQeeQ&busi_data=eyJncm91cENvZGUiOiI3MDYyOTIyNjMiLCJ0b2tlbiI6IlZVbEpZQ1NxbWI1R29tRU42WjNYU1RxbGhpTE9HNGl2Uk9VUTJRMnhxdWtjN2pzOTAwYmNxWDQwSjV4anFqTGkiLCJ1aW4iOiIxNzg3OTEyNDU1In0%3D&data=GlHoPLQsyAav4NjwClBN55l1jwxarn4FTYo83NFiO7RdPDitNCfH7u29oj4DfBFU8ekpeoAnkExGJf6smcI6YQ&svctype=4&tempid=h5_group_info" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/fo/bn.png" alt="关卡编辑器" class="card-img">
+                        </div>
+                        <div class="card-name">官方交流群2号</div>
+                        
+                       
+                    
+                        
+                    </a>
+                </div>
+                
+                
+           
+            </section>
+            <!-- 反馈页 -->
+            <section class="page-content" id="feedback-page">
+                 <div class="title-wrapper">
+                    <div class="site-main-title">问题反馈</div>
+                    <h3>Bugs Feedback</h3><br>
+                <div class="card-container">
+                    <a href="mailto:dlfmweb@163.com" class="card" target="_blank">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/Bug.png" alt="邮箱反馈" class="card-img">
+                        </div>
+                        <div class="card-name">官方反馈邮箱</div>
+                       
+                    </a>
+                </div>
+            </section>
+            <!-- 新增主题页面 -->
+            <section class="page-content" id="theme-page">
+                <div class="title-wrapper">
+                    <div class="site-main-title">主题设置</div>
+                    <h3>Theme Settings</h3>
+                </div>
+                <div class="theme-container">
+                    <div class="theme-card active" data-theme="classic">
+                        <img src="https://xiaoye6661234.github.io/fo/logo.png" alt="经典主题" class="theme-preview">
+                        <div class="theme-name">经典</div>
+                    </div>
+                    <div class="theme-card" data-theme="oil">
+                        <img src="https://xiaoye6661234.github.io/sucai/youhua.png" alt="油画主题" class="theme-preview">
+                        <div class="theme-name">油画</div>
+                    </div>
+                    <div class="theme-card" data-theme="ink">
+                        <img src="https://xiaoye6661234.github.io/sucai/shuimo.png" alt="水墨主题" class="theme-preview">
+                        <div class="theme-name">水墨</div>
+                    </div>
+                    
+                </div>
+            </section>
+        </main>
     </div>
-    <div class="card" data-series="WebLine" data-search-content="下载游戏 安卓下载 暂不支持">
-        <h2 class="card-title">下载游戏</h2>
-        <div class="button-grid half">
-            <button class="btn android" onclick="alert('请加入QQ群下载')"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">下载</button>
-        </div>
-        <div class="hint-text">⚠️ <strong>请加入QQ下载</strong></div>
-    </div>
-    <div class="card" data-series="WebLine" data-search-content="玩家社群 QQ群 官方QQ群 qm.qq.com 群内交流">
-        <h2 class="card-title">玩家社群</h2>
-        <div class="button-grid full">
-            <a href="https://qm.qq.com/q/zTW8maOW3g" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">加入官方QQ群</a>
-        </div>
-        <div class="hint-text">群内交流饭制、获取最新进度</div>
-    </div>
-
-    <!-- Time Line -->
-    <h1 class="hero-title" data-series="timeline">《Time Line》</h1>
-    <div class="hero-sub" data-series="timeline">Dancing Line Fanmade — Time Line</div>
-        <div class="card" data-series="timeline" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/time.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-        <img src="https://xiaoye6661234.github.io/fo/time1.png" 
-     width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片2">
-     <div class="hint-text"><i>图片</i>精美图片</div>
-    </div>
-    <div class="card" data-series="timeline" data-search-content="时间线 timeline">
-        <h2 class="card-title">合集简介—Arphros<img src="https://xiaoye6661234.github.io/fo/arphros.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2>
-        <div class="intro-text">玩家在此合集里命名为时间追逐者，通过无数的关卡，找到其中的那个“时间”，此合集需要Arphros游玩，所以你需要Arphros才能游玩此合集，“敬请期待″</div>
-        <div class="author-info"><span>作者：Time Line官方</span></div>
-    </div>
-    <div class="card" data-series="timeline" data-search-content="timeline QQ群">
-        <h2 class="card-title">更新日志</h2>
-        <div class="intro-text">Time Line v1.1.5<br>新关卡:<br>Song of the Journey 作者:Fbxwz_91<br>Poolcore Ⅱ 作者:zepyhr<br>开端Beginning 作者:小合<br></div>
-    </div>
-    <div class="card" data-series="timeline" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">暂无<br></div></div>
-    <div class="card" data-series="timeline" data-search-content="timeline">
-        <h2 class="card-title">关注作者</h2>
-        <div class="button-grid three"><a href="https://b23.tv/KpALglv" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div>
-        <div class="hint-text"><i>关注</i> 点击直达作者B站个人主页</div>
-    </div>
-    <div class="card" data-series="timeline" data-search-content="合集视频">
-        <h2 class="card-title">合集视频</h2>
-        <div class="button-grid half"><a href="https://b23.tv/V8QE73h" target="_blank" class="btn">Song of Journey</a></div>
-        <div class="button-grid half"><a href=" https://b23.tv/bvTfAb5" target="_blank" class="btn">Poolcore</a></div>
-        <div class="hint-text"><i>视频</i> 点击直达合集精美视频</div>
-    </div>
-    <div class="card" data-series="timeline" data-search-content="下载游戏 安卓下载 暂不支持">
-        <h2 class="card-title">下载游戏</h2>
-        <div class="button-grid half"><button class="btn android" onclick="alert('请加入QQ群下载')"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">下载</button></div>
-        <div class="hint-text">⚠️ <strong>请加入QQ下载</strong></div>
-    </div>
-    <div class="card" data-series="timeline" data-search-content="玩家社群 复制QQ群号 277389312">
-        <h2 class="card-title">玩家社群</h2>
-        <div class="button-grid full"><button class="btn copy-qq-btn" data-qq="277389312"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (277389312)</button></div>
-        <div class="hint-text">下载游戏，请自行到QQ内搜索。点击按钮复制群号。</div>
-    </div>
-
-    <!-- Ethereal Line -->
-    <h1 class="hero-title" data-series="etherealline">《Ethereal Line》</h1>
-    <div class="hero-sub" data-series="etherealline">Dancing Line Fanmade — Ethereal Line</div>
-        <div class="card" data-series="etherealline" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/eth.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-        <img src="https://xiaoye6661234.github.io/fo/eth1.png" 
-     width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片2">
-     <div class="hint-text"><i>图片</i>精美图片</div>
-    </div>
-    <div class="card" data-series="etherealline" data-search-content="空灵之线">
-        <h2 class="card-title">合集简介—Arphros<img src="https://xiaoye6661234.github.io/fo/arphros.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">《Ethereal Line》（空灵之线）是由Ethereal Studio以《Arphros》为蓝本制作的一款饭制合集</div>
-        <div class="author-info"><span>作者：Ethereal_Zepyhr</span></div>
-    </div>
-    <div class="card" data-series="etherealline" data-search-content="空灵之线 QQ群"><h2 class="card-title">更新日志</h2><div class="intro-text">暂无<br></div></div>
-    <div class="card" data-series="etherealline" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">暂无<br></div></div>
-    <div class="card" data-series="etherealline" data-search-content="作者 开发者 空灵之线 哔哩哔哩">
-        <h2 class="card-title">关注作者</h2><div class="button-grid three"><a href="https://b23.tv/DtB189V" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div><div class="hint-text"><i>关注</i> 点击直达作者B站个人主页</div>
-    </div>
-    <div class="card" data-series="etherealline" data-search-content="合集视频">
-        <h2 class="card-title">合集视频</h2><div class="button-grid half"><a href="https://b23.tv/nvfQ1lr" target="_blank" class="btn">校园</a></div><div class="button-grid half"><a href=" https://b23.tv/lvpAH68" target="_blank" class="btn">Dead Soul </a></div><div class="hint-text"><i>视频</i> 点击直达合集精美视频</div>
-    </div>
-    <div class="card" data-series="etherealline" data-search-content="下载游戏 安卓下载 暂不支持">
-        <h2 class="card-title">下载游戏</h2><div class="button-grid half"><button class="btn android" onclick="alert('下载方式:进入QQ群获取游玩包及工程包（收录关卡工程包会经过原作者同意公开）QQ群:198274639')"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">下载</button></div><div class="hint-text">⚠️ <strong>请加入QQ下载</strong></div>
-    </div>
-    <div class="card" data-series="etherealline" data-search-content="玩家社群 复制QQ群号 198274639">
-        <h2 class="card-title">玩家社群</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="198274639"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (198274639)</button></div><div class="hint-text">下载方式:进入QQ群获取游玩包及工程包（收录关卡工程包会经过原作者同意公开）QQ群:198274639</div>
-    </div>
-
-    <!-- 创游之线 -->
-    <h1 class="hero-title" data-series="cuangyou">《创游之线2026》</h1>
-    <div class="hero-sub" data-series="cuangyou">Dancing Line Fanmade — Julian's Editor Levels Collection 2026</div>
-    <div class="card" data-series="cuangyou" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/made1.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-     <img src="https://xiaoye6661234.github.io/fo/made.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     </div>
-    <div class="card" data-series="cuangyou" data-search-content="创游之线 cuangyou">
-        <h2 class="card-title">合集简介—创游世界<img src="https://xiaoye6661234.github.io/fo/make.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">合集全名：Dancing Line Fan-made Julian's Editor Levels Collection 2026<br>中文名：跳舞的线创游世界版本饭制关卡合集2026<br>中文简称：创游之线2026<br>创游中的部分关卡支持复活的舞线饭制合集<br>本合集共36关（含2个非正式关卡和一个联合关卡）<br>你可以在里面游玩到各种各样精彩的关卡！<br>Tip：国家公祭日（12月13日）停服1天<br>新关正在制作中，敬请期待~<br></div> 
-        <div class="author-info"><span>作者：Costan余弦正切、碧星熠熠Z-317、白栢mr、大豆子 等</span></div>
-    </div>
-    <div class="card" data-series="cuangyou" data-search-content="创游"><h2 class="card-title">更新日志</h2><div class="intro-text">Version:2026.1.25.0更新公告：微调部分关卡<br></div></div>
-    <div class="card" data-series="cuangyou" data-search-content="mazeine合集视频 暂无"><h2 class="card-title">合集视频</h2><div class="intro-text">暂无</div></div>
-    <div class="card" data-series="cuangyou" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">新关卡的制作过程是→铺路→布景→调整→完成→加入选关→发布<br></div></div>
-    <div class="card" data-series="cuangyou" data-search-content="作者 开发者">
-        <h2 class="card-title">游戏游玩：创游平台</h2><div class="button-grid three"><a href="https://s.hortorinteractive.com/eZVxQb" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/make.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">创游世界</a></div><div class="hint-text"><i>查看</i> 点击直达创游主页</div>
-    </div>
-    <div class="card" data-series="cuangyou" data-search-content="玩家社群 复制QQ群号 198274639">
-        <h2 class="card-title">玩家社群</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="936533839"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (936533839)</button></div><div class="hint-text">下载方式:进入QQ群谈论</div>
-    </div>
-
-    <!-- Paint Realm (第一次) -->
-    <h1 class="hero-title" data-series="paint">《Paint Realm》</h1>
-    <div class="hero-sub" data-series="paint">Dancing Line Fanmade — Paint Realm </div>
-    <div class="card" data-series="paint" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/paint.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-        <img src="https://xiaoye6661234.github.io/fo/paint1.png" 
-     width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片2">
-     <div class="hint-text"><i>图片</i>精美图片</div>
-    </div>
-     <div class="card" data-series="paint" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
-        <h2 class="card-title">合集简介—Arphros<img src="https://xiaoye6661234.github.io/fo/arphros.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">Paint Realm是由Realm Studio以跳舞的线饭制蓝本Arphros制作的一款跳舞的线饭制社交性合集。游戏以大量关卡为特色。该合集由2024年11月12日建成。</div><div class="author-info"><span>作者：Realm Studio（总设计）</span></div>
-    </div>
-    <div class="card" data-series="paint" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群">
-        <h2 class="card-title">更新日志</h2><div class="intro-text">1.新增关卡：英语 – Realm 
-2.收录关卡：Wasted – L.chen Poolcore – Ethereal Studio 石人之谜 – RS轮胎</div>
-    </div>
-    <div class="card" data-series="paint" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">暂无<br></div></div>
-    <div class="card" data-series="paint" data-search-content="关注"><h2 class="card-title">关注作者</h2><div class="button-grid three"><a href="https://b23.tv/D0HTsyt" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div><div class="hint-text"><i>关注</i> 点击直达作者B站个人主页</div></div>
-    <div class="card" data-series="paint" data-search-content="合集视频"><h2 class="card-title">合集视频</h2><div class="button-grid half"><a href="https://b23.tv/1etjiM1" target="_blank" class="btn">PV</a></div><div class="button-grid half"><a href="https://b23.tv/eS41Old" target="_blank" class="btn">黑白秘境</a></div><div class="hint-text"><i>视频</i> 点击直达合集精美视频</div></div>
-    <div class="card" data-series="paint" data-search-content="下载游戏 安卓下载 暂不支持"><h2 class="card-title">下载游戏</h2><div class="button-grid half"><button class="btn android" onclick="alert('请加入QQ群下载')"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">下载</button></div><div class="hint-text">⚠️ <strong>请加入QQ下载</strong></div></div>
-    <div class="card" data-series="paint" data-search-content="玩家社群 复制QQ群号 967235342"><h2 class="card-title">玩家社群</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="967235342"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (967235342)</button></div><div class="hint-text">下载游戏，请自行到QQ内搜索。点击按钮复制群号。</div></div>
-
-    <!-- 太难Line -->
-    <h1 class="hero-title" data-series="tainan">《太难Line》</h1>
-    <div class="hero-sub" data-series="tainan">Dancing Line Fanmade — So Difficult Line </div>
-        <div class="card" data-series="tainan" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/tainan.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-   </div>
-    <div class="card" data-series="tainan" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
-        <h2 class="card-title">合集简介—蛋仔派对<img src="https://xiaoye6661234.github.io/fo/egg.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">《太难line》是由主制作“我太难了eAPB”以《蛋仔派对》为蓝本的饭制合集，2026年2月份，v1.0.0版本已上线。目前仍在活跃更新中（虽然关卡产出较慢）。</div><div class="author-info"><span>作者：eAPB（总设计）</span></div>
-    </div>
-    <div class="card" data-series="tainan" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群">
-        <h2 class="card-title">更新日志</h2><div class="intro-text">- 版本：太难line关卡目录 V1.0.0 原创关卡：
-1.时光之始（lv1 新手），作者：我太难了eAPB 
-2.青空（lv2 简单），作者：我太难了eAPB 
-3.Daylight(梦想)（lv3 普通），作者：我太难了eAPB 
-4.新春（lv4 困难），作者：我太难了eAPB&乜實 
-5.深渊（lv5 反人类），作者：我太难了eAPB 
-收录关卡：
-1.钻石，作者：砖块鹿就 
-2.庙会，作者：乜實 
-3.黄金时分，作者：乜實 
-4.Sypha，作者：乜實&DL大神&不安的小发&咕.呱.咕.呱 
-5.反转世界，作者：乜實</div>
-    </div>
-    <div class="card" data-series="tainan" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">暂无<br></div></div>
-    <div class="card" data-series="tainan" data-search-content="关注">
-        <h2 class="card-title">关注作者</h2><div class="button-grid three"><a href="https://v.douyin.com/c4AjkvQiA" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/tik.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">抖音</a></div><div class="button-grid three"><a href="https://b23.tv/mAKKhGP" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div><div class="hint-text"><i>关注</i> 点击直达作者B站/抖音个人主页</div>
-    </div>
-    <div class="card" data-series="tainan" data-search-content="合集视频"><h2 class="card-title">合集视频</h2><div class="button-grid half"><a href="https://b23.tv/xqC8Vpt" target="_blank" class="btn">PV</a></div><div class="hint-text"><i>视频</i> 点击直达合集精美视频</div></div>
-    <div class="card" data-series="tainan" data-search-content="下载游戏 安卓下载 暂不支持"><h2 class="card-title">下载游戏</h2><div class="button-grid half"><a href="http://party.163.com/m/index.html" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/egg.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">下载蛋仔派对游玩</a></div><div class="hint-text">⚠️ <strong>请加入QQ下载</strong></div></div>
-    <div class="card" data-series="tainan" data-search-content="玩家社群 复制QQ群号 904443183"><h2 class="card-title">玩家社群</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="904443183"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (904443183)</button></div><div class="hint-text">下载游戏，请自行到QQ内搜索。点击按钮复制群号。</div></div>
-
-
-    <!-- KunLine -->
-    <h1 class="hero-title" data-series="kunline">《KunLine》</h1>
-    <div class="hero-sub" data-series="kunline">Dancing Line Fanmade — KunLine </div>
-       <div class="card" data-series="kunline" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/kun.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
+    <!-- 手机端底部导航 -->
+    <footer class="mobile-nav" id="mobileNav">
+        <a href="#home" class="mobile-nav-item active" data-page="home" data-name="home">
+            <img src="https://xiaoye6661234.github.io/fo/home1.png" class="mobile-nav-icon" alt="首页">
+            <span>首页</span>
+        </a>
+           
+        <a href="#game" class="mobile-nav-item" data-page="game" data-name="game">
+            <img src="https://xiaoye6661234.github.io/fo/game.png" class="mobile-nav-icon" alt="游戏">
+            <span>游戏</span>
+        </a>
    
-   </div>
-    <div class="card" data-series="kunline" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
-        <h2 class="card-title">合集简介—Arphros<img src="https://xiaoye6661234.github.io/fo/arphros.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">此合集为焜焜之焚豪（主制作）以Arphros为基础制作的关卡合集。合集关分为三个分支，主线关卡合集、答辩关卡合集以及联合关卡合集。</div><div class="author-info"><span>作者：坤坤之焚豪（总设计）</span></div>
-    </div>
-    <div class="card" data-series="kunline" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群">
-        <h2 class="card-title">更新日志</h2><div class="intro-text">1.神罚改动：改动摄像头的运镜，增加隐形路，增加滤镜。2.增加了一条隐形路（观察1场景的云）。</div>
-    </div>
-    <div class="card" data-series="kunline" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">暂无<br></div></div>
-    <div class="card" data-series="kunline" data-search-content="关注"><h2 class="card-title">关注作者</h2><div class="button-grid three"><a href="https://b23.tv/rp0hw8P" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div><div class="hint-text"><i>关注</i> 点击直达作者B站/抖音个人主页</div></div>
-    <div class="card" data-series="kunline" data-search-content="合集视频"><h2 class="card-title">合集视频</h2><div class>暂无</div><div class="hint-text"><i>视频</i> 暂无</div></div>
-    <div class="card" data-series="kunline" data-search-content="下载游戏 安卓下载 暂不支持"><h2 class="card-title">下载游戏</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="966271706"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (966271706)</button></div><div class="hint-text">⚠️ <strong>请加入QQ下载</strong></div></div>
-    <div class="card" data-series="kunline" data-search-content="玩家社群 复制QQ群号 904443183"><h2 class="card-title">玩家社群</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="966271706"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (966271706)</button></div><div class="hint-text">下载游戏，请自行到QQ内搜索。点击按钮复制群号。</div></div>
-
-    <!-- Cube-ALC -->
-    <h1 class="hero-title" data-series="cube">《Cube-ALC》</h1>
-    <div class="hero-sub" data-series="cube">Dancing Line Fanmade — Cube-ALC</div>
-       <div class="card" data-series="cube" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/cube.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-       <img src="https://xiaoye6661234.github.io/fo/cube1.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-   </div>
-    <div class="card" data-series="cube" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
-        <h2 class="card-title">合集简介—Arphros<img src="https://xiaoye6661234.github.io/fo/arphros.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">⚠️这是一个非常简陋的DLFM合集，使用Arphros制作，没有iOS版本，没有合集UI，没有安装包，必须下载Arphros并看导入教程才可以玩。虽然简陋，但还是可以在Arphros设置里调画质、Post、音画同步，关卡比较好，很好玩，更新较快。下载完只有一个一个的.arphros文件单包，还要下载QQ浏览器保存文件管理！⚠️</div><div class="author-info"><span>作者：DL–Cubic_World(C.A.studio Offical)（总设计）</span></div>
-    </div>
-    <div class="card" data-series="cube" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群">
-        <h2 class="card-title">更新日志</h2><div class="intro-text">V1.3.3版本更新日志 更新内容：
-1.新增关卡：An Anniversary Party 
-2.新增联合关卡：屿光p7、夜明p9 
-3.提升Golden Hour和部分关卡的关卡质量 
-4.修复山巅关卡的部分bug 
-5.移除了联合关卡中的关卡排序 
-6.修改了下更新公告的表现形式</div>
-    </div>
-    <div class="card" data-series="cube" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">暂无<br></div></div>
-    <div class="card" data-series="cube" data-search-content="关注"><h2 class="card-title">关注作者</h2><div class=>无平台链接</div><div class="hint-text"><i>关注</i> 点击直达滚木链接</div></div>
-    <div class="card" data-series="cube" data-search-content="合集视频"><h2 class="card-title">合集视频</h2><div class="button-grid three"><a href="http://b23.tv/BV16kcsz9EpS" target="_blank" class="btn">1.3.3更新日志</a></div><div class="hint-text"><i>视频</i> 暂无</div></div>
-    <div class="card" data-series="cube" data-search-content="下载游戏 安卓下载 暂不支持"><h2 class="card-title">下载游戏</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="1060300729"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (1060300729)</button></div><div class="hint-text">⚠️ <strong>请加入QQ下载</strong></div></div>
-    <div class="card" data-series="cube" data-search-content="玩家社群 复制QQ群号 1060300729"><h2 class="card-title">玩家社群</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="1060300729"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (1060300729)</button></div><div class="hint-text">下载游戏，请自行到QQ内搜索。点击按钮复制群号。</div></div>
-
-    <h1 class="hero-title" data-series="earos">《Earos Line》</h1>
-    <div class="hero-sub" data-series="earos">Dancing Line Fanmade — Earos Line</div>
-       <div class="card" data-series="earos" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/earos.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-       <img src="https://xiaoye6661234.github.io/fo/earos1.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-   </div>
-    <div class="card" data-series="earos" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
-        <h2 class="card-title">合集简介—Arphros<img src="https://xiaoye6661234.github.io/fo/arphros.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">本合集由Earos Studio使用Arphros制作，欢迎支持！</div><div class="author-info"><span>作者：Earos Studio（总设计）</span></div>
-    </div>
-      <div class="card" data-series="earos" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群"><h2 class="card-title">更新日志</h2><div class="intro-text">【Earos Line v1.1.4.5 Update】
-[更新内容]
-*Fine Logic部分细节优化
-*Fine Logic补充部分判定
-「关卡作者:THE-PHI-PRDCR;优化:Earos Studio」
-[其他说明]
-*若要游玩本关卡优化版本,请加入官方群823709288获取最新Arphros包,并在Arphros中导入关卡后游玩
-*本关卡的原版原作者已经在关卡商店发布,可直接搜索游玩
-*快给我去支持B站官号@EarosStudio官方</div></div>
-  <div class="card" data-series="earos" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">本合集所有原创关卡都是在2025年暑假完成的，作者全是收录+优化，所以，作者需要收录支持(？<br></div></div>
-    <div class="card" data-series="earos" data-search-content="关注"><h2 class="card-title">关注作者</h2><div class="button-grid three"><a href="https://b23.tv/Q7m4E3c" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div><div class="hint-text"><i>关注</i> 点击直达哔哩哔哩中心</div></div>
-    <div class="card" data-series="earos" data-search-content="合集视频"><h2 class="card-title">合集视频</h2><div class="button-grid three"><a href="https://b23.tv/ZubVqmZ" target="_blank" class="btn">Fine Logic</a></div><div class="hint-text"><i>视频</i> 点击直达</div></div>
-    <div class="card" data-series="earos" data-search-content="下载游戏 安卓下载 暂不支持"><h2 class="card-title">下载游戏</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="823709288"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (823709288)</button></div><div class="hint-text">⚠️ <strong>请加入QQ下载</strong></div></div>
-    <div class="card" data-series="earos" data-search-content="玩家社群 复制QQ群号 823709288"><h2 class="card-title">玩家社群</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="823709288"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (823709288)</button></div><div class="hint-text">下载游戏，请自行到QQ内搜索。点击按钮复制群号。</div></div>
-
-    <h1 class="hero-title" data-series="maze">《MazeLine 1.0》</h1>
-    <div class="hero-sub" data-series="maze">Dancing Line Fanmade — MazeLine 1.0</div>
-        <div class="card" data-series="maze" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/maze1.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-   
-     <div class="hint-text"><i>图片</i>精美图片</div>
-    </div>
-    <div class="card" data-series="maze" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
-        <h2 class="card-title">合集简介—蛋仔派对<img src="https://xiaoye6661234.github.io/fo/egg.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">合集为MazeLine前身 使用蛋仔派对制作 更古早的版本还拥有选关界面 后期被指作为单独的地图 此合集暂时没有停更 蛋仔派对搜索MazeLine可游玩 关卡质量较差</div><div class="author-info"><span>作者：cloverglow（总设计）</span></div>
-    </div>
-      <div class="card" data-series="maze" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群"><h2 class="card-title">更新日志</h2><div class="intro-text">注：版本号经过后期重制
-V1.0.0 地图发布
-V1.0.1 计划过多个关卡但地图改为单关卡 仅剩《初章》关卡
-V1.0.2 去除旧版模版的通关功能
-V1.0.3 发布地图《沙漠10%》 拥有至今未修复的飞跃可点击问题
-V1.0.4 发布地图《敬请期待》 现已收录至eggyline
-V1.0.5 游戏暂时停更</div></div>
-  <div class="card" data-series="maze" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">暂无<br></div></div>
-    <div class="card" data-series="maze" data-search-content="关注"><h2 class="card-title">关注作者</h2><div class="button-grid three"><a href="https://b23.tv/Q7m4E3c" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div><div class="hint-text"><i>关注</i> 点击直达哔哩哔哩中心</div></div>
-    <div class="card" data-series="maze" data-search-content="合集视频"><h2 class="card-title">合集视频</h2><div class="button-grid three">暂无</a></div> </div>
-    <div class="card" data-series="maze" data-search-content="下载游戏 安卓下载 暂不支持"><h2 class="card-title">下载游戏</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="https://163.com"><img src="https://xiaoye6661234.github.io/fo/egg.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">复制链接 下载蛋仔派对</button></div><div class="hint-text">⚠️ <strong>请下载蛋仔派对游玩</strong></div></div>
-    <div class="card" data-series="maze" data-search-content="玩家社群 复制QQ群号 1034994919"><h2 class="card-title">玩家社群</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="1034994919"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (1034994919)</button></div><div class="hint-text">下载游戏，请自行到QQ内搜索。点击按钮复制群号。</div></div>
-    
-        <h1 class="hero-title" data-series="ear">《StarRealm》</h1>
-    <div class="hero-sub" data-series="ear">Dancing Line Fanmade — StarRealm</div>
-       <div class="card" data-series="ear" data-search-content="图片">
-        <h2 class="card-title">精美图片</h2>
-  <img src="https://xiaoye6661234.github.io/fo/sr.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-       <img src="https://xiaoye6661234.github.io/fo/sr1.png"  
-   width="1280" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-   
-     <div class="hint-text"><i>图片</i>精美图片</div>
-    </div>
-    <div class="card" data-series="ear" data-search-content="烧烤之夜 驍烤之燁 Barbecue Night 合集简介 作者 驍燁 总设计 停更 2026 Windows">
-        <h2 class="card-title">合集简介—Arphros<img src="https://xiaoye6661234.github.io/fo/arphros.png"  
-   width="50" 
-     height="50" 
-     alt="图片1"></h2><div class="intro-text">StarRealm(星际领域)是一款音乐节奏游戏，作为一款Dancing Line(跳舞的线)的饭制同人游戏，保留原版玩法与各种布景。这是一款arphros饭制合集，主题主要是自然、回忆和星空。
-StarRealm里面共有5个关卡，因本合集的性质，只收录质量中等和高质量的关卡，您也可以在群内投稿您的关卡。
-因本合集建立时间过晚，所以目前还没有相关的活动，在这之后会筹备很多活动，供玩家游玩挑战。
-关于本合集质量问题您不用担心，本合集的特殊性质能保证您玩上优质、质量高、表现力高的关卡，具体请看群聊内的群公告。
-arp合集StarRealm在以后可能会演变成unity制作的真正的跳舞的线饭制合集(前提是作者要有电脑)，且StarRealm目前正在筹备更新。
-更多玩法与活动请尽情期待。</div><div class="author-info"><span>作者：Earphone 耳机（总设计）</span></div>
-    </div>
-       <div class="card" data-series="ear" data-search-content="烧烤之夜 更新日志 v1.0.0 开端 陨石危机 很快回来 设置界面 选关界面 Windows QQ群"><h2 class="card-title">更新日志</h2><div class="intro-text">1.0.3版本更新日志
-添加新关卡：
-“look busy”
-by：耄毯
-移除关卡：木星P3</div></div>
-  <div class="card" data-series="ear" data-search-content="冷知识"><h2 class="card-title">冷知识</h2><div class="intro-text">冷知识：
-1. 作者是伊尔风
-2. the inverted world元件真纪吧多
-3. 2026年3月1日是StarRealm的1/3周年(
-4. NOY牛逼666<br></div></div>
-    <div class="card" data-series="ear" data-search-content="关注"><h2 class="card-title">关注作者</h2><div class="button-grid three"><a href="https://b23.tv/qF4B2yN" target="_blank" class="btn"><img src="https://xiaoye6661234.github.io/fo/bili.png"  
-   width="40" 
-     height="40" 
-     alt="图片1">哔哩哔哩</a></div><div class="hint-text"><i>关注</i> 点击直达哔哩哔哩中心</div></div>
-    <div class="card" data-series="ear" data-search-content="合集视频"><h2 class="card-title">合集视频</h2>
-  <div class="button-grid three"><a href="https://b23.tv/sXfFepX" target="_blank" class="btn">Leap Summer</a></div>
-    <div class="button-grid three"><a href="hhttps://b23.tv/gjqrRkd" target="_blank" class="btn">Look Busy</a></div></div>
-    <div class="card" data-series="ear" data-search-content="下载游戏 安卓下载 暂不支持"><h2 class="card-title">下载游戏</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="635796668"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">加入QQ群下载</button></div><div class="hint-text">⚠️ <strong>请加入QQ群下载</strong></div></div>
-    <div class="card" data-series="ear" data-search-content="玩家社群 复制QQ群号 635796668"><h2 class="card-title">玩家社群</h2><div class="button-grid full"><button class="btn copy-qq-btn" data-qq="635796668"><img src="https://xiaoye6661234.github.io/fo/qq.png"  
-   width="30" 
-     height="30" 
-     alt="图片1">复制QQ群号 (635796668)</button></div><div class="hint-text">下载游戏，请自行到QQ内搜索。点击按钮复制群号。</div></div>
-   
-    <!-- 敬请期待 -->
-    <h1 class="hero-title" data-series="coming">敬请期待</h1>
-    <div class="hero-sub" data-series="coming">Coming Soon</div>
-            <div class="card" data-series="coming" data-search-content="图片">
-  <img src="https://xiaoye6661234.github.io/fo/gunmu.png"  
-   width="720" 
-     height="720" 
-     style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
-     alt="图片1">
-     <br>
-     <div class="hint-text"><i>滚木</i>滚木</div>
-    </div>
-    <div class="card" data-series="coming" data-search-content="冷知识"><h2 class="card-title">敬请期待</h2><div class="intro-text">滚木滚木滚木滚木</div></div>
- 
-    <div style="text-align: center;">
-  <a href="https://b23.tv/ntOQKGF" target="_blank" style="border: none; text-decoration: none;">
-    <img src="https://xiaoye6661234.github.io/fo/g1.png" style="width="375" 
-     height="65" 
-     ;border: none; display: block; margin: 0 auto;">
-  </a>
-</div>
-
-    <div class="footer-note">跳舞的线饭制网2026<br>最后编辑于2026.3.14 22:53  网站所有内容均已获得原作者授权</div>
-</div>
-<a href="https://icp.gov.moe/?keyword=20260082" target="_blank">萌ICP备20260082号</a>
-
-<!-- 公告A (原公告) -->
-<div id="announcementOverlayA" class="announcement-overlay">
-    <div class="announcement-card">
-        <div class="announcement-title">规则 • 必读</div>
-        <strong>首次进站必读！</strong>
-        <div class="announcement-content">
-            <strong>欢迎您访问并使用“跳舞的线饭制网”（以下简称“本网站”）。本网站是由驍燁个人搭建并运营的非商业性爱好者交流平台，旨在为《跳舞的线》游戏爱好者提供饭制作品（同人作品）的展示与分享服务。为保障网站运营秩序及所有用户的合法权益，请您在使用本网站服务前仔细阅读并充分理解本协议全部内容。如您对本协议任何条款有异议，请立即停止使用本网站服务；您的继续使用行为将视为对本协议所有条款的完全接受。
-
-第一章 总则
-
-第一条 网站性质与所有权
-
-1. 本网站为驍燁个人所有并维护，是以《跳舞的线》相关饭制作品为核心内容的非商业性个人网站，其所有权、运营权归驍燁（以下简称“站主”）所有。
-2. 站主保留根据法律法规及网站发展需要，对本协议进行修订、对网站功能进行调整或终止网站运营的权利。
-
-第二条 协议适用范围
-
-本协议适用于所有访问、浏览、使用本网站及在本网站上传、下载、分享饭制作品及相关信息的用户（以下简称“用户”或“您”）。
-
-第三条 协议效力
-
-本协议内容（包括站主后续可能发布的补充规则、公告、声明等）构成您与本网站之间关于使用服务的完整协议。您在使用本网站特定服务时，还需遵守该等特定服务项下的单独协议或规则。
-
-第二章 知识产权与版权声明
-
-第四条 网站内容知识产权
-
-1. 本网站所展示的饭制作品（包括但不限于游戏关卡、音乐、图像、视频、文字说明等）均为相关用户（即“上架者”或“作者”）独立创作或经合法授权后上传，其著作权归原作者或合法权利人所有。
-2. 用户上传作品至本网站，即视为您同意授予本网站免费的、非独占的、永久的展示权，以便在本网站平台范围内对作品进行发布、宣传及存档。您仍保有作品的全部著作权，并有权在其他渠道自行发布。
-3. 本网站原创内容（如网站标识、排版设计、程序代码等）的知识产权归站主所有，未经许可，任何单位或个人不得擅自复制、修改、传播或用于商业用途。
-
-第五条 作品授权与来源
-
-1. 本网站内所有已上架的合集作品，均已获得原作者的明确授权。
-2. 后续通过腾讯文档收集表、邮箱申请、私信等方式申请上架的作品，若无特别注明“合集作者&所有权人为xx”且附相应证明，则默认该作品的上架者即为该作品的作者及所有权人。上架者需保证其拥有完整、合法的权利，且该权利归属在本网站展示期间不得随意变更；如需变更，应提前通知站主并提供相关权利转移证明。
-
-第六条 同人作品性质声明
-
-本网站所收录的《跳舞的线》饭制作品，系由游戏爱好者基于原游戏玩法进行的同人创作。本网站及创作者无意侵犯原游戏著作权人——猎豹移动公司（Cheetah Mobile）的合法权益。如原著作权人对相关作品有异议，可通过本协议末联系方式联系站主，站主将在核实后依法采取必要措施（包括但不限于下架相关作品）。
-
-第三章 用户行为规范
-
-第七条 信息管理
-
-1. 您在本网站发布的任何信息（包括昵称、头像、评论、作品简介等）均应遵守法律法规及本协议，不得含有以下内容：
-   · 违反国家宪法、法律、行政法规的；
-   · 危害国家安全、泄露国家秘密、颠覆国家政权、破坏国家统一的；
-   · 损害国家荣誉和利益的；
-   · 煽动民族仇恨、民族歧视，破坏民族团结的；
-   · 破坏国家宗教政策，宣扬邪教和封建迷信的；
-   · 散布谣言，扰乱社会秩序，破坏社会稳定的；
-   · 散布淫秽、色情、赌博、暴力、凶杀、恐怖或者教唆犯罪的；
-   · 侮辱或者诽谤他人，侵害他人合法权益的；
-   · 含有法律、行政法规禁止的其他内容的。
-
-第八条 饭制作品内容规范
-
-1. 本网站对饭制作品本身的艺术质量不设审查标准，但将严格监督作品的合法性。严禁作品（包括但不限于游戏关卡内场景、配乐、名称、简介、截图等）包含以下违法违规内容：
-   · 色情内容：明显的性暗示、色情词语、色情图片、色情音频或涉及色情交易等；
-   · 侵权内容：未经他人允许私自修改他人工程、抄袭他人布景设计（非通用元素）、原封不动搬运他人作品并署自己之名；
-   · 暴力血腥：宣扬暴力、虐待、血腥场景、恐怖惊悚画面等；
-   · 赌博内容：涉及赌博工具、赌博场所或赌博行为等；
-   · 毒品内容：宣扬吸毒、毒品制作、毒品交易等（经批准的禁毒宣传教育内容除外）；
-   · 其他不宜内容：包含以上任何一项，或内容主题、布景等不适宜未成年人接触。
-
-第九条 禁止非法传播与商业倒卖
-
-1. 本网站严厉禁止任何未经授权的非法传播行为。用户不得将本站作品提供的安装包下载链接（APK等格式）擅自上传至其他网站、平台或通过其他渠道进行大规模传播，尤其严禁以下行为：
-   · 将安装包上传至任何商业性网站、应用市场，并设置付费下载或变相收费；
-   · 将安装包作为自己产品的一部分进行出售或捆绑销售；
-   · 以“代安装”“代找资源”等名义向他人收取费用。
-2. 任何以商业目的使用本网站作品的行为，均须事先获得作品著作权人及站主的书面许可。
-
-第十条 用户互动规范
-
-1.不得恶意举报、虚假投诉或利用规则干扰其他用户正常使用网站。
-
-第四章 作品上架规则
-
-第十一条 上架申请方式
-
-用户可通过以下任一方式提交作品上架申请：
-
-1. 收集表：每周开放名额为10个，开放时间每周日12:00至次周五12:00（以网站公告为准）。名额满后收集表自动关闭。
-2. 邮箱申请：每周开放名额为3个，请将申请发送至邮箱 goodgood0222@qq.com。邮件标题请注明“饭制作品上架申请”，并在正文中按第十二条要求提供完整信息。
-3. 官方私信：如果遇到本网站官方账号私信联系，即可直接上架（24小时内无回复即视为作废）。
-
-第十二条 上架信息要求
-
-申请上架作品时，应提供以下完整信息，其中“必填项”缺失可能导致申请不予受理：
-
-（一）必填项
-
-1. 合集名称：有明确的名称；如仅有中文名，可由站方协助翻译成英文（使用DeepSeek等工具）。
-2. 合集简介：简要介绍作品、特点或创作背景，如“《XXX》是由XXX制作的以XXX为主题的音乐关卡”。
-3. 制作引擎/软件/方式：例如使用Unity、Arphros、Html等。
-4. 作者信息：必须提供真实、准确的作者名称（个人或团队），不得冒名顶替。如有多个作者，请全部列出。
-5. 下载方式：提供稳定、有效的下载链接（如百度网盘、夸克网盘等等），并确保链接长期有效；如需提取码或解压密码，请一并提供。或者加入QQ群下载
-6. 官方交流群：作品相关的QQ群号或微信群号（如有）。
-
-（二）选填项
-
-1. 更新日志：如作品有版本更新，可附上更新日志，格式如：“v1.0.0更新：①新增关卡XXX；②优化XXX”。
-2. 官网/主页：作品的官方网站、个人主页或相关链接。
-3. 冷知识/花絮：关于作品的有趣背景或小知识。
-
-第十三条 申请审核与处理
-
-1. 站主将在收到申请后1-3个工作日内进行审核。审核通过的作品将安排上架；如未通过，将通过原申请渠道告知原因（信息不全、存在违规内容等）。
-2. 用户应确保所提交信息的真实性、准确性。因信息错误导致的一切后果由申请人自行承担。
-3. 每周名额按提交时间顺序确认，额满即止。同一作品请勿重复提交多个申请渠道，以免占用名额。
-
-第五章 违规处理与投诉机制
-
-第十四条 违规处理措施
-
-如发现用户或作品存在违反本协议的行为，站主有权采取以下一项或多项措施：
-
-1. 要求违规者限期整改；
-2. 下架相关作品；
-
-第十五条 投诉与举报
-
-1. 如您发现本网站存在违规内容（包括但不限于侵权、色情、暴力、赌博等），或发现有人未经授权倒卖作品，可通过以下方式举报：
-   · 举报邮箱：goodgood0222@qq.com
-   · 私信官方社交媒体账号（见网站公告）
-2. 举报时请提供以下信息：
-   · 您的真实姓名及联系方式（以便核实，本站将对个人信息保密）；
-   · 被举报内容的链接或具体描述；
-   · 初步证明材料（如截图、权利证明等）。
-3. 站主在收到有效举报后将尽快核查处理，但对于匿名或信息不全的举报，可能无法逐一回复。
-
-第六章 免责声明
-
-第十六条 信息真实性免责
-
-本网站所有作品均由用户自行上传并发布，站主对作品内容的真实性、合法性、准确性、完整性不承担任何明示或暗示的保证。用户应自行判断并承担使用风险。
-
-第十七条 外部链接免责
-
-本网站可能包含跳转至第三方网站或资源的链接，该类链接仅为方便用户而提供，不代表站主对第三方内容的认可。您访问任何第三方链接所产生的风险由您自行承担。
-
-第十八条 站主学业因素
-
-本网站由站主个人利用课余时间维护与管理。因站主学业任务（包括但不限于考试、课程设计、毕业论文、实习等）可能导致网站更新延迟、服务暂时中断或部分功能无法正常使用。站主将尽力提前告知并在学业允许范围内维持网站运行，但无法保证服务不中断或不受影响。对于因站主学业原因造成的任何不便或损失，站主不承担法律责任。
-
-第十九条 未成年人保护
-
-本网站部分内容可能不适合未成年人观看。监护人应引导未成年人合理使用互联网，避免接触不适宜内容。如发现本网站存在对未成年人有害的信息，请及时举报。
-
-第七章 协议修改与终止
-
-第二十条 协议修改
-
-站主有权根据法律法规变化或网站运营需要，随时修改本协议的任何条款，并在本网站显著位置公布修改后的协议。修改后的协议自公布之日起生效。如您继续使用本网站服务，即视为同意接受修改后的协议约束。
-
-第二十一条 服务终止
-
-站主保留在不事先通知的情况下，随时暂停或终止本网站全部或部分服务的权利。对于因服务终止给您造成的损失，站主不承担责任。
-
-第八章 其他
-
-第二十二条 联系方式
-
-如对本协议或本网站有任何疑问、意见或建议，欢迎通过以下方式联系：
-
-· 邮箱：goodgood0222@qq.com
-· 官方社交媒体：请关注本网站公告获取最新联系方式
-
-第二十三条 协议生效
-
-本协议自发布之日起生效。您开始使用本网站服务即视为您已阅读并同意本协议的全部条款。
-——————————
-跳舞的线饭制网（DancingLine Fan-Made Website）
-站主：驍燁
-发布日期：2026.3.13
-最后修订：2026.3.13<br>
-        </div>
-        <div class="announcement-button">
-            <button class="announcement-btn" id="announceAConfirm">确定</button>
-        </div>
-    </div>
-</div>
-
-<!-- 公告B (新增) -->
-<div id="announcementOverlayB" class="announcement-overlay announcement-hidden">
-    <div class="announcement-card">
-        <div class="announcement-title">公告</div>
-        <strong>更新内容</strong>
-        <div class="announcement-content">
-1.更新单独的设置界面
-2.更新了图片预览板块，现在用户上架应用的时候可以添加图片了
-3.增加了两个新饭制
-4.更新和网站规则板块
-5.更新的返回首页按钮，现在用户在浏览其他饭制的时候，点击此按钮即可一键返回首页
-6.全面适配手机电脑，我就不信还有问题
-7.更新了滚木
-8.广告位招租:
-跳舞的线饭制网广告征集
-要求：
-①视频格式：暂不支持
-②不要商业性广告
-③尽量搞笑抽象一点
-④图片类尽量不要AI
-⑤可以是自己合集的推广或者搞笑瞬间
-⑥每人限2个，最终只添加1～3个随机展示（比如饭制详情页等）
-欢迎报名，时间不限
-9.广告展示改为一周（周日到下周五）换一次
-        </div>
-        <div class="announcement-button">
-            <button class="announcement-btn" id="announceBConfirm">确定</button>
-        </div>
-    </div>
-</div>
-
-<!-- 设置浮层 (已移除关闭图标) -->
-<div id="settingsOverlay" class="settings-overlay announcement-hidden">
-    <div class="settings-card">
-        <!-- 关闭图标已移除，只保留底部关闭按钮 -->
-        <div class="settings-title">设置</div>
-        <div class="settings-content">
-            <div class="settings-row">
-                <button class="btn" id="settingsDarkToggle">🌑 深色模式</button>
-                <button class="btn" id="settingsSaveData">保存数据</button>
-            </div>
-            <div class="settings-row">
-                <button class="btn" id="settingsFeedback">反馈</button>
-                <button class="btn" id="settingsShowAnnounceB">更新公告</button>
-            </div>
-               <div class="settings-row">
-    <button class="btn" id="musicTrackBtn">🎵 音乐(1/5)</button>
-    <button class="btn" id="musicToggleBtn">🔇 背景音乐 OFF</button>
-</div>
-            <div class="hint-text" style="text-align:center;">保存数据暂不可用</div></div>
-        <div class="settings-footer">
-            <button class="btn" id="settingsCloseBtn">关闭</button>
-        </div>
-    </div>
-</div>
-
-<script>
-(function() {
-    // 获取元素
-    const directoryItems = document.querySelectorAll('.directory-item[data-series]'); // 只取有data-series的（排除设置按钮）
-    const settingsBtn = document.getElementById('settingsBtn');
-    const seriesElements = document.querySelectorAll('[data-series]');
-    const searchInput = document.getElementById('searchInput');
-    const searchBtn = document.getElementById('searchButton');
-    const allCards = Array.from(document.querySelectorAll('.card'));
-    const returnHomeBar = document.getElementById('returnHomeBar');
-    const overlayA = document.getElementById('announcementOverlayA');
-    const overlayB = document.getElementById('announcementOverlayB');
-    const confirmA = document.getElementById('announceAConfirm');
-    const confirmB = document.getElementById('announceBConfirm');
-    const settingsOverlay = document.getElementById('settingsOverlay');
-    const settingsCloseBtn = document.getElementById('settingsCloseBtn');
-    const settingsDarkToggle = document.getElementById('settingsDarkToggle');
-    const settingsSaveData = document.getElementById('settingsSaveData');
-    const settingsFeedback = document.getElementById('settingsFeedback');
-    const settingsShowAnnounceB = document.getElementById('settingsShowAnnounceB');
-    const body = document.body;
-
-    // 浮层计数 (用于禁止背景滚动)
-    let activeOverlays = 0;
-
-    function updateBodyScroll() {
-        if (activeOverlays > 0) {
-            body.classList.add('no-scroll');
-        } else {
-            body.classList.remove('no-scroll');
+        <a href="#maker" class="mobile-nav-item" data-page="maker" data-name="maker">
+            <img src="https://xiaoye6661234.github.io/fo/maker.png" class="mobile-nav-icon" alt="开发者">
+            <span>开发者</span>
+        </a>
+          
+        <a href="#join" class="mobile-nav-item" data-page="join" data-name="join">
+            <img src="https://xiaoye6661234.github.io/fo/join.png" class="mobile-nav-icon" alt="加入我们">
+            <span>加入我们</span>
+        </a>
+    </footer>
+    <script>
+        // 获取所有元素
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
+        const pageContents = document.querySelectorAll('.page-content');
+        const themeCards = document.querySelectorAll('.theme-card');
+        // 素材基础地址
+        const baseIconUrl = 'https://xiaoye6661234.github.io/fo/';
+        const sucaiUrl = 'https://xiaoye6661234.github.io/sucai/';
+
+        // ========== 主题核心功能 ==========
+        // 初始化主题：读取本地存储
+        function initTheme() {
+            const savedTheme = localStorage.getItem('dlfmTheme') || 'classic';
+            applyTheme(savedTheme);
         }
-    }
 
-    function showOverlay(overlay) {
-        if (overlay.classList.contains('announcement-hidden')) {
-            overlay.classList.remove('announcement-hidden');
-            activeOverlays++;
-            updateBodyScroll();
-        }
-    }
-
-    function hideOverlay(overlay) {
-        if (!overlay.classList.contains('announcement-hidden')) {
-            overlay.classList.add('announcement-hidden');
-            activeOverlays--;
-            updateBodyScroll();
-        }
-    }
-
-    // 视图过渡
-    function updateWithTransition(updateFn) {
-        if (document.startViewTransition) document.startViewTransition(updateFn);
-        else updateFn();
-    }
-
-    // 系列切换
-    function setActiveSeries(series) {
-        directoryItems.forEach(item => {
-            item.classList.toggle('active', item.dataset.series === series);
-        });
-        // 全部饭制按钮的高亮单独处理 (因为它是all-btn)
-        const allBtn = document.querySelector('.directory-item.all-btn');
-        if (allBtn) allBtn.classList.toggle('active', series === 'all');
-
-        seriesElements.forEach(el => {
-            if (series === 'all') el.classList.remove('series-hidden');
-            else el.classList.toggle('series-hidden', el.dataset.series !== series);
-        });
-
-        // 控制返回首页栏的显示：当系列不是all时显示
-        if (series === 'all') {
-            returnHomeBar.style.display = 'none';
-        } else {
-            returnHomeBar.style.display = 'flex';
-        }
-    }
-
-    function performSearch() {
-        const keyword = searchInput.value.trim().toLowerCase();
-        allCards.forEach(card => {
-            const text = (card.dataset.searchContent || '') + ' ' + card.innerText;
-            card.classList.toggle('search-hidden', keyword && !text.toLowerCase().includes(keyword));
-        });
-    }
-
-    const debounce = (func, delay) => {
-        let timer;
-        return (...args) => { clearTimeout(timer); timer = setTimeout(() => func.apply(this, args), delay); };
-    };
-    const performSearchWithTransition = debounce(() => updateWithTransition(performSearch), 200);
-
-    // 目录点击 (只针对有data-series的项)
-    directoryItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const series = this.dataset.series;
-            updateWithTransition(() => {
-                setActiveSeries(series);
-                performSearch();
-            });
-        });
-    });
-
-    // 返回首页栏点击
-    returnHomeBar.addEventListener('click', () => {
-        updateWithTransition(() => {
-            setActiveSeries('all');
-            performSearch();
-        });
-    });
-
-    // 搜索
-    searchBtn.addEventListener('click', () => updateWithTransition(performSearch));
-    searchInput.addEventListener('keyup', e => e.key === 'Enter' && performSearchWithTransition());
-    searchInput.addEventListener('input', performSearchWithTransition);
-
-    // 设置按钮
-    settingsBtn.addEventListener('click', () => {
-        showOverlay(settingsOverlay);
-    });
-
-    // 关闭设置
-    settingsCloseBtn.addEventListener('click', () => {
-        hideOverlay(settingsOverlay);
-    });
-
-    // 深色模式
-    function toggleDarkMode() {
-        body.classList.toggle('dark-mode');
-        const isDark = body.classList.contains('dark-mode');
-        settingsDarkToggle.textContent = isDark ? '☀️ 浅色模式' : '🌑 深色模式';
-    }
-    settingsDarkToggle.textContent = body.classList.contains('dark-mode') ? '☀️ 浅色模式' : '🌑 深色模式';
-    settingsDarkToggle.addEventListener('click', toggleDarkMode);
-
-    // 保存数据 (模拟)
-    settingsSaveData.addEventListener('click', () => {
-        alert('数据已保存 (模拟) 当前模式：' + (body.classList.contains('dark-mode') ? '深色' : '浅色'));
-    });
-
-    // 反馈
-    settingsFeedback.addEventListener('click', () => {
-        window.location.href = 'mailto:goodgood0222@qq.com?subject=跳舞的线饭制网反馈';
-    });
-
-    // 从设置中打开公告B (公告层级高于设置，直接显示)
-    settingsShowAnnounceB.addEventListener('click', () => {
-        showOverlay(overlayB);
-    });
-
-    // 公告A确定 -> 关闭A，显示B
-    confirmA.addEventListener('click', () => {
-        hideOverlay(overlayA);
-        showOverlay(overlayB);
-    });
-
-    // 公告B确定 -> 关闭B
-    confirmB.addEventListener('click', () => {
-        hideOverlay(overlayB);
-    });
-
-    // 初始化：显示公告A (但不叠加计数，因为初始activeOverlays为0，手动设置)
-    overlayA.classList.remove('announcement-hidden');
-    overlayB.classList.add('announcement-hidden');
-    settingsOverlay.classList.add('announcement-hidden');
-    activeOverlays = 1; // 公告A显示
-    updateBodyScroll();
-
-    // 复制QQ按钮
-    function bindCopyQQ() {
-        document.querySelectorAll('.copy-qq-btn').forEach(btn => {
-            btn.replaceWith(btn.cloneNode(true));
-        });
-        document.querySelectorAll('.copy-qq-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                let qq = this.dataset.qq; 
-                if (!qq) return;
-                if (navigator.clipboard?.writeText) {
-                    navigator.clipboard.writeText(qq).then(() => alert('QQ群号已复制：' + qq + '\n因作者设置，该群请自行到QQ内搜索'));
-                } else {
-                    let ta = document.createElement('textarea');
-                    ta.value = qq;
-                    document.body.appendChild(ta);
-                    ta.select();
-                    try { 
-                        document.execCommand('copy') ? alert('QQ群号已复制：' + qq) : alert('无法复制，群号：' + qq); 
-                    } catch { 
-                        alert('复制异常，群号：' + qq); 
-                    }
-                    document.body.removeChild(ta);
+        // 应用主题
+        function applyTheme(themeName) {
+            // 移除所有主题class
+            document.body.classList.remove('theme-classic', 'theme-oil', 'theme-ink');
+            // 添加当前主题class
+            document.body.classList.add(`theme-${themeName}`);
+            // 更新主题卡片选中状态
+            themeCards.forEach(card => {
+                card.classList.remove('active');
+                if (card.getAttribute('data-theme') === themeName) {
+                    card.classList.add('active');
                 }
             });
+            // 保存到本地存储
+            localStorage.setItem('dlfmTheme', themeName);
+        }
+
+        // 主题卡片点击事件
+        themeCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const targetTheme = card.getAttribute('data-theme');
+                applyTheme(targetTheme);
+            });
         });
-    }
-// ==================== 背景音乐控制 ====================
-const baseMusicUrl = 'https://xiaoye6661234.github.io/fo/';
-const trackNames = ['sypha.mp3', 'world.mp3', 'ten.mp3', 'Utopia.mp3', 'piano.mp3'];
-let currentTrackIndex = 0;          // 当前选中曲目索引（0~4）
-let musicEnabled = false;           // 背景音乐总开关（默认关闭）
-let audio = null;                   // Audio 实例
 
-// 获取或创建 Audio 对象
-function getAudio() {
-    if (!audio) {
-        audio = new Audio();
-        audio.preload = 'metadata'; // 仅预加载元数据
-        audio.onerror = () => console.warn('音频加载失败，请检查文件名或网络');
-    }
-    return audio;
-}
+        // ========== 原有导航功能 ==========
+        // 汉堡菜单点击事件（手机端展开/收起侧边栏）
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
 
-// 设置当前曲目（切换 src，不自动播放）
-function setTrack(index) {
-    if (index < 0 || index >= trackNames.length) return;
-    currentTrackIndex = index;
-    const url = baseMusicUrl + trackNames[currentTrackIndex];
-    const aud = getAudio();
-    aud.src = url;
-    aud.load();                     // 重新加载新资源
-}
-
-// 尝试播放当前曲目（仅当 musicEnabled = true 时生效）
-function playCurrent() {
-    if (!musicEnabled) return;
-    const aud = getAudio();
-    if (!aud.src) {                 // 如果尚未设置 src，则用当前索引设置
-        setTrack(currentTrackIndex);
-    }
-    aud.play().catch(e => console.warn('播放失败，可能由于浏览器策略或网络', e));
-}
-
-// 更新音乐按钮上的曲目指示
-function updateTrackButtonText() {
-    if (musicTrackBtn) {
-        musicTrackBtn.innerText = `🎵 音乐(${currentTrackIndex + 1}/${trackNames.length})`;
-    }
-}
-
-// 获取两个新增按钮
-const musicTrackBtn = document.getElementById('musicTrackBtn');
-const musicToggleBtn = document.getElementById('musicToggleBtn');
-
-if (musicTrackBtn && musicToggleBtn) {
-    // 初始化按钮文字
-    updateTrackButtonText();
-    musicToggleBtn.innerText = musicEnabled ? '🔊 背景音乐 ON' : '🔇 背景音乐 OFF';
-
-    // 点击“音乐”按钮：切换到下一首
-    musicTrackBtn.addEventListener('click', () => {
-        const nextIndex = (currentTrackIndex + 1) % trackNames.length;
-        setTrack(nextIndex);                // 切换 src
-        updateTrackButtonText();             // 更新按钮显示
-        if (musicEnabled) {
-            playCurrent();                   // 如果开关打开则立即播放
-        }
-    });
-
-    // 点击“背景音乐”按钮：切换总开关
-    musicToggleBtn.addEventListener('click', () => {
-        musicEnabled = !musicEnabled;
-        musicToggleBtn.innerText = musicEnabled ? '🔊 背景音乐 ON' : '🔇 背景音乐 OFF';
-
-        if (musicEnabled) {
-            playCurrent();                   // 开启后尝试播放当前曲目
-        } else {
-            if (audio) {
-                audio.pause();                // 关闭时暂停
+        // 点击侧边栏外区域关闭手机端侧边栏
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                sidebar.classList.remove('show');
             }
-        }
-    });
-}
-    // 初始状态：全部饭制
-    setActiveSeries('all');
-    bindCopyQQ();
-    searchInput.value = '';
-    allCards.forEach(c => c.classList.remove('search-hidden'));
-})();
-</script>
+        });
+
+        // 导航项点击事件：激活样式+图标切换+页面切换
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetPage = item.getAttribute('data-page');
+                const itemName = item.getAttribute('data-name');
+                // 1. 移除所有导航项的active类，重置为默认图标
+                navItems.forEach(nav => {
+                    const name = nav.getAttribute('data-name');
+                    nav.classList.remove('active');
+                    const icon = nav.querySelector('img');
+                    // 主题图标用sucai地址，其他用fo地址
+                    const baseUrl = name === 'dress' ? sucaiUrl : baseIconUrl;
+                    icon.src = `${baseUrl}${name}.png`;
+                });
+                // 2. 给当前点击的导航项添加active类，切换为点亮图标
+                const activeNavs = document.querySelectorAll(`[data-page="${targetPage}"]`);
+                activeNavs.forEach(nav => {
+                    nav.classList.add('active');
+                    const icon = nav.querySelector('img');
+                    const name = nav.getAttribute('data-name');
+                    const baseUrl = name === 'dress' ? sucaiUrl : baseIconUrl;
+                    icon.src = `${baseUrl}${name}1.png`;
+                });
+                // 3. 切换对应页面内容显示
+                pageContents.forEach(page => {
+                    page.classList.remove('active');
+                });
+                document.getElementById(`${targetPage}-page`).classList.add('active');
+                // 4. 手机端点击导航后自动收起侧边栏
+                sidebar.classList.remove('show');
+                // 5. 平滑滚动到页面顶部
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // 页面加载时初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+        });
+    </script>
 </body>
 </html>

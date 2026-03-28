@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>关卡详情 - Cube-ALC - 跳舞的线饭制网</title>
+    <style>
+        /* 全局字体与基础样式 - 与noyalc规范完全一致，无任何修改 */
+        @font-face {
+            font-family: 'DreamFont';
+            src: url('https://xiaoye6661234.github.io/fo/dream.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'DreamFont', "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        body {
+            background-color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a {
+            text-decoration: none;
+        }
+        /* ========== 顶部通栏 - 与noyalc完全一致 ========== */
+        .top-header {
+            width: 100%;
+            height: 65px;
+            background-color: #bbbbbb;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .menu-toggle {
+            font-size: 1.8rem;
+            color: #000;
+            cursor: pointer;
+            display: none;
+        }
+        .site-title {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #000000;
+            letter-spacing: 1px;
+            margin-left: 10px;
+        }
+        .header-right {
+            flex: 1;
+        }
+        /* ========== 内容容器（侧边栏+主内容） - 与noyalc完全一致 ========== */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            width: 100%;
+        }
+        /* ========== 电脑端侧边栏 - 与noyalc完全一致 ========== */
+        .sidebar {
+            width: 200px;
+            background-color: #ffffff;
+            box-shadow: 3px 0 15px rgba(0, 0, 0, 0.12);
+            padding: 15px 12px;
+            position: fixed;
+            top: 65px;
+            left: 0;
+            height: calc(100vh - 65px);
+            display: flex;
+            flex-direction: column;
+            z-index: 998;
+            transition: transform 0.3s ease;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 5px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            color: #000000;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            transition: all 0.2s ease;
+        }
+        .nav-item:hover {
+            color: #007AFF;
+            background-color: #f0f7ff;
+        }
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+        /* ========== 主内容区域 - 与noyalc完全一致 ========== */
+        .main-content {
+            margin-left: 200px;
+            width: calc(100% - 200px);
+            padding: 20px 20px;
+            flex: 1;
+        }
+        /* 卡片容器 - 与noyalc完全一致 */
+        .card-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            align-items: start;
+        }
+        /* 内容卡片 - 与noyalc完全一致 */
+        .content-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .content-card:hover {
+            transform: scale(1.005);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+            z-index: 10;
+        }
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #000000;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .card-content {
+            width: 100%;
+            color: #333333;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+        /* 按钮样式 - 与noyalc完全一致 */
+        .btn {
+            display: inline-block;
+            padding: 8px 24px;
+            background-color: #888888;
+            color: #ffffff;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: background-color 0.2s ease;
+            line-height: 1.2;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #666666;
+        }
+        .button-grid {
+            width: 100%;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        /* 图片样式 - 与noyalc完全一致 */
+        .card-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto !important;
+            border-radius: 6px;
+        }
+        /* 作者头像容器 - 与noyalc完全一致 */
+        .author-avatar-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+        /* ========== 手机端适配 - 与noyalc完全一致 ========== */
+        @media (max-width: 767px) {
+            .top-header {
+                height: 65px;
+                padding: 0 15px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .site-title {
+                font-size: 1.5rem;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+                width: 75%;
+                max-width: 280px;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px 15px;
+                padding-bottom: 80px;
+            }
+            .card-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .content-card {
+                padding: 20px;
+                gap: 12px;
+            }
+            .card-title {
+                font-size: 1.5rem;
+            }
+            .author-avatar-group {
+                gap: 10px;
+            }
+            .author-avatar {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        /* ========== 手机端底部导航 - 与noyalc完全一致 ========== */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #ffffff;
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            align-items: center;
+            justify-content: space-around;
+        }
+        @media (max-width: 767px) {
+            .mobile-nav {
+                display: flex;
+            }
+        }
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 100%;
+            color: #000000;
+            transition: all 0.2s ease;
+        }
+        .mobile-nav-item:hover {
+            color: #007AFF;
+        }
+        .mobile-nav-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            margin-bottom: 4px;
+        }
+        .mobile-nav-item span {
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部通栏 - 与noyalc结构完全一致 -->
+    <header class="top-header">
+        <div class="menu-toggle" id="menuToggle">☰</div>
+        <h1 class="site-title">跳舞的线饭制网—Cube-ALC</h1>
+        <div class="header-right"></div>
+    </header>
+    <div class="content-wrapper">
+        <!-- 左侧侧边栏导航 - 与noyalc结构完全一致 -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <a href="https://xiaoye6661234.github.io/dlfmweb/" class="nav-item">
+                    <img src="https://xiaoye6661234.github.io/fo/home.png" class="nav-icon" alt="返回首页">
+                    <span>返回首页</span>
+                </a>
+                <a href="javascript:copyQQ()" class="nav-item">
+                    <img src="https://xiaoye6661234.github.io/fo/join.png" class="nav-icon" alt="加入群聊">
+                    <span>加入群聊</span>
+                </a>
+                <a href="mailto:dlfmweb@163.com" class="nav-item" target="_blank">
+                    <img src="https://xiaoye6661234.github.io/fo/feedback.png" class="nav-icon" alt="举报反馈">
+                    <span>举报反馈</span>
+                </a>
+            </nav>
+        </aside>
+        <!-- 主内容区域 - 模块顺序与noyalc完全一致 -->
+        <main class="main-content">
+            <div class="card-container">
+                <!-- 开发者卡片 - 头像使用指定来源路径 -->
+                <div class="content-card">
+                    <h2 class="card-title">开发者</h2>
+                    <div class="author-avatar-group">
+                        <img src="https://xiaoye6661234.github.io/sucai/cubealc.png" class="author-avatar" alt="Cube-ALC开发团队">
+                    </div>
+                    <div class="card-content">
+                        Cube-ALC
+                    </div>
+                </div>
+                <!-- 关卡预览卡片 -->
+                <div class="content-card">
+                    <h2 class="card-title">关卡预览</h2>
+                    <div class="card-content">
+                        <img src="https://xiaoye6661234.github.io/fo/cube.png" alt="Cube-ALC关卡预览图">
+                    </div>
+                    <div class="card-content">
+                        <img src="https://xiaoye6661234.github.io/fo/cube1.png" alt="Cube-ALC关卡预览图">
+                </div></div>
+                <!-- 相关视频卡片 -->
+                <div class="content-card">
+                    <h2 class="card-title">相关视频</h2>
+                    <div class="card-content">
+                        <div class="button-grid">
+                            <button class="btn" onclick="alert('暂无相关视频，敬请期待官方后续发布')">暂无相关视频</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 合集简介卡片 -->
+                <div class="content-card">
+                    <h2 class="card-title">合集简介</h2>
+                    <div class="card-content">
+                      ⚠️这是一个非常简陋的DLFM合集，使用Arphros制作，没有iOS版本，没有合集UI，没有安装包，必须下载Arphros并看导入教程才可以玩。虽然简陋，但还是可以在Arphros设置里调画质、Post、音画同步，关卡比较好，很好玩，更新较快。下载完只有一个一个的.arphros文件单包，还要下载QQ浏览器保存文件管理！⚠️
+                    </div>
+                </div>
+                <!-- 更新日志卡片 -->
+                <div class="content-card">
+                    <h2 class="card-title">更新日志</h2>
+                    <div class="card-content">
+                       
+                      V1.3.3版本更新日志 更新内容：<br>
+1.新增关卡：An Anniversary Party<br>
+2.新增联合关卡：屿光p7、夜明p9<br>
+3.提升Golden Hour和部分关卡的关卡质量<br>
+4.修复山巅关卡的部分bug<br>
+5.移除了联合关卡中的关卡排序<br>
+6.修改了下更新公告的表现形式<br>
+                    </div>
+                </div>
+                <!-- 冷知识卡片 -->
+                <div class="content-card">
+                    <h2 class="card-title">冷知识</h2>
+                    <div class="card-content">
+                        暂无相关冷知识介绍，敬请期待后续补充~
+                    </div>
+                </div>
+                <!-- 关注作者卡片 -->
+                <div class="content-card">
+                    <h2 class="card-title">关注作者</h2>
+                    <div class="card-content">
+                               <div class="button-grid">
+                            <a href="https://space.bilibili.com/3546728894565168?spm_id_from=333.788.upinfo.head.click" target="_blank" class="btn">
+                                <img src="https://xiaoye6661234.github.io/fo/bili.png" width="30" height="30" alt="哔哩哔哩"> 哔哩哔哩
+                            </a>
+                        </div></div>
+                </div>
+                <!-- 下载游戏卡片 -->
+                <div class="content-card">
+                    <h2 class="card-title">下载游戏</h2>
+                    <div class="card-content">
+                        <div class="button-grid">
+                            <button class="btn" onclick="copyQQ()"> <img src="https://xiaoye6661234.github.io/fo/qq.png" width="30" height="30" alt="哔哩哔哩">复制社群信息（群内下载）</button>
+                        </div>
+                        <br>
+                        <div class="card-content" style="color: #888; font-size: 1rem; text-align: center;">
+                            ⚠️ 游戏安装包仅在官方QQ群内提供，请关注官方后续发布
+                        </div>
+                    </div>
+                </div>
+                <!-- 玩家社群卡片 -->
+                <div class="content-card">
+                    <h2 class="card-title">玩家社群</h2>
+                    <div class="button-grid">
+                            <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=ypMpCH6eeKFx632zZmC6AgJ8%2F85%2F7ALgeSqrtnX2zhx%2F7%2ByUN1vXlXsegGwKJQrg&busi_data=eyJncm91cENvZGUiOiIxMDYwMzAwNzI5IiwidG9rZW4iOiJ1VGlqSTNxbXI3MEx5OGExaUo2Rmo4Z2RvakJJL2cwVGQ3KzBENTJZcERaZGFJRzdCZ2FydzNSb2M5N0FUNXE5IiwidWluIjoiMTc4NzkxMjQ1NSJ9&data=chNoAHVUk8cVMy9t_b-j7hjpvJ7M1WPoyARJ6QLoKvg1T0oZCrRd1flfxuu-uDOX2BOl7cFdUvmMFR6X2bj7KQ&svctype=4&tempid=h5_group_info" target="_blank" class="btn">
+                                <img src="https://xiaoye6661234.github.io/fo/qq.png" width="30" height="30" alt="哔哩哔哩"> QQ
+                            </a>
+                        </div></div></div>
+        </main>
+    </div>
+    <!-- 手机端底部导航 - 与noyalc结构完全一致 -->
+    <footer class="mobile-nav" id="mobileNav">
+        <a href="https://xiaoye6661234.github.io/dlfmweb/" class="mobile-nav-item">
+            <img src="https://xiaoye6661234.github.io/fo/home.png" class="mobile-nav-icon" alt="返回首页">
+            <span>返回首页</span>
+        </a>
+        <a href="javascript:copyQQ()" class="mobile-nav-item">
+            <img src="https://xiaoye6661234.github.io/fo/join.png" class="mobile-nav-icon" alt="加入群聊">
+            <span>加入群聊</span>
+        </a>
+        <a href="mailto:dlfmweb@163.com" class="mobile-nav-item" target="_blank">
+            <img src="https://xiaoye6661234.github.io/fo/feedback.png" class="mobile-nav-icon" alt="举报反馈">
+            <span>举报反馈</span>
+        </a>
+    </footer>
+    <script>
+        // 汉堡菜单交互 - 与noyalc完全一致
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        // 展开/收起侧边栏
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+        
+        // 点击侧边栏外区域自动关闭
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                sidebar.classList.remove('show');
+            }
+        });
+        
+        // 核心复制功能
+        function copyQQ() {
+            const content = '1060300729';
+            // 现代浏览器clipboard API
+            if (navigator.clipboard?.writeText) {
+                navigator.clipboard.writeText(content).then(() => {
+                    alert('复制成功！' + content);
+                }).catch(err => {
+                    fallbackCopy(content); // 兼容失败时使用备用方案
+                });
+            } else {
+                fallbackCopy(content); // 不支持clipboard API的浏览器兼容
+            }
+        }
+        
+        // 备用复制方案（兼容旧浏览器）- 与noyalc完全一致
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                const success = document.execCommand('copy');
+                success ? alert('复制成功！' + text) : alert('复制失败，请手动复制：' + text);
+            } catch (err) {
+                alert('复制异常，请手动复制：' + text);
+            }
+            document.body.removeChild(textarea);
+        }
+    </script>
+</body>
+</html>

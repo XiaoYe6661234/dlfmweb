@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>驍烤之燁 - 跳舞的线饭制网</title>
+    <style>
+        /* 全局字体与基础样式 - 完全沿用noyalc规范，无任何修改 */
+        @font-face {
+            font-family: 'DreamFont';
+            src: url('https://xiaoye6661234.github.io/fo/dream.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'DreamFont', "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        body {
+            background-color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        a {
+            text-decoration: none;
+        }
+        /* ========== 顶部通栏 - 与noyalc完全一致 ========== */
+        .top-header {
+            width: 100%;
+            height: 65px;
+            background-color: #bbbbbb;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        .menu-toggle {
+            font-size: 1.8rem;
+            color: #000;
+            cursor: pointer;
+            display: none;
+        }
+        .site-title {
+            font-size: 1.7rem;
+            font-weight: bold;
+            color: #000000;
+            letter-spacing: 1px;
+            margin-left: 10px;
+        }
+        .header-right {
+            flex: 1;
+        }
+        /* ========== 内容容器（侧边栏+主内容） - 与noyalc完全一致 ========== */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            width: 100%;
+        }
+        /* ========== 电脑端侧边栏 - 与noyalc完全一致 ========== */
+        .sidebar {
+            width: 200px;
+            background-color: #ffffff;
+            box-shadow: 3px 0 15px rgba(0, 0, 0, 0.12);
+            padding: 15px 12px;
+            position: fixed;
+            top: 65px;
+            left: 0;
+            height: calc(100vh - 65px);
+            display: flex;
+            flex-direction: column;
+            z-index: 998;
+            transition: transform 0.3s ease;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 5px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            color: #000000;
+            border-radius: 6px;
+            font-size: 1.05rem;
+            transition: all 0.2s ease;
+        }
+        .nav-item:hover {
+            color: #007AFF;
+            background-color: #f0f7ff;
+        }
+        .nav-icon {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+        /* ========== 主内容区域 - 与noyalc完全一致 ========== */
+        .main-content {
+            margin-left: 200px;
+            width: calc(100% - 200px);
+            padding: 20px 20px;
+            flex: 1;
+        }
+        /* 卡片容器 - 与noyalc完全一致 */
+        .card-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            align-items: start;
+        }
+        /* 内容卡片 - 与noyalc完全一致 */
+        .content-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .content-card:hover {
+            transform: scale(1.005);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+            z-index: 10;
+        }
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #000000;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .card-content {
+            width: 100%;
+            color: #333333;
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin: 0;
+        }
+        /* 按钮样式 - 与noyalc完全一致 */
+        .btn {
+            display: inline-block;
+            padding: 8px 24px;
+            background-color: #888888;
+            color: #ffffff;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: background-color 0.2s ease;
+            line-height: 1.2;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #666666;
+        }
+        .btn.android {
+            background-color: #f2f2f2;
+            color: #8a8f99;
+            border-color: #dadfe6;
+            cursor: not-allowed;
+        }
+        .btn.android:hover {
+            background-color: #f2f2f2;
+        }
+        .button-grid {
+            width: 100%;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        /* 图片样式 - 与noyalc完全一致 */
+        .card-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto !important;
+            border-radius: 6px;
+        }
+        /* 作者头像容器 - 与noyalc完全一致 */
+        .author-avatar-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+        /* ========== 手机端适配 - 与noyalc完全一致 ========== */
+        @media (max-width: 767px) {
+            .top-header {
+                height: 65px;
+                padding: 0 15px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .site-title {
+                font-size: 1.5rem;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+                width: 75%;
+                max-width: 280px;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px 15px;
+                padding-bottom: 80px;
+            }
+            .card-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .content-card {
+                padding: 20px;
+                gap: 12px;
+            }
+            .card-title {
+                font-size: 1.5rem;
+            }
+            .author-avatar-group {
+                gap: 10px;
+            }
+            .author-avatar {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        /* ========== 手机端底部导航 - 与noyalc完全一致 ========== */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background-color: #ffffff;
+            box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+            align-items: center;
+            justify-content: space-around;
+        }
+        @media (max-width: 767px) {
+            .mobile-nav {
+                display: flex;
+            }
+        }
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            height: 100%;
+            color: #000000;
+            transition: all 0.2s ease;
+        }
+        .mobile-nav-item:hover {
+            color: #007AFF;
+        }
+        .mobile-nav-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            margin-bottom: 4px;
+        }
+        .mobile-nav-item span {
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部通栏 - 与noyalc结构完全一致 -->
+    <header class="top-header">
+        <div class="menu-toggle" id="menuToggle">☰</div>
+        <h1 class="site-title">跳舞的线饭制网—驍烤之燁</h1>
+        <div class="header-right"></div>
+    </header>
+    <div class="content-wrapper">
+        <!-- 左侧侧边栏导航 - 与noyalc结构完全一致 -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <a href="https://xiaoye6661234.github.io/dlfmweb/" class="nav-item">
+                    <img src="https://xiaoye6661234.github.io/fo/home.png" class="nav-icon" alt="返回首页">
+                    <span>返回首页</span>
+                </a>
+                <a href="javascript:copyQQ()" class="nav-item">
+                    <img src="https://xiaoye6661234.github.io/fo/join.png" class="nav-icon" alt="加入群聊">
+                    <span>加入群聊</span>
+                </a>
+                <a href="mailto:dlfmweb@163.com" class="nav-item" target="_blank">
+                    <img src="https://xiaoye6661234.github.io/fo/feedback.png" class="nav-icon" alt="举报反馈">
+                    <span>举报反馈</span>
+                </a>
+            </nav>
+        </aside>
+        <!-- 主内容区域 - 模块顺序与noyalc完全一致，内容全部来自index(1) -->
+        <main class="main-content">
+            <div class="card-container">
+                <!-- 开发者卡片 - 头像使用用户指定来源路径 -->
+                <div class="content-card">
+                    <h2 class="card-title">开发者</h2>
+                    <div class="author-avatar-group">
+                        <img src="https://xiaoye6661234.github.io/fo/xy.jpg" class="author-avatar" alt="驍燁（总设计）">
+                    </div>
+                    <div class="card-content">
+                        驍燁（总设计）
+                    </div>
+                </div>
+                <!-- 关卡预览卡片 - 提取index(1)中对应图片 -->
+                <div class="content-card">
+                    <h2 class="card-title">关卡预览</h2>
+                    <div class="card-content">
+                        <img src="https://xiaoye6661234.github.io/fo/bn.png" alt="驍烤之燁关卡预览图1">
+                        <br>
+                        <img src="https://xiaoye6661234.github.io/fo/bn1.png" alt="驍烤之燁关卡预览图2">
+                    </div>
+                </div>
+                <!-- 相关视频卡片 - 提取index(1)中对应链接 -->
+                <div class="content-card">
+                    <h2 class="card-title">相关视频</h2>
+                    <div class="card-content">
+                        <div class="button-grid">
+                            <a href="https://v.douyin.com/zah9tZS9wYw/" target="_blank" class="btn">1.0.0版本发布视频</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 合集简介卡片 - 完整提取index(1)中对应内容 -->
+                <div class="content-card">
+                    <h2 class="card-title">合集简介</h2>
+                    <div class="card-content">
+                        《驍烤之燁》（Barbecue Night，另名《烧烤之夜》）是跳舞的线社区玩家“驍燁”自制的饭制合集。2026年2月份，v1.0.0版本已上线，目前仅完成Windows原型版本。因作者时间管理及部分原因，此合集已进入停更阶段，感谢各位玩家的支持。
+                    </div>
+                </div>
+                <!-- 更新日志卡片 - 完整提取index(1)中对应内容 -->
+                <div class="content-card">
+                    <h2 class="card-title">更新日志</h2>
+                    <div class="card-content">
+                        驍烤之燁&烧烤之夜 v1.0.0更新公告<br><br>
+                        1. 关卡内容：<br>
+                        &nbsp;&nbsp;《开端》：可游玩，已完工<br>
+                        &nbsp;&nbsp;《陨石危机》：可游玩，未完工<br>
+                        &nbsp;&nbsp;《很快回来》：不可游玩<br><br>
+                        2. 其他更新：<br>
+                        &nbsp;&nbsp;① 设置界面翻新<br>
+                        &nbsp;&nbsp;② 选关界面翻新<br><br>
+                        3. 游玩平台：<br>
+                        &nbsp;&nbsp;目前仅限Windows，安卓版本后续补充<br><br>
+                        4. 下载方式：<br>
+                        &nbsp;&nbsp;支持百度网盘链接下载
+                    </div>
+                </div>
+                <!-- 冷知识卡片 - 完整提取index(1)中对应内容 -->
+                <div class="content-card">
+                    <h2 class="card-title">冷知识</h2>
+                    <div class="card-content">
+                        1. 《驍烤之燁》这个名字其实是<a href="https://space.bilibili.com/3546947665266985?spm_id_from=333.337.0.0" target="_blank" style="color:#007AFF;">lnchestn</a>取的，但由于太难写，所以用《烧烤之夜》方便记忆<br><br>
+                        2. 《开端》其实有两个版本，第一个版本因为开发者不小心删除了不该删的内容，导致工程崩溃，于是就有了第二版<br><br>
+                        3. 合集最大帮助者是<a href="https://space.bilibili.com/3546947665266985?spm_id_from=333.337.0.0" target="_blank" style="color:#007AFF;">lnchestn</a>，他提供了超多有用的帮助<br><br>
+                        4. 开发者之所以没有限制传包，是因为合集交流群人数太少，没人上传相关内容<br><br>
+                        5. 关卡《陨石危机》的BGM，来自原作者利用AI制作的长视频片头曲，<a href="https://b23.tv/6AlKd5o" target="_blank" style="color:#007AFF;">👀看看</a>
+                    </div>
+                </div>
+                <!-- 关注作者卡片 - 完整提取index(1)中对应链接 -->
+                <div class="content-card">
+                    <h2 class="card-title">关注作者</h2>
+                    <div class="card-content">
+                        <div class="button-grid">
+                            <a href="https://space.bilibili.com/3546763094919285?spm_id_from=333.337.0.0" target="_blank" class="btn">
+                                <img src="https://xiaoye6661234.github.io/fo/bili.png" width="30" height="30" alt="哔哩哔哩"> 哔哩哔哩
+                            </a>
+                        </div>
+                        <br>
+                        <div class="button-grid">
+                            <a href="https://www.douyin.com/user/MS4wLjABAAAAuhyDxda_ju86Q3Oq6iG4NtEqoA0Jlhn-wMv0SEOUsLg?from_tab_name=main" target="_blank" class="btn">
+                                <img src="https://xiaoye6661234.github.io/fo/tik.png" width="30" height="30" alt="抖音"> 抖音
+                            </a>
+                        </div>
+                        <br>
+                        <div class="button-grid">
+                            <a href="https://xhslink.com/m/ADMpgiGhPMU" target="_blank" class="btn">
+                                <img src="https://xiaoye6661234.github.io/fo/red.png" width="30" height="30" alt="小红书"> 小红书
+                            </a>
+                        </div>
+                        <br>
+                        <div class="button-grid">
+                            <a href="https://v.kuaishou.com/n8hmPLq1" target="_blank" class="btn">
+                                <img src="https://xiaoye6661234.github.io/fo/kuai.png" width="30" height="30" alt="快手"> 快手
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- 下载游戏卡片 - 完整提取index(1)中对应链接与说明 -->
+                <div class="content-card">
+                    <h2 class="card-title">下载游戏</h2>
+                    <div class="card-content">
+                        <div class="button-grid">
+                            <a href="https://pan.baidu.com/s/13202xazcEXru3o1FeUAI7g?pwd=XKZY" target="_blank" class="btn">
+                                <img src="https://xiaoye6661234.github.io/fo/win.png" width="30" height="30" alt="Windows">
+                                <img src="https://xiaoye6661234.github.io/fo/baidu.png" width="30" height="30" alt="百度网盘">
+                                Windows下载
+                            </a>
+                        </div>
+                        <br>
+                        <div class="button-grid">
+                            <button class="btn android" onclick="alert('安卓下载资源暂未开放，作者正在努力打包中。\n\n目前仅支持Windows，iOS与HarmonyOS暂不支持。')">
+                                <img src="https://xiaoye6661234.github.io/fo/an.png" width="30" height="30" alt="安卓">
+                                安卓下载
+                            </button>
+                        </div>
+                        <br>
+                        <div class="card-content" style="color: #888; font-size: 1rem; text-align: center;">
+                            百度网盘提取码：<code style="background:#eee; padding:2px 6px; border-radius:4px;">XKZY</code>
+                        </div>
+                        <div class="card-content" style="color: #888; font-size: 1rem; text-align: center; margin-top: 8px;">
+                            ⚠️ 暂不支持iOS 和 HarmonyOS，安卓版本暂无资源
+                        </div>
+                    </div>
+                </div>
+                <!-- 玩家社群卡片 - 实现点击复制加群链接，提示复制成功 -->
+                <div class="content-card">
+                    <h2 class="card-title">玩家社群</h2>
+                    <div class="card-content">
+                        <div class="button-grid">
+                            <button class="btn" onclick="copyQQ()">复制官方QQ群加群链接</button>
+                        </div>
+                        <br>
+                        <div class="card-content" style="color: #888; font-size: 1rem; text-align: center;">
+                            群内交流饭制内容、获取最新更新动态
+                        </div>
+                    </div>
+                </div>
+                <!-- 其他内容卡片 - 提取index(1)中对应链接 -->
+                <div class="content-card">
+                    <h2 class="card-title">其他内容</h2>
+                    <div class="card-content">
+                        <div class="button-grid">
+                            <a href="https://xiaoye6661234.github.io/dl/" target="_blank" class="btn">跳舞的线同人论坛</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- 手机端底部导航 - 与noyalc结构完全一致 -->
+    <footer class="mobile-nav" id="mobileNav">
+        <a href="https://xiaoye6661234.github.io/dlfmweb/" class="mobile-nav-item">
+            <img src="https://xiaoye6661234.github.io/fo/home.png" class="mobile-nav-icon" alt="返回首页">
+            <span>返回首页</span>
+        </a>
+        <a href="javascript:copyQQ()" class="mobile-nav-item">
+            <img src="https://xiaoye6661234.github.io/fo/join.png" class="mobile-nav-icon" alt="加入群聊">
+            <span>加入群聊</span>
+        </a>
+        <a href="mailto:dlfmweb@163.com" class="mobile-nav-item" target="_blank">
+            <img src="https://xiaoye6661234.github.io/fo/feedback.png" class="mobile-nav-icon" alt="举报反馈">
+            <span>举报反馈</span>
+        </a>
+    </footer>
+    <script>
+        // 汉堡菜单交互 - 与noyalc完全一致
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        // 展开/收起侧边栏
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+        
+        // 点击侧边栏外区域自动关闭
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                sidebar.classList.remove('show');
+            }
+        });
+        
+        // 核心复制功能 - 驍烤之燁官方QQ群加群链接，点击提示复制成功
+        function copyQQ() {
+            const qqLink = 'https://qm.qq.com/q/zTW8maOW3g';
+            // 现代浏览器clipboard API
+            if (navigator.clipboard?.writeText) {
+                navigator.clipboard.writeText(qqLink).then(() => {
+                    alert('复制成功！官方QQ群加群链接已复制到剪贴板');
+                }).catch(err => {
+                    fallbackCopy(qqLink); // 兼容失败时使用备用方案
+                });
+            } else {
+                fallbackCopy(qqLink); // 不支持clipboard API的浏览器兼容
+            }
+        }
+        
+        // 备用复制方案（兼容旧浏览器）- 与noyalc完全一致
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                const success = document.execCommand('copy');
+                success ? alert('复制成功！官方QQ群加群链接已复制到剪贴板') : alert('复制失败，请手动复制：' + text);
+            } catch (err) {
+                alert('复制异常，请手动复制：' + text);
+            }
+            document.body.removeChild(textarea);
+        }
+    </script>
+</body>
+</html>
