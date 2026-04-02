@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
+      <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/xiaoye6661234/sucai/dlfmw.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/xiaoye6661234/sucai/dlfmw.png">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>跳舞的线饭制网</title>
@@ -28,12 +31,10 @@
             background-repeat: no-repeat;
         }
         /* ========== 主题核心样式 - 自动适配电脑/手机 ========== */
-        /* 经典主题（默认） */
         body.theme-classic {
             background-color: #ffffff;
             background-image: none;
         }
-        /* 油画主题 */
         body.theme-oil {
             background-color: #ffffff;
             background-image: url('https://xiaoye6661234.github.io/sucai/youhua.png');
@@ -41,7 +42,6 @@
             background-position: center;
             background-attachment: fixed;
         }
-        /* 水墨主题 */
         body.theme-ink {
             background-color: #ffffff;
             background-image: url('https://xiaoye6661234.github.io/sucai/shuimo.png');
@@ -49,13 +49,32 @@
             background-position: center;
             background-attachment: fixed;
         }
-        /* 手机端背景自动适配 */
+        body.theme-qingming {
+            background-color: #ffffff;
+            background-image: url('https://xiaoye6661234.github.io/sucai/qingming.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        body.theme-qingming1 {
+            background-color: #ffffff;
+            background-image: url('https://xiaoye6661234.github.io/sucai/qingming1.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
         @media (max-width: 767px) {
             body.theme-oil {
                 background-image: url('https://xiaoye6661234.github.io/sucai/youhua1.png');
             }
             body.theme-ink {
                 background-image: url('https://xiaoye6661234.github.io/sucai/shuimo1.png');
+            }
+            body.theme-qingming {
+                background-image: url('https://xiaoye6661234.github.io/sucai/m-qingming2.png');
+            }
+            body.theme-qingming1 {
+                background-image: url('https://xiaoye6661234.github.io/sucai/m-qingming.png');
             }
         }
         a {
@@ -200,10 +219,20 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
             transition: all 0.3s ease;
             height: 100%;
+            cursor: pointer;
+            background-color: #ffffff;
         }
         .card:hover {
             transform: scale(1.02);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        }
+        /* 普通展示卡片（不可点击时保留样式） */
+        .card-static {
+            cursor: default;
+        }
+        .card-static:hover {
+            transform: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
         }
         .card-img-wrap {
             width: 100%;
@@ -221,30 +250,21 @@
             color: #ffffff;
             padding: 12px 15px;
             font-size: 1.2rem;
+            text-align: center;
         }
-        /* 下载卡片底部按钮容器 */
-        .card-btn-wrap {
-            padding: 15px;
-            background-color: #f8f9fa;
-            display: flex;
-            justify-content: center;
-            flex-grow: 1;
-            align-items: center;
+        /* 下载卡片专属标记 (小徽章，不是按钮，仅视觉提示) */
+        .download-badge {
+            background: #28a745;
+            font-size: 0.7rem;
+            border-radius: 20px;
+            padding: 2px 8px;
+            margin-left: 8px;
+            display: inline-block;
+            vertical-align: middle;
+            color: white;
+            font-weight: normal;
         }
-        .download-btn {
-            padding: 8px 20px;
-            background-color: #007AFF;
-            color: #fff;
-            border-radius: 4px;
-            border: none;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        .download-btn:hover {
-            background-color: #0066cc;
-        }
-        /* 首页公告大卡牌（占2个普通卡片宽度） */
+        /* 首页公告大卡牌 */
         .notice-card {
             grid-column: span 2;
             background-color: #f0f7ff;
@@ -271,10 +291,10 @@
             font-size: 1.1rem;
             line-height: 1.8;
         }
-        /* ========== 主题页面专属样式 ========== */
+        /* ========== 主题页面专属样式 (电脑3列 手机2列) ========== */
         .theme-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 30px;
             padding: 20px;
             max-width: 1200px;
@@ -326,8 +346,28 @@
             font-weight: bold;
             color: #333;
         }
-        /* 极小设备微调 */
+        @media (max-width: 767px) {
+            .theme-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                padding: 15px;
+            }
+            .theme-preview {
+                height: 130px;
+            }
+            .theme-name {
+                font-size: 1.2rem;
+            }
+        }
         @media (max-width: 480px) {
+            .theme-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+                padding: 10px;
+            }
+            .theme-preview {
+                height: 110px;
+            }
             .card-container {
                 gap: 18px;
             }
@@ -354,11 +394,6 @@
             .notice-content {
                 font-size: 1rem;
             }
-            .theme-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 10px;
-            }
         }
         /* ========== 手机端适配 ========== */
         @media (max-width: 767px) {
@@ -372,7 +407,6 @@
             .site-title {
                 font-size: 1.5rem;
             }
-            /* 侧边栏手机端默认隐藏，点击汉堡展开 */
             .sidebar {
                 transform: translateX(-100%);
                 width: 75%;
@@ -437,6 +471,18 @@
         .mobile-nav-item span {
             font-size: 0.85rem;
         }
+        /* 下载卡片专用指针 */
+        .download-model-card {
+            cursor: pointer;
+        }
+        .inline-download-icon {
+            background: #007AFF;
+            font-size: 0.7rem;
+            border-radius: 20px;
+            padding: 2px 8px;
+            margin-left: 8px;
+            color: white;
+        }
     </style>
 </head>
 <body class="theme-classic">
@@ -447,7 +493,7 @@
         <div class="header-right"></div>
     </header>
     <div class="content-wrapper">
-        <!-- 左侧侧边栏导航 - 新增主题入口 -->
+        <!-- 左侧侧边栏导航 -->
         <aside class="sidebar" id="sidebar">
             <nav class="sidebar-nav">
                 <a href="#home" class="nav-item active" data-page="home" data-name="home">
@@ -462,13 +508,11 @@
                     <img src="https://xiaoye6661234.github.io/fo/download.png" class="nav-icon" alt="下载">
                     <span>下载</span>
                 </a>
-               
                 <a href="#maker" class="nav-item" data-page="maker" data-name="maker">
                     <img src="https://xiaoye6661234.github.io/fo/maker.png" class="nav-icon" alt="开发者">
                     <span>开发者</span>
-                   
                 </a>
-                  <a href="#theme" class="nav-item" data-page="theme" data-name="dress">
+                <a href="#theme" class="nav-item" data-page="theme" data-name="dress">
                     <img src="https://xiaoye6661234.github.io/sucai/dress.png" class="nav-icon" alt="主题">
                     <span>主题</span>
                 </a>
@@ -484,7 +528,6 @@
                     <img src="https://xiaoye6661234.github.io/fo/feedback.png" class="nav-icon" alt="反馈">
                     <span>反馈</span>
                 </a>
-             
             </nav>
         </aside>
         <!-- 主内容区域 -->
@@ -494,9 +537,7 @@
                 <div class="title-wrapper">
                     <div class="site-main-title">跳舞的线饭制网</div>
                     <h3>Dancing Line Fanmade Website</h3>
-                  
                 </div>
-                <!-- 公告大卡牌，可自行编辑notice-content内的内容 -->
                 <div class="card-container">
                     <div class="notice-card">
                         <h2>公告</h2>
@@ -508,7 +549,10 @@
                             4. 后续将持续更新饭制关卡与开发资源，敬请关注！<br>
                             5.本网站属于非营业性的同人网站，每次编辑都充满了我们开发者的心血与努力，非常感谢支持我们的全体成员<br>
                             6.新增主题功能，现在在侧边栏即可找到，里面会不定时更新新的主题，每次重大节假日会随机更新1～3个专属主题！<br>
-                            7.欢迎上架你们的合集到此网站！<br><br>
+                            7.欢迎上架你们的合集到此网站！<br>
+                            8.现在全面上线清明主题电脑和手机都有适配，但这里建议不要频繁切换主题，否则会出现卡顿现象，解决方法是刷新网页（客户端退出重进）<br>
+                            9.跳舞的线饭制网客户端上线，已经上架到了下载页面，点击卡片下载即可，我们承诺客户端没有任何恶意风险，请放心下载
+                            10.下载功能全新上线，现在已上架到部分卡片，未来将扩大至各开发者
                             English Edition:<br>
                             1.After extensive code refactoring and development, the Dancing Line Fanmade Website is finally rolling out its full major update. We took inspiration from the official DLRS fan community website, reworked it, and integrated our own ideas and core vision.<br>
                             2.The official Dancing Line typeface is now applied across the entire site, delivering an experience on par with the original game!<br>
@@ -516,7 +560,10 @@
 4.We will continue to roll out ongoing updates for fanmade levels and development resources. Stay tuned for more!<br>
 5.This is a non-commercial fan-run website. Every revision is crafted with the immense dedication and hard work of our development team, and we would like to extend our sincerest gratitude to all of our supporters.<br>
 6.A brand-new theme feature has been added, now accessible via the sidebar. New themes will be added on an irregular basis, and 1 to 3 exclusive themes will be released randomly for every major holiday!<br>
-7.You are more than welcome to submit and host your own level collections on this website!
+7.You are more than welcome to submit and host your own level collections on this website!<br>
+8. The Qingming theme is now fully available for both PC and mobile. However, it is recommended not to switch themes frequently, as this may cause lag. To resolve this, simply refresh the webpage (or exit and re-enter the client on mobile).<br>
+ 9.The Dancing Line Fan-Made Website client is now live and available on the download page. Simply click the card to download it. We guarantee that the client is completely safe and free from any malicious risks, so feel free to download it.<br>
+10.The download feature is now fully launched and available on certain cards, with plans to expand it to various developers in the future.<br>
                         </div>
                     </div>
                 </div>
@@ -528,338 +575,153 @@
                     <h3>Fanmade Level Collection</h3>
                 </div>
                  <h2 class="page-title">精选</h2>
-                 <h4>优质&原创占比高或玩法丰富的合集会优先展示</h4><br><h5>当前仅供参考</h5>
-                 <br>
+                 <h4>优质&原创占比高或玩法丰富的合集会优先展示</h4><br><h5>当前仅供参考</h5><br>
                 <div class="card-container">
-                    <a href="Guideline.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/guide1.png" alt="饭制关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">Guideline 引导线</div>
-                    </a>
-                    <a href="NOYALC.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/noy4.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">NOYALC</div>
-                    </a>
-                    <a href="BarbecueNight.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/bn.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">驍烤之燁</div>
-                    </a>
-                
-                  
-                    <a href="42Line.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/42.png" alt="饭制关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">42Line</div>
-                    </a>
-                    <a href="MazeLine.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/maze2.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">MazeLine</div>
-                    </a>
-                    <a href="TimeLine.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/time1.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">TimeLine</div>
-                    </a>
-                       <a href="GlowTrace.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/glowtrace.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">GlowTrace</div>
-                    </a>
-                    <a href="EtherealLine.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/eth.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">EtherealLine</div>
-                    </a>
-                      <a href="StarRealm.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/sr.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">Star Realm</div>
-                    </a>
-                         <a href="EarosLine.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/earos1.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">Earos Line</div>
-                    </a>
-                    <a href="CuangYou.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/made.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">创游之线</div>
-                    </a>
-                    <a href="PaintRealm.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/paint.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">Paint Realm</div>
-                    </a>
-                    <a href="Tainan.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/tainan.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">太难Line</div>
-                    </a>
-                    <a href="KunLine.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/kun.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">KunLine</div>
-                    </a>
-                    <a href="Cube-ALC.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/cube.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">Cube-ALC</div>
-                    </a>
-                   
-                    <a href="MazeLine1.0.html" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/maze1.png" alt="关卡预览" class="card-img">
-                        </div>
-                        <div class="card-name">MazeLine1.0</div>
-                    </a>
-                 
+                    <a href="DL.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/dl1.png" alt="饭制关卡预览" class="card-img"></div><div class="card-name">跳舞的线</div></a>
+                    <a href="Guideline.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/guide1.png" alt="饭制关卡预览" class="card-img"></div><div class="card-name">Guideline 引导线</div></a>
+                    <a href="NOYALC.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/noy4.png" alt="关卡预览" class="card-img"></div><div class="card-name">NOYALC</div></a>
+                    <a href="BarbecueNight.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/bn.png" alt="关卡预览" class="card-img"></div><div class="card-name">驍烤之燁</div></a>
+                    <a href="42Line.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/42.png" alt="饭制关卡预览" class="card-img"></div><div class="card-name">42Line</div></a>
+                    <a href="MazeLine.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/maze2.png" alt="关卡预览" class="card-img"></div><div class="card-name">MazeLine</div></a>
+                    <a href="TimeLine.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/time1.png" alt="关卡预览" class="card-img"></div><div class="card-name">TimeLine</div></a>
+                    <a href="GlowTrace.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/glowtrace.png" alt="关卡预览" class="card-img"></div><div class="card-name">GlowTrace</div></a>
+                    <a href="EtherealLine.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/eth.png" alt="关卡预览" class="card-img"></div><div class="card-name">EtherealLine</div></a>
+                    <a href="StarRealm.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/sr.png" alt="关卡预览" class="card-img"></div><div class="card-name">Star Realm</div></a>
+                    <a href="EarosLine.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/earos1.png" alt="关卡预览" class="card-img"></div><div class="card-name">Earos Line</div></a>
+                    <a href="CuangYou.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/made.png" alt="关卡预览" class="card-img"></div><div class="card-name">创游之线</div></a>
+                    <a href="PaintRealm.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/paint.png" alt="关卡预览" class="card-img"></div><div class="card-name">Paint Realm</div></a>
+                    <a href="Tainan.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/tainan.png" alt="关卡预览" class="card-img"></div><div class="card-name">太难Line</div></a>
+                    <a href="KunLine.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/kun.png" alt="关卡预览" class="card-img"></div><div class="card-name">KunLine</div></a>
+                    <a href="Cube-ALC.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/cube.png" alt="关卡预览" class="card-img"></div><div class="card-name">Cube-ALC</div></a>
+                    <a href="MazeLine1.0.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/maze1.png" alt="关卡预览" class="card-img"></div><div class="card-name">MazeLine1.0</div></a>
                 </div>
             </section>
-            <!-- 下载页内容 -->
+            <!-- 下载页内容 - 重点: 点击卡片直接下载模型文件 -->
             <section class="page-content" id="download-page">
-                  <div class="title-wrapper">
+                <div class="title-wrapper">
+                  
+                  
+                  
                     <div class="site-main-title">资源下载</div>
                     <h3>Download Resources</h3>
-                </div> <h2 class="page-title">游戏引擎/软件</h2>
-                 <h4>电脑用户推荐Unity，手机用户推荐Arphros</h4>
-                 <br>
+                </div> 
+                 <h2 class="page-title">下载跳舞的线饭制网官方客户端</h2>
+                  
+                    <div class="card download-model-card" data-download-url="https://xiaoye6661234.github.io/sucai/跳舞的线饭制网.apk.1" data-download-filename="example_resource.obj">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/ydd.png" alt="示例模型" class="card-img">
+                        </div>
+                        <div class="card-name">
+                           跳舞的线饭制网官方客户端
+                            <span class="download-badge">官方认证</span>
+                        </div>
+                    </div><br>
+                <h2 class="page-title">游戏引擎/软件</h2>
+                <h4>电脑用户推荐Unity，手机用户推荐Arphros</h4><br>
                 <div class="card-container">
                     <a href="https://www.unity.com" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/Unity.png" alt="开发工具包" class="card-img">
-                        </div>
+                        <div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Unity.png" alt="开发工具包" class="card-img"></div>
                         <div class="card-name">Unity引擎</div>
-                      
-                        
                     </a>
                     <a href="https://arphros.kjn.in.th/download" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/Arphros.png" alt="关卡编辑器" class="card-img">
-                        </div>
+                        <div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Arphros.png" alt="关卡编辑器" class="card-img"></div>
                         <div class="card-name">Arphros</div>
-                        
-                       
-                    
-                        
                     </a>
                 </div>
                 <h2 class="page-title">模型资源库</h2>
-                 <h4>请问未经允许随便转发！请加群下载</h4>
-                 <br>
-                <div class="card-container">
+                <h4>点击卡片即可加入群聊下载模型</h4><br>
+                <div class="card-container" id="modelLibraryContainer">
+                    <!-- 原有分享卡片 (QQ群链接，保持原样) -->
                     <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=w%2BaN6zYPwP1FC7plZXu%2BIbTN6y7eQQ5kY7AwO2NL5rGbumThjmhO%2BfstfWztoKL0&busi_data=eyJncm91cENvZGUiOiIxMDcyNDExNTE5IiwidG9rZW4iOiJKUDZDTVdGQnoxRWhoZm02S2NXdzVyNkh0UjVWTGdDQ1o5TGRZY3VWbVVSbGRGWC9qTi9tMXJsaVcyUENuejVlIiwidWluIjoiMTc4NzkxMjQ1NSJ9&data=9kjmcUT4zyO60jIfTpPDOCDuEs_1VmdLzJbkMRneXqqdxEv3R8hP-vsJLUbQaDGUUXLRE1LZeZVZlgrtYgocmA&svctype=4&tempid=h5_group_info" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/model1.png" alt="基础模型" class="card-img">
-                        </div>
+                        <div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/model1.png" alt="基础模型" class="card-img"></div>
                         <div class="card-name">lnchestn分享的模型<br>QQ群号：1072411519</div>
-                    <a href="" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/model.png" alt="特效模型" class="card-img">
-                        </div>
-                        <div class="card-name">Arphros精选模型<br>QQ群号：1039368783</div>
-                      
-                   
-                   
-                    
-                        
                     </a>
+                    <!-- 静态展示卡片 (无下载) -->
+                    <div class="card card-static">
+                        <div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/model.png" alt="特效模型" class="card-img"></div>
+                        <div class="card-name">Arphros精选模型<br>QQ群号：1039368783</div>
+                    </div>
+
+                    <!-- ========= 可直接下载的卡片区域 ========= -->
+                    <!-- 卡片1：tree.obj 模型文件 (点击直接下载) -->  <h2 class="page-title">游玩包下载体验</h2><br>
+                    <div class="card download-model-card" data-download-url="https://xiaoye6661234.github.io/sucai/跳舞的线饭制网.apk.1" data-download-filename="tree.obj">
+                        <div class="card-img-wrap">
+                            <img src="https://xiaoye6661234.github.io/sucai/ydd.png" alt="3D模型文件" class="card-img">
+                        </div>
+                        <div class="card-name">
+                            跳舞的线饭制网官方客户端
+                            <span class="download-badge">官方认证 无病毒</span>
+                        </div>
+                    </div>
+
+                    <!-- ========= 扩展示例卡片：演示如何添加新下载资源 ========= -->
+                    <!-- 使用方法：复制整个 div.download-model-card，修改 data-download-url (文件真实地址)，
+                         data-download-filename (下载后的文件名)，同时更换图片和文字即可完成新下载项 -->
+                
+                    <!-- 提示：后续添加只需复制上面带有 download-model-card 的卡片，修改 data-download-url 和显示文字即可 -->
+               
+           
                 </div>
             </section>
             <!-- 开发者页 -->
             <section class="page-content" id="maker-page">
-                  <div class="title-wrapper">
-                    <div class="site-main-title">开发者必备资源</div>
-                    <h3>Essential Resources for Developers</h3>
-                       </div> <h2 class="page-title">游戏引擎/软件</h2>
-                 <h4>电脑用户推荐Unity，手机用户推荐Arphros</h4>
-                 <br>
+                <div class="title-wrapper"><div class="site-main-title">开发者必备资源</div><h3>Essential Resources for Developers</h3></div>
+                <h2 class="page-title">游戏引擎/软件</h2><h4>电脑用户推荐Unity，手机用户推荐Arphros</h4><br>
                 <div class="card-container">
-                    <a href="https://www.unity.com" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/Unity.png" alt="开发工具包" class="card-img">
-                        </div>
-                        <div class="card-name">Unity引擎</div>
-                      
-                        
-                    </a>
-                    <a href="https://arphros.kjn.in.th/download" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/Arphros.png" alt="关卡编辑器" class="card-img">
-                        </div>
-                        <div class="card-name">Arphros</div>
-                        
-                       
-                    
-                        
-                    </a>
-                
+                    <a href="https://www.unity.com" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Unity.png" alt="开发工具包" class="card-img"></div><div class="card-name">Unity引擎</div></a>
+                    <a href="https://arphros.kjn.in.th/download" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Arphros.png" alt="关卡编辑器" class="card-img"></div><div class="card-name">Arphros</div></a>
                 </div>
-                 <h2 class="page-title">开发者守则及应用上架</h2>
-                
-                 <br>
-          
-                      <div class="card-container">
-                    <a href="https://dlfmweb.github.io/about/" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/Rule.png" alt="开发工具包" class="card-img">
-                        </div>
-                        <div class="card-name">开发者守则</div>
-                      
-                        
-                    </a>
-                    <a href="https://docs.qq.com/form/page/DR1VyTVZKZUt5eXpR" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/update.png" alt="关卡编辑器" class="card-img">
-                        </div>
-                        <div class="card-name">申请表</div>
-                    </a>
-                         <a href="mailto:dlfmweb@163.com" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/update.png" alt="关卡编辑器" class="card-img">
-                        </div>
-                        <div class="card-name">邮箱</div></a>
+                <h2 class="page-title">开发者守则及应用上架</h2><br>
+                <div class="card-container">
+                    <a href="https://dlfmweb.github.io/about/" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Rule.png" alt="开发工具包" class="card-img"></div><div class="card-name">开发者守则</div></a>
+                    <a href="https://docs.qq.com/form/page/DR1VyTVZKZUt5eXpR" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/update.png" alt="关卡编辑器" class="card-img"></div><div class="card-name">申请表</div></a>
+                    <a href="mailto:dlfmweb@163.com" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/update.png" alt="关卡编辑器" class="card-img"></div><div class="card-name">邮箱</div></a>
                 </div>
             </section>
             <!-- 教程页 -->
             <section class="page-content" id="teach-page">
-                <div class="title-wrapper">
-                    <div class="site-main-title">制作教程</div>
-                    <h3>Creation Tutorials</h3><br>
-                    
-                    <div class="card-container">
-                    <a href="https://b23.tv/Wh8ku84" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/teachvideo.png" alt="基础模型" class="card-img">
-                        </div>
-                        <div class="card-name">蓝焰TheBlueFire</div>
-                    <a href="https://b23.tv/Us148KI" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/teachvideo3.png" alt="特效模型" class="card-img">
-                        </div>
-                        <div class="card-name">Sry-ABYSS</div>
-                      
-                   
-                    <a href="https://b23.tv/pG5TSV9" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/teachvideo2.png" alt="角色模型" class="card-img">
-                        </div>
-                        <div class="card-name">幻影の刄</div>
-                     <a href="https://b23.tv/8vJOW5o" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/teachvideo1.png" alt="角色模型" class="card-img">
-                        </div>
-                        <div class="card-name">RS轮胎</div>
-                        
-                    </a>
+                <div class="title-wrapper"><div class="site-main-title">制作教程</div><h3>Creation Tutorials</h3><br></div>
+                <div class="card-container">
+                    <a href="https://b23.tv/Wh8ku84" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/teachvideo.png" alt="基础模型" class="card-img"></div><div class="card-name">蓝焰TheBlueFire</div></a>
+                    <a href="https://b23.tv/Us148KI" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/teachvideo3.png" alt="特效模型" class="card-img"></div><div class="card-name">Sry-ABYSS</div></a>
+                    <a href="https://b23.tv/pG5TSV9" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/teachvideo2.png" alt="角色模型" class="card-img"></div><div class="card-name">幻影の刄</div></a>
+                    <a href="https://b23.tv/8vJOW5o" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/teachvideo1.png" alt="角色模型" class="card-img"></div><div class="card-name">RS轮胎</div></a>
                 </div>
             </section>
             <!-- 加入我们页 -->
             <section class="page-content" id="join-page">
-                 <div class="title-wrapper">
-                    <div class="site-main-title">加入我们</div>
-                    <h3>Join Us</h3><br>
-                         <div class="card-container">
-                    <a href="https://qm.qq.com/q/MvcP1CBt2U" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/logo.png" alt="开发工具包" class="card-img">
-                        </div>
-                        <div class="card-name">官方交流群</div>
-                      
-                        
-                    </a>
-                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=X%2F3L8IFjTEytmDwtvsRQ8epM59XyqWftjxnAKDJAxDglPguog6Jt2cSf0FLJQeeQ&busi_data=eyJncm91cENvZGUiOiI3MDYyOTIyNjMiLCJ0b2tlbiI6IlZVbEpZQ1NxbWI1R29tRU42WjNYU1RxbGhpTE9HNGl2Uk9VUTJRMnhxdWtjN2pzOTAwYmNxWDQwSjV4anFqTGkiLCJ1aW4iOiIxNzg3OTEyNDU1In0%3D&data=GlHoPLQsyAav4NjwClBN55l1jwxarn4FTYo83NFiO7RdPDitNCfH7u29oj4DfBFU8ekpeoAnkExGJf6smcI6YQ&svctype=4&tempid=h5_group_info" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/fo/bn.png" alt="关卡编辑器" class="card-img">
-                        </div>
-                        <div class="card-name">官方交流群2号</div>
-                        
-                       
-                    
-                        
-                    </a>
+                <div class="title-wrapper"><div class="site-main-title">加入我们</div><h3>Join Us</h3><br></div>
+                <div class="card-container">
+                    <a href="https://qm.qq.com/q/MvcP1CBt2U" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/logo.png" alt="开发工具包" class="card-img"></div><div class="card-name">官方交流群</div></a>
+                    <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=X%2F3L8IFjTEytmDwtvsRQ8epM59XyqWftjxnAKDJAxDglPguog6Jt2cSf0FLJQeeQ&busi_data=eyJncm91cENvZGUiOiI3MDYyOTIyNjMiLCJ0b2tlbiI6IlZVbEpZQ1NxbWI1R29tRU42WjNYU1RxbGhpTE9HNGl2Uk9VUTJRMnhxdWtjN2pzOTAwYmNxWDQwSjV4anFqTGkiLCJ1aW4iOiIxNzg3OTEyNDU1In0%3D&data=GlHoPLQsyAav4NjwClBN55l1jwxarn4FTYo83NFiO7RdPDitNCfH7u29oj4DfBFU8ekpeoAnkExGJf6smcI6YQ&svctype=4&tempid=h5_group_info" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/bn.png" alt="关卡编辑器" class="card-img"></div><div class="card-name">官方交流群2号</div></a>
                 </div>
-                
-                
-           
             </section>
             <!-- 反馈页 -->
             <section class="page-content" id="feedback-page">
-                 <div class="title-wrapper">
-                    <div class="site-main-title">问题反馈</div>
-                    <h3>Bugs Feedback</h3><br>
+                <div class="title-wrapper"><div class="site-main-title">问题反馈</div><h3>Bugs Feedback</h3><br></div>
                 <div class="card-container">
-                    <a href="mailto:dlfmweb@163.com" class="card" target="_blank">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/Bug.png" alt="邮箱反馈" class="card-img">
-                        </div>
-                        <div class="card-name">官方反馈邮箱</div>
-                       
-                    </a>
+                    <a href="mailto:dlfmweb@163.com" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Bug.png" alt="邮箱反馈" class="card-img"></div><div class="card-name">官方反馈邮箱</div></a>
                 </div>
             </section>
-            <!-- 新增主题页面 -->
+            <!-- 主题页面 -->
             <section class="page-content" id="theme-page">
-                <div class="title-wrapper">
-                    <div class="site-main-title">主题设置</div>
-                    <h3>Theme Settings</h3>
-                </div>
+                <div class="title-wrapper"><div class="site-main-title">主题设置</div><h3>Theme Settings</h3></div>
                 <div class="theme-container">
-                    <div class="theme-card active" data-theme="classic">
-                        <img src="https://xiaoye6661234.github.io/fo/logo.png" alt="经典主题" class="theme-preview">
-                        <div class="theme-name">经典</div>
-                    </div>
-                    <div class="theme-card" data-theme="oil">
-                        <img src="https://xiaoye6661234.github.io/sucai/youhua.png" alt="油画主题" class="theme-preview">
-                        <div class="theme-name">油画</div>
-                    </div>
-                    <div class="theme-card" data-theme="ink">
-                        <img src="https://xiaoye6661234.github.io/sucai/shuimo.png" alt="水墨主题" class="theme-preview">
-                        <div class="theme-name">水墨</div>
-                    </div>
-                    
+                    <div class="theme-card active" data-theme="classic"><img src="https://xiaoye6661234.github.io/fo/logo.png" alt="经典主题" class="theme-preview"><div class="theme-name">经典</div></div>
+                    <div class="theme-card" data-theme="oil"><img src="https://xiaoye6661234.github.io/sucai/youhua.png" alt="油画主题" class="theme-preview"><div class="theme-name">油画</div></div>
+                    <div class="theme-card" data-theme="ink"><img src="https://xiaoye6661234.github.io/sucai/shuimo.png" alt="水墨主题" class="theme-preview"><div class="theme-name">水墨</div></div>
+                    <div class="theme-card" data-theme="qingming"><img src="https://xiaoye6661234.github.io/sucai/qingming.png" alt="油画主题" class="theme-preview"><div class="theme-name">清明1</div></div>
+                    <div class="theme-card" data-theme="qingming1"><img src="https://xiaoye6661234.github.io/sucai/qingming1.png" alt="水墨主题" class="theme-preview"><div class="theme-name">清明2</div></div>
                 </div>
             </section>
         </main>
     </div>
     <!-- 手机端底部导航 -->
     <footer class="mobile-nav" id="mobileNav">
-        <a href="#home" class="mobile-nav-item active" data-page="home" data-name="home">
-            <img src="https://xiaoye6661234.github.io/fo/home1.png" class="mobile-nav-icon" alt="首页">
-            <span>首页</span>
-        </a>
-           
-        <a href="#game" class="mobile-nav-item" data-page="game" data-name="game">
-            <img src="https://xiaoye6661234.github.io/fo/game.png" class="mobile-nav-icon" alt="游戏">
-            <span>游戏</span>
-        </a>
-   
-        <a href="#maker" class="mobile-nav-item" data-page="maker" data-name="maker">
-            <img src="https://xiaoye6661234.github.io/fo/maker.png" class="mobile-nav-icon" alt="开发者">
-            <span>开发者</span>
-        </a>
-          
-        <a href="#join" class="mobile-nav-item" data-page="join" data-name="join">
-            <img src="https://xiaoye6661234.github.io/fo/join.png" class="mobile-nav-icon" alt="加入我们">
-            <span>加入我们</span>
-        </a>
+        <a href="#home" class="mobile-nav-item active" data-page="home" data-name="home"><img src="https://xiaoye6661234.github.io/fo/home1.png" class="mobile-nav-icon" alt="首页"><span>首页</span></a>
+        <a href="#game" class="mobile-nav-item" data-page="game" data-name="game"><img src="https://xiaoye6661234.github.io/fo/game.png" class="mobile-nav-icon" alt="游戏"><span>游戏</span></a>
+        <a href="#maker" class="mobile-nav-item" data-page="maker" data-name="maker"><img src="https://xiaoye6661234.github.io/fo/maker.png" class="mobile-nav-icon" alt="开发者"><span>开发者</span></a>
+        <a href="#join" class="mobile-nav-item" data-page="join" data-name="join"><img src="https://xiaoye6661234.github.io/fo/join.png" class="mobile-nav-icon" alt="加入我们"><span>加入我们</span></a>
     </footer>
     <script>
         // 获取所有元素
@@ -868,94 +730,95 @@
         const navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
         const pageContents = document.querySelectorAll('.page-content');
         const themeCards = document.querySelectorAll('.theme-card');
-        // 素材基础地址
         const baseIconUrl = 'https://xiaoye6661234.github.io/fo/';
         const sucaiUrl = 'https://xiaoye6661234.github.io/sucai/';
 
-        // ========== 主题核心功能 ==========
-        // 初始化主题：读取本地存储
+        // 主题核心功能
         function initTheme() {
             const savedTheme = localStorage.getItem('dlfmTheme') || 'classic';
             applyTheme(savedTheme);
         }
-
-        // 应用主题
         function applyTheme(themeName) {
-            // 移除所有主题class
             document.body.classList.remove('theme-classic', 'theme-oil', 'theme-ink');
-            // 添加当前主题class
             document.body.classList.add(`theme-${themeName}`);
-            // 更新主题卡片选中状态
             themeCards.forEach(card => {
                 card.classList.remove('active');
-                if (card.getAttribute('data-theme') === themeName) {
-                    card.classList.add('active');
-                }
+                if (card.getAttribute('data-theme') === themeName) card.classList.add('active');
             });
-            // 保存到本地存储
             localStorage.setItem('dlfmTheme', themeName);
         }
-
-        // 主题卡片点击事件
         themeCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const targetTheme = card.getAttribute('data-theme');
-                applyTheme(targetTheme);
-            });
+            card.addEventListener('click', () => applyTheme(card.getAttribute('data-theme')));
         });
-
-        // ========== 原有导航功能 ==========
-        // 汉堡菜单点击事件（手机端展开/收起侧边栏）
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('show');
-        });
-
-        // 点击侧边栏外区域关闭手机端侧边栏
+        menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
         document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-                sidebar.classList.remove('show');
-            }
+            if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) sidebar.classList.remove('show');
         });
-
-        // 导航项点击事件：激活样式+图标切换+页面切换
+        // 页面导航切换
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetPage = item.getAttribute('data-page');
                 const itemName = item.getAttribute('data-name');
-                // 1. 移除所有导航项的active类，重置为默认图标
                 navItems.forEach(nav => {
                     const name = nav.getAttribute('data-name');
                     nav.classList.remove('active');
                     const icon = nav.querySelector('img');
-                    // 主题图标用sucai地址，其他用fo地址
-                    const baseUrl = name === 'dress' ? sucaiUrl : baseIconUrl;
-                    icon.src = `${baseUrl}${name}.png`;
+                    const base = name === 'dress' ? sucaiUrl : baseIconUrl;
+                    if (icon && name) icon.src = `${base}${name}.png`;
                 });
-                // 2. 给当前点击的导航项添加active类，切换为点亮图标
                 const activeNavs = document.querySelectorAll(`[data-page="${targetPage}"]`);
                 activeNavs.forEach(nav => {
                     nav.classList.add('active');
                     const icon = nav.querySelector('img');
                     const name = nav.getAttribute('data-name');
-                    const baseUrl = name === 'dress' ? sucaiUrl : baseIconUrl;
-                    icon.src = `${baseUrl}${name}1.png`;
+                    const base = name === 'dress' ? sucaiUrl : baseIconUrl;
+                    if (icon && name) icon.src = `${base}${name}1.png`;
                 });
-                // 3. 切换对应页面内容显示
-                pageContents.forEach(page => {
-                    page.classList.remove('active');
-                });
+                pageContents.forEach(page => page.classList.remove('active'));
                 document.getElementById(`${targetPage}-page`).classList.add('active');
-                // 4. 手机端点击导航后自动收起侧边栏
                 sidebar.classList.remove('show');
-                // 5. 平滑滚动到页面顶部
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
 
-        // 页面加载时初始化
-        window.addEventListener('DOMContentLoaded', () => {
+        // ========== 通用下载卡片功能 (点击直接下载，无按钮) ==========
+        // 为所有 .download-model-card 添加点击下载事件
+        function initDownloadCards() {
+            const downloadCards = document.querySelectorAll('.download-model-card');
+            downloadCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const fileUrl = this.getAttribute('data-download-url');
+                    const fileName = this.getAttribute('data-download-filename') || 'download.obj';
+                    if (!fileUrl) {
+                        console.warn('未设置下载链接');
+                        return;
+                    }
+                    // 动态创建a标签触发下载 (同源download有效)
+                    const link = document.createElement('a');
+                    link.href = fileUrl;
+                    link.download = fileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+            });
+        }
+        // 初始化下载卡片以及监听动态变化 (未来手动添加卡片也会生效，但初次加载完全足够)
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                initDownloadCards();
+                initTheme();
+            });
+        } else {
+            initDownloadCards();
             initTheme();
+        }
+        // 确保主题初始化不会重复覆盖
+        window.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('dlfmTheme')) initTheme();
         });
     </script>
 </body>
