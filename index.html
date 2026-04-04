@@ -295,6 +295,24 @@
             border-radius: 20px;
             margin-top: 30px;
         }
+        /* 下载页面内部局部修正：确保所有下载卡片容器统一响应式网格，保证手机2电脑3 */
+        .download-section-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+        @media (min-width: 768px) {
+            .download-section-container {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 30px;
+            }
+        }
+        /* 单独下载卡片样式继承card原有样式保证一致性 */
+        .download-section-container .card {
+            margin: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body class="theme-classic">
@@ -345,7 +363,7 @@
 1. 经过好久的代码重构和编写，现在跳舞的线饭制网终于迎来全面大更新，我们模仿了DLRS同人群官网，但是我们加以改造，并且融入了我们的想法与立场<br>
 2. 现在全局使用了跳舞的线官方字体，带给你媲美原版的体验！<br>
 3. 所有游戏关卡卡片已迁移至【游戏】页面，并且为每个合集单独开发了相应的网站，我们还接入了下载功能，点击即可下载体验部分关卡，欢迎前往体验<br>
-4. 后续将持续更新饭制关卡与开发资源，敬请关注！
+4. 后续将持续更新饭制关卡与开发资源，敬请关注！<br>
 5.本网站属于非营业性的同人网站，每次编辑都充满了我们开发者的心血与努力，非常感谢支持我们的全体成员<br>
 6.新增主题功能，现在在侧边栏即可找到，里面会不定时更新新的主题，每次重大节假日会随机更新1～3个专属主题！<br>
 7.欢迎上架你们的合集到此网站！<br>
@@ -391,30 +409,41 @@ English Version<br>
                     <a href="MazeLine1.0.html" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/maze1.png" alt="关卡预览" class="card-img"></div><div class="card-name">MazeLine1.0</div></a>
                 </div>
             </section>
-            <!-- 下载页等保持不变（略缩减） -->
-            <section class="page-content" id="download-page"><div class="title-wrapper"><div class="site-main-title">资源下载</div><h3>Download Resources</h3></div><h2 class="page-title">下载跳舞的线饭制网官方客户端</h2><div class="card download-model-card" data-download-url="https://xiaoye6661234.github.io/sucai/跳舞的线饭制网.apk.1" data-download-filename="跳舞的线饭制网官方客户端"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/ydd.png" alt="示例模型" class="card-img"></div><div class="card-name">跳舞的线饭制网官方客户端<span class="download-badge">官方认证</span></div></div><br><h2 class="page-title">游戏引擎/软件</h2><h4>电脑用户推荐Unity，手机用户推荐Arphros</h4><br><div class="card-container"><a href="https://www.unity.com" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Unity.png" class="card-img"></div><div class="card-name">Unity引擎</div></a><a href="https://arphros.kjn.in.th/download" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Arphros.png" class="card-img"></div><div class="card-name">Arphros</div></a> </div> <h2 class="page-title">模型资源库</h2>
-                <h4>点击卡片即可加入群聊下载模型</h4><br>
-                <div class="card-container" id="modelLibraryContainer">
-                    <!-- 原有分享卡片 (QQ群链接，保持原样) -->
+            <!-- 下载页面 - 修复卡片网格布局，严格保证手机一行2个电脑一行3个 -->
+            <section class="page-content" id="download-page">
+                <div class="title-wrapper"><div class="site-main-title">资源下载</div><h3>Download Resources</h3></div>
+                <h2 class="page-title">下载跳舞的线饭制网官方客户端</h2>
+                <div class="download-section-container">
+                    <div class="card download-model-card" data-download-url="https://xiaoye6661234.github.io/sucai/跳舞的线饭制网.apk.1" data-download-filename="跳舞的线饭制网官方客户端">
+                        <div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/ydd.png" alt="官方客户端" class="card-img"></div>
+                        <div class="card-name">跳舞的线饭制网官方客户端<span class="download-badge">官方认证</span></div>
+                    </div>
+                </div>
+                <h2 class="page-title">游戏引擎/软件</h2><h4>电脑用户推荐Unity，手机用户推荐Arphros</h4><br>
+                <div class="download-section-container">
+                    <a href="https://www.unity.com" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Unity.png" class="card-img"></div><div class="card-name">Unity引擎</div></a>
+                    <a href="https://arphros.kjn.in.th/download" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Arphros.png" class="card-img"></div><div class="card-name">Arphros</div></a>
+                </div>
+                <h2 class="page-title">模型资源库</h2><h4>点击卡片即可加入群聊下载模型</h4><br>
+                <div class="download-section-container" id="modelLibraryContainer">
                     <a href="https://qun.qq.com/universal-share/share?ac=1&authKey=w%2BaN6zYPwP1FC7plZXu%2BIbTN6y7eQQ5kY7AwO2NL5rGbumThjmhO%2BfstfWztoKL0&busi_data=eyJncm91cENvZGUiOiIxMDcyNDExNTE5IiwidG9rZW4iOiJKUDZDTVdGQnoxRWhoZm02S2NXdzVyNkh0UjVWTGdDQ1o5TGRZY3VWbVVSbGRGWC9qTi9tMXJsaVcyUENuejVlIiwidWluIjoiMTc4NzkxMjQ1NSJ9&data=9kjmcUT4zyO60jIfTpPDOCDuEs_1VmdLzJbkMRneXqqdxEv3R8hP-vsJLUbQaDGUUXLRE1LZeZVZlgrtYgocmA&svctype=4&tempid=h5_group_info" class="card" target="_blank">
                         <div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/model1.png" alt="基础模型" class="card-img"></div>
                         <div class="card-name">lnchestn分享的模型<br>QQ群号：1072411519</div>
                     </a>
-                    <!-- 静态展示卡片 (无下载) -->
                     <div class="card card-static">
                         <div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/model.png" alt="特效模型" class="card-img"></div>
                         <div class="card-name">Arphros精选模型<br>QQ群号：1039368783</div>
                     </div>
-                    <h2 class="page-title">游玩包下载体验</h2><br>
+                </div>
+                <h2 class="page-title">游玩包下载体验</h2><br>
+                <div class="download-section-container">
                     <div class="card download-model-card" data-download-url="https://xiaoye6661234.github.io/sucai/跳舞的线饭制网.apk.1" data-download-filename="跳舞的线饭制网官方客户端">
-                        <div class="card-img-wrap">
-                            <img src="https://xiaoye6661234.github.io/sucai/ydd.png" alt="3D模型文件" class="card-img">
-                        </div>
-                        <div class="card-name">
-                            跳舞的线饭制网官方客户端
-                            <span class="download-badge">官方认证 无病毒</span>
-                        
-                    </div></div></section>
+                        <div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/ydd.png" alt="3D模型文件" class="card-img"></div>
+                        <div class="card-name">跳舞的线饭制网官方客户端<span class="download-badge">官方认证 无病毒</span></div>
+                    </div>
+                    
+                </div>
+            </section>
             <section class="page-content" id="maker-page"><div class="title-wrapper"><div class="site-main-title">开发者必备资源</div><h3>Essential Resources for Developers</h3></div><h2 class="page-title">游戏引擎/软件</h2><div class="card-container"><a href="https://www.unity.com" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Unity.png" class="card-img"></div><div class="card-name">Unity引擎</div></a><a href="https://arphros.kjn.in.th/download" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Arphros.png" class="card-img"></div><div class="card-name">Arphros</div></a></div><h2 class="page-title">开发者守则及应用上架</h2><div class="card-container"><a href="https://dlfmweb.github.io/about/" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/Rule.png" class="card-img"></div><div class="card-name">开发者守则</div></a><a href="https://docs.qq.com/form/page/DR1VyTVZKZUt5eXpR" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/update.png" class="card-img"></div><div class="card-name">申请表</div></a><a href="mailto:dlfmweb@163.com" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/update.png" class="card-img"></div><div class="card-name">邮箱</div></a></div></section>
             <section class="page-content" id="teach-page"><div class="title-wrapper"><div class="site-main-title">制作教程</div><h3>Creation Tutorials</h3><br></div><div class="card-container"><a href="https://b23.tv/Wh8ku84" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/teachvideo.png" class="card-img"></div><div class="card-name">蓝焰TheBlueFire</div></a><a href="https://b23.tv/Us148KI" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/teachvideo3.png" class="card-img"></div><div class="card-name">Sry-ABYSS</div></a><a href="https://b23.tv/pG5TSV9" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/teachvideo2.png" class="card-img"></div><div class="card-name">幻影の刄</div></a><a href="https://b23.tv/8vJOW5o" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/sucai/teachvideo1.png" class="card-img"></div><div class="card-name">RS轮胎</div></a></div></section>
             <section class="page-content" id="join-page"><div class="title-wrapper"><div class="site-main-title">加入我们</div><h3>Join Us</h3><br></div><div class="card-container"><a href="https://qm.qq.com/q/MvcP1CBt2U" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/logo.png" class="card-img"></div><div class="card-name">官方交流群</div></a><a href="https://qun.qq.com/universal-share/share?ac=1&authKey=X%2F3L8IFjTEytmDwtvsRQ8epM59XyqWftjxnAKDJAxDglPguog6Jt2cSf0FLJQeeQ&busi_data=eyJncm91cENvZGUiOiI3MDYyOTIyNjMiLCJ0b2tlbiI6IlZVbEpZQ1NxbWI1R29tRU42WjNYU1RxbGhpTE9HNGl2Uk9VUTJRMnhxdWtjN2pzOTAwYmNxWDQwSjV4anFqTGkiLCJ1aW4iOiIxNzg3OTEyNDU1In0%3D&data=GlHoPLQsyAav4NjwClBN55l1jwxarn4FTYo83NFiO7RdPDitNCfH7u29oj4DfBFU8ekpeoAnkExGJf6smcI6YQ&svctype=4&tempid=h5_group_info" class="card" target="_blank"><div class="card-img-wrap"><img src="https://xiaoye6661234.github.io/fo/bn.png" class="card-img"></div><div class="card-name">官方交流群2号</div></a></div></section>
@@ -443,43 +472,21 @@ English Version<br>
         const SC_ICON = 'https://xiaoye6661234.github.io/sucai/sc.png';
         const SC3_ICON = 'https://xiaoye6661234.github.io/sucai/sc3.png';
         
-        // 获取收藏列表
-        function getFavorites() {
-            const raw = localStorage.getItem(FAV_KEY);
-            return raw ? JSON.parse(raw) : [];
-        }
-        function saveFavorites(list) {
-            localStorage.setItem(FAV_KEY, JSON.stringify(list));
-        }
-        // 判断是否收藏
-        function isFavoriteById(id) {
-            const favs = getFavorites();
-            return favs.some(item => item.id === id);
-        }
-        // 添加/删除收藏 (item包含 id, name, imgSrc, link)
+        function getFavorites() { const raw = localStorage.getItem(FAV_KEY); return raw ? JSON.parse(raw) : []; }
+        function saveFavorites(list) { localStorage.setItem(FAV_KEY, JSON.stringify(list)); }
+        function isFavoriteById(id) { return getFavorites().some(item => item.id === id); }
         function toggleFavorite(item) {
             let favs = getFavorites();
             const exists = favs.some(f => f.id === item.id);
-            if (exists) {
-                favs = favs.filter(f => f.id !== item.id);
-            } else {
-                favs.push({ id: item.id, name: item.name, imgSrc: item.imgSrc, link: item.link });
-            }
+            if (exists) favs = favs.filter(f => f.id !== item.id);
+            else favs.push({ id: item.id, name: item.name, imgSrc: item.imgSrc, link: item.link });
             saveFavorites(favs);
             return !exists;
         }
-        // 从收藏中移除
-        function removeFavoriteById(id) {
-            let favs = getFavorites();
-            favs = favs.filter(f => f.id !== id);
-            saveFavorites(favs);
-        }
-
-        // 为游戏页卡片添加收藏按钮 & 同步状态
+        function removeFavoriteById(id) { let favs = getFavorites(); favs = favs.filter(f => f.id !== id); saveFavorites(favs); }
         function attachFavoriteButtonsToGameCards() {
             const gameCards = document.querySelectorAll('#game-page .card-container .card');
             gameCards.forEach(card => {
-                // 避免重复添加按钮
                 if (card.querySelector('.favorite-btn')) return;
                 const href = card.getAttribute('href');
                 if (!href) return;
@@ -487,7 +494,6 @@ English Version<br>
                 const imgSrc = card.querySelector('.card-img')?.getAttribute('src') || '';
                 const uniqueId = href;
                 const isFav = isFavoriteById(uniqueId);
-                // 创建按钮
                 const btn = document.createElement('div');
                 btn.className = 'favorite-btn';
                 const btnImg = document.createElement('img');
@@ -496,104 +502,48 @@ English Version<br>
                 btn.appendChild(btnImg);
                 card.style.position = 'relative';
                 card.appendChild(btn);
-                // 绑定点击事件（阻止冒泡，不触发卡片跳转）
                 btn.addEventListener('click', async (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    const favItem = {
-                        id: uniqueId,
-                        name: cardName,
-                        imgSrc: imgSrc,
-                        link: href
-                    };
+                    const favItem = { id: uniqueId, name: cardName, imgSrc: imgSrc, link: href };
                     const nowFav = toggleFavorite(favItem);
-                    // 更新按钮图标
                     btnImg.src = nowFav ? SC3_ICON : SC_ICON;
-                    // 刷新收藏页面显示
                     renderFavoritesPage();
-                    // 同步游戏页其他相同id卡片的按钮状态（如果有重复，但一个页面唯一）
+                    refreshAllGameCardButtons();
                 });
             });
         }
-        
-        // 渲染收藏页面
         function renderFavoritesPage() {
             const container = document.getElementById('favoritesContainer');
             if (!container) return;
             const favorites = getFavorites();
-            if (favorites.length === 0) {
-                container.innerHTML = `<div class="empty-favorites">暂无收藏，去游戏页面点亮星星吧</div>`;
-                return;
-            }
+            if (favorites.length === 0) { container.innerHTML = `<div class="empty-favorites">暂无收藏，去游戏页面点亮星星吧</div>`; return; }
             container.innerHTML = '';
             favorites.forEach(fav => {
-                const card = document.createElement('a');
-                card.className = 'card';
-                card.href = fav.link;
-                card.target = '_blank';
-                card.setAttribute('data-fav-id', fav.id);
-                // 内部结构
-                const imgWrap = document.createElement('div');
-                imgWrap.className = 'card-img-wrap';
-                const img = document.createElement('img');
-                img.src = fav.imgSrc;
-                img.alt = fav.name;
-                img.className = 'card-img';
-                imgWrap.appendChild(img);
-                const nameDiv = document.createElement('div');
-                nameDiv.className = 'card-name';
-                nameDiv.innerText = fav.name;
-                card.appendChild(imgWrap);
-                card.appendChild(nameDiv);
-                // 收藏按钮（取消收藏用）
-                const delBtn = document.createElement('div');
-                delBtn.className = 'favorite-btn';
-                const delImg = document.createElement('img');
-                delImg.src = SC3_ICON; // 已收藏状态
-                delImg.alt = '取消收藏';
-                delBtn.appendChild(delImg);
-                card.style.position = 'relative';
-                card.appendChild(delBtn);
-                delBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    removeFavoriteById(fav.id);
-                    // 同步更新游戏页对应卡片按钮状态
-                    const gameCardLink = document.querySelector(`#game-page .card-container .card[href="${fav.id}"]`);
-                    if (gameCardLink) {
-                        const existingBtn = gameCardLink.querySelector('.favorite-btn img');
-                        if (existingBtn) existingBtn.src = SC_ICON;
-                    }
-                    renderFavoritesPage();  // 重新渲染收藏页
-                });
+                const card = document.createElement('a'); card.className = 'card'; card.href = fav.link; card.target = '_blank'; card.setAttribute('data-fav-id', fav.id);
+                const imgWrap = document.createElement('div'); imgWrap.className = 'card-img-wrap';
+                const img = document.createElement('img'); img.src = fav.imgSrc; img.alt = fav.name; img.className = 'card-img'; imgWrap.appendChild(img);
+                const nameDiv = document.createElement('div'); nameDiv.className = 'card-name'; nameDiv.innerText = fav.name;
+                card.appendChild(imgWrap); card.appendChild(nameDiv);
+                const delBtn = document.createElement('div'); delBtn.className = 'favorite-btn';
+                const delImg = document.createElement('img'); delImg.src = SC3_ICON; delImg.alt = '取消收藏'; delBtn.appendChild(delImg);
+                card.style.position = 'relative'; card.appendChild(delBtn);
+                delBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); removeFavoriteById(fav.id); refreshAllGameCardButtons(); renderFavoritesPage(); });
                 container.appendChild(card);
             });
         }
-        
-        // 全量刷新游戏页卡片按钮状态（保证外部改动时图标统一）
         function refreshAllGameCardButtons() {
-            const gameCards = document.querySelectorAll('#game-page .card-container .card');
-            gameCards.forEach(card => {
+            document.querySelectorAll('#game-page .card-container .card').forEach(card => {
                 const href = card.getAttribute('href');
                 if (!href) return;
                 const isFav = isFavoriteById(href);
                 const favBtn = card.querySelector('.favorite-btn img');
-                if (favBtn) {
-                    favBtn.src = isFav ? SC3_ICON : SC_ICON;
-                }
+                if (favBtn) favBtn.src = isFav ? SC3_ICON : SC_ICON;
             });
         }
+        function initFavorites() { attachFavoriteButtonsToGameCards(); renderFavoritesPage(); }
         
-        // 初始化收藏模块：注入游戏页按钮，渲染收藏页
-        function initFavorites() {
-            attachFavoriteButtonsToGameCards();
-            renderFavoritesPage();
-        }
-        
-        // 监听动态内容（因为导航切换不涉及dom重绘，但收藏状态更改后需要同步）
-        // 由于页面卡片固定，只需初始化一次，但收藏页重新渲染后不会影响游戏页按钮，注意移除时刷新即可
-        
-        // ---------- 原有导航、主题逻辑（保持不变并融合）----------
+        // 导航、主题逻辑
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
         const navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
@@ -601,110 +551,40 @@ English Version<br>
         const themeCards = document.querySelectorAll('.theme-card');
         const baseIconUrl = 'https://xiaoye6661234.github.io/fo/';
         const sucaiUrl = 'https://xiaoye6661234.github.io/sucai/';
-        
-        function initTheme() {
-            const savedTheme = localStorage.getItem('dlfmTheme') || 'classic';
-            applyTheme(savedTheme);
-        }
+        function initTheme() { const savedTheme = localStorage.getItem('dlfmTheme') || 'classic'; applyTheme(savedTheme); }
         function applyTheme(themeName) {
             document.body.classList.remove('theme-classic', 'theme-oil', 'theme-ink', 'theme-qingming', 'theme-qingming1');
             document.body.classList.add(`theme-${themeName}`);
-            themeCards.forEach(card => {
-                card.classList.remove('active');
-                if (card.getAttribute('data-theme') === themeName) card.classList.add('active');
-            });
+            themeCards.forEach(card => { card.classList.remove('active'); if (card.getAttribute('data-theme') === themeName) card.classList.add('active'); });
             localStorage.setItem('dlfmTheme', themeName);
         }
         themeCards.forEach(card => card.addEventListener('click', () => applyTheme(card.getAttribute('data-theme'))));
         menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
         document.addEventListener('click', (e) => { if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) sidebar.classList.remove('show'); });
-        
-        // 导航切换（扩展收藏页支持）
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetPage = item.getAttribute('data-page');
                 const itemName = item.getAttribute('data-name');
-                navItems.forEach(nav => {
-                    const name = nav.getAttribute('data-name');
-                    nav.classList.remove('active');
-                    const icon = nav.querySelector('img');
-                    if (icon && name) {
-                        let base = (name === 'dress' || name === 'sc') ? sucaiUrl : baseIconUrl;
-                        // 特殊处理收藏图标：未激活用sc.png，激活用sc2.png
-                        if (name === 'sc') {
-                            icon.src = `${sucaiUrl}sc.png`;
-                        } else {
-                            icon.src = `${base}${name}.png`;
-                        }
-                    }
-                });
-                // 激活当前导航
+                navItems.forEach(nav => { const name = nav.getAttribute('data-name'); nav.classList.remove('active'); const icon = nav.querySelector('img'); if (icon && name) { if (name === 'sc') icon.src = `${sucaiUrl}sc.png`; else { let base = (name === 'dress') ? sucaiUrl : baseIconUrl; icon.src = `${base}${name}.png`; } } });
                 const activeNavs = document.querySelectorAll(`[data-page="${targetPage}"]`);
-                activeNavs.forEach(nav => {
-                    nav.classList.add('active');
-                    const icon = nav.querySelector('img');
-                    const name = nav.getAttribute('data-name');
-                    if (icon && name) {
-                        if (name === 'sc') {
-                            icon.src = `${sucaiUrl}sc2.png`;
-                        } else {
-                            let base = (name === 'dress') ? sucaiUrl : baseIconUrl;
-                            icon.src = `${base}${name}1.png`;
-                        }
-                    }
-                });
+                activeNavs.forEach(nav => { nav.classList.add('active'); const icon = nav.querySelector('img'); const name = nav.getAttribute('data-name'); if (icon && name) { if (name === 'sc') icon.src = `${sucaiUrl}sc2.png`; else { let base = (name === 'dress') ? sucaiUrl : baseIconUrl; icon.src = `${base}${name}1.png`; } } });
                 pageContents.forEach(page => page.classList.remove('active'));
                 document.getElementById(`${targetPage}-page`).classList.add('active');
                 sidebar.classList.remove('show');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                // 每次切换到游戏页时重新确保收藏按钮完整（避免遗漏）
-                if (targetPage === 'game') {
-                    attachFavoriteButtonsToGameCards();
-                    refreshAllGameCardButtons();
-                }
-                if (targetPage === 'favorites') {
-                    renderFavoritesPage();
-                }
+                if (targetPage === 'game') { attachFavoriteButtonsToGameCards(); refreshAllGameCardButtons(); }
+                if (targetPage === 'favorites') renderFavoritesPage();
             });
         });
-        
-        // 下载卡片原有功能
         function initDownloadCards() {
-            const downloadCards = document.querySelectorAll('.download-model-card');
-            downloadCards.forEach(card => {
-                card.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const fileUrl = this.getAttribute('data-download-url');
-                    const fileName = this.getAttribute('data-download-filename') || 'download.obj';
-                    if (!fileUrl) return;
-                    const link = document.createElement('a');
-                    link.href = fileUrl;
-                    link.download = fileName;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                });
+            document.querySelectorAll('.download-model-card').forEach(card => {
+                card.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); const fileUrl = this.getAttribute('data-download-url'); const fileName = this.getAttribute('data-download-filename') || 'download.obj'; if (!fileUrl) return; const link = document.createElement('a'); link.href = fileUrl; link.download = fileName; document.body.appendChild(link); link.click(); document.body.removeChild(link); });
             });
         }
-        
-        // 启动所有
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                initTheme();
-                initDownloadCards();
-                initFavorites();
-            });
-        } else {
-            initTheme();
-            initDownloadCards();
-            initFavorites();
-        }
-        window.addEventListener('DOMContentLoaded', () => {
-            if (!localStorage.getItem('dlfmTheme')) initTheme();
-            attachFavoriteButtonsToGameCards();
-        });
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { initTheme(); initDownloadCards(); initFavorites(); });
+        else { initTheme(); initDownloadCards(); initFavorites(); }
+        window.addEventListener('DOMContentLoaded', () => { if (!localStorage.getItem('dlfmTheme')) initTheme(); attachFavoriteButtonsToGameCards(); });
     </script>
 </body>
 </html>
